@@ -88,7 +88,7 @@ nav.tabs button[aria-selected="true"]{background:var(--acc)!important;border-col
 .tsvg{width:100%;height:auto;max-height:90px;background:var(--soft);border-radius:12px;margin-bottom:6px}
 .tname{font-weight:700;color:var(--violet)} .tpy{font-size:26px;font-weight:700;color:var(--teal)} .tz{font-size:30px}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px}
-.pl{font-size:28px;font-weight:700;color:var(--violet)}
+.pl{font-size:28px;font-weight:700;color:var(--violet)} .rd{font-size:18px;font-weight:600;color:var(--teal)} .tr2{font-size:20px}
 /* level tags */
 .lv{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px;white-space:nowrap}
 .lv1{background:var(--l1s);color:var(--l1)}.lv2{background:var(--l2s);color:var(--l2)}.lv3{background:var(--l3s);color:var(--l3)}.lv4{background:var(--l4s);color:var(--l4)}
@@ -144,6 +144,7 @@ td.p{color:var(--teal);font-weight:500;white-space:nowrap}
 tr.known td.h{color:var(--muted)}
 .hideth td.t span{filter:blur(6px);cursor:pointer}
 .hideth td.t span.show{filter:none}
+.hidepy td.p span{filter:blur(6px);cursor:pointer} .hidepy td.p span.show{filter:none}
 .more{text-align:center;margin-top:12px}
 
 /* flashcards */
@@ -266,7 +267,7 @@ function renderProg(){ if(S.level){const st=lvStats(S.level);$('#curProg').textC
 function renderHome(){
   const desc={1:'เริ่มจากศูนย์ คำพื้นฐานในชีวิตประจำวัน',2:'ต่อยอดประโยคยาวขึ้น พูดเรื่องรอบตัวได้',3:'คุยเรื่องการเรียน งาน และการเดินทาง'};
   $('#home').innerHTML=`<div class="hello">วันนี้จะเรียนระดับไหนดี</div><p class="muted" style="margin-top:0">แต่ละระดับมีบทเรียน คำศัพท์ และแบบฝึกของตัวเอง</p>
-  <div class="levels"><button class="lvcard k0" id="goPy"><span class="big">เริ่มที่นี่: พินอิน</span><span>วรรณยุกต์ 4 เสียง พยัญชนะ สระ และแบบฝึกฟัง</span><span class="d">สำหรับคนที่เพิ่งเริ่มจากศูนย์ ใช้เวลาประมาณ 1–2 วัน</span></button>${[1,2,3].map(l=>{const st=lvStats(l),nl=LESSONS.filter(x=>x.lv===l).length;
+  <div class="levels"><button class="lvcard k0" id="goPy"><span class="big">เริ่มที่นี่: พินอิน</span><span>วรรณยุกต์ 4 เสียง พยัญชนะต้น และสระ</span><span class="d">สำหรับคนที่เพิ่งเริ่มจากศูนย์ ใช้เวลาประมาณ 1–2 วัน</span></button>${[1,2,3].map(l=>{const st=lvStats(l),nl=LESSONS.filter(x=>x.lv===l).length;
     return `<button class="lvcard k${l}" data-lv="${l}"><span class="big">HSK${l}</span><span>${st.n} คำ ${nl} บทเรียน</span><span class="d">${desc[l]}</span>
     <span class="d">จำได้ ${st.k} คำ (${st.p}%)</span><div class="bar" style="width:100%"><i style="width:${st.p}%;background:var(--l${l})"></i></div></button>`;}).join('')}</div>`;
   $$('.lvcard[data-lv]').forEach(b=>b.onclick=()=>enterLevel(+b.dataset.lv)); $('#goPy').onclick=enterPinyin;
@@ -375,15 +376,17 @@ function renderVocab(){
   const shown=rows.slice(0,S.limit);
   $('#main').innerHTML=`<div class="controls">${lvSelect()}${setSelect()}
     <input type="search" id="search" placeholder="ค้นหาตัวจีน พินอิน หรือภาษาไทย" value="${esc(S.q)}">
-    <label class="chip"><input type="checkbox" id="hideTh"${S.hideTh?' checked':''}> ซ่อนความหมาย</label></div>
-    <div class="tablebox ${S.hideTh?'hideth':''}">${rows.length?`<table><thead><tr><th>คำ</th><th>พินอิน</th><th>ความหมาย</th><th>ระดับ</th><th>ฟัง</th><th>จำได้</th></tr></thead><tbody>${
-      shown.map(w=>`<tr class="${known.has(w.h)?'known':''}"><td class="h">${esc(w.h)}</td><td class="p">${esc(w.p)}</td><td class="t"><span>${esc(thOf(w))}</span></td><td>${tag(w.l)}</td>
+    <label class="chip"><input type="checkbox" id="showPyV"${S.hidePyV?'':' checked'}> พินอิน</label><label class="chip"><input type="checkbox" id="hideTh"${S.hideTh?' checked':''}> ซ่อนความหมาย</label></div>
+    <div class="tablebox ${S.hideTh?'hideth':''} ${S.hidePyV?'hidepy':''}">${rows.length?`<table><thead><tr><th>คำ</th><th>พินอิน</th><th>ความหมาย</th><th>ระดับ</th><th>ฟัง</th><th>จำได้</th></tr></thead><tbody>${
+      shown.map(w=>`<tr class="${known.has(w.h)?'known':''}"><td class="h">${esc(w.h)}</td><td class="p"><span>${esc(w.p)}</span></td><td class="t"><span>${esc(thOf(w))}</span></td><td>${tag(w.l)}</td>
       <td><button class="icon" data-say="${esc(w.h)}" aria-label="ฟัง ${esc(w.h)}">${PLAY}</button></td><td><input type="checkbox" data-k="${esc(w.h)}"${known.has(w.h)?' checked':''} aria-label="จำได้"></td></tr>`).join('')}</tbody></table>`
       :`<div style="padding:26px;text-align:center" class="muted">ไม่พบคำนี้ ลองพิมพ์พินอินไม่ต้องใส่วรรณยุกต์ เช่น xuexi หรือคำนี้อาจอยู่ในระดับอื่น</div>`}</div>
     ${rows.length>S.limit?`<div class="more"><button class="btn" id="more">แสดงเพิ่ม (เหลืออีก ${rows.length-S.limit} คำ)</button></div>`:''}`;
   bindSel(()=>{S.limit=120;renderVocab();});
   const s=$('#search'); s.oninput=e=>{S.q=e.target.value;S.limit=120;const p=e.target.selectionStart;renderVocab();const n=$('#search');n.focus();n.setSelectionRange(p,p);};
   $('#hideTh').onchange=e=>{S.hideTh=e.target.checked;renderVocab();};
+  $('#showPyV').onchange=e=>{S.hidePyV=!e.target.checked;renderVocab();};
+  $$('.hidepy td.p span').forEach(sp=>sp.onclick=()=>sp.classList.toggle('show'));
   if($('#more')) $('#more').onclick=()=>{S.limit+=200;renderVocab();};
   $$('[data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));
   $$('.hideth td.t span').forEach(sp=>sp.onclick=()=>sp.classList.toggle('show'));
@@ -521,20 +524,20 @@ const TONES=[
  {n:4,name:'เสียงที่ 4',py:'mà',h:'骂',m:'ด่า',d:'ตกแรงจากสูงลงต่ำ สั้นและเด็ดขาด เหมือนตอนดุว่า "ไม่!"',th:'ใกล้เสียงโทแบบตกแรง',path:'M14 14 L106 66'},
  {n:0,name:'เสียงเบา',py:'ma',h:'吗',m:'คำลงท้ายคำถาม',d:'สั้น เบา ไม่มีเครื่องหมาย ระดับเสียงขึ้นกับพยางค์ข้างหน้า',th:'พูดเบา ๆ สั้น ๆ',path:''}];
 const INIT=[
- ['ริมฝีปาก',[['b','ป','八','bā','ไม่พ่นลม'],['p','พ','跑','pǎo','พ่นลม'],['m','ม','妈','mā',''],['f','ฟ','飞','fēi','']]],
- ['ปลายลิ้น',[['d','ต','大','dà','ไม่พ่นลม'],['t','ท','他','tā','พ่นลม'],['n','น','你','nǐ',''],['l','ล','来','lái','']]],
- ['โคนลิ้น',[['g','ก','哥','gē','ไม่พ่นลม'],['k','ค','看','kàn','พ่นลม'],['h','ฮ','喝','hē','ออกเสียงจากลำคอ ครืดเบา ๆ']]],
- ['ลิ้นแบนแตะหลังฟันล่าง',[['j','จ','鸡','jī','ยิ้มเล็กน้อย'],['q','ช','七','qī','พ่นลม'],['x','ซ','西','xī','ยิ้มเล็กน้อย']]],
- ['ม้วนลิ้น',[['zh','จ (ม้วนลิ้น)','中','zhōng','ไม่พ่นลม ปลายลิ้นแตะเพดาน'],['ch','ช (ม้วนลิ้น)','吃','chī','พ่นลม'],['sh','ซ (ม้วนลิ้น)','是','shì',''],['r','ร (ม้วนลิ้น)','热','rè','คล้าย r ในภาษาอังกฤษ']]],
- ['ปลายลิ้นแตะหลังฟันบน',[['z','จึ / ts','字','zì','ไม่พ่นลม'],['c','ชึ / ts พ่นลม','菜','cài','พ่นลมแรง'],['s','ซึ','四','sì','']]],
- ['กึ่งสระ',[['y','ย','一','yī',''],['w','ว','我','wǒ','']]]];
+ ['ริมฝีปาก',[['b','bo','ปัว','波','ไม่พ่นลม'],['p','po','พัว','坡','พ่นลม'],['m','mo','มัว','摸',''],['f','fo','ฟัว','佛','']]],
+ ['ปลายลิ้น',[['d','de','เตอ','得','ไม่พ่นลม'],['t','te','เทอ','特','พ่นลม'],['n','ne','เนอ','讷',''],['l','le','เลอ','乐','']]],
+ ['โคนลิ้น',[['g','ge','เกอ','哥','ไม่พ่นลม'],['k','ke','เคอ','科','พ่นลม'],['h','he','เฮอ','喝','ออกจากลำคอ']]],
+ ['ลิ้นแบนแตะหลังฟันล่าง',[['j','ji','จี','鸡',''],['q','qi','ชี','七','พ่นลม'],['x','xi','ซี','西','']]],
+ ['ม้วนลิ้น',[['zh','zhi','จรือ','知','ไม่พ่นลม'],['ch','chi','ชรือ','吃','พ่นลม'],['sh','shi','ซรือ','诗',''],['r','ri','ยรือ','日','']]],
+ ['ปลายลิ้นแตะหลังฟันบน',[['z','zi','จือ','资','ไม่พ่นลม'],['c','ci','ชือ','词','พ่นลม'],['s','si','ซือ','思','']]],
+ ['กึ่งสระ',[['y','yi','อี','衣',''],['w','wu','อู','屋','']]]];
 const FIN=[
- ['สระเดี่ยว',[['a','อา','八'],['o','ออ / โอ','我'],['e','เออ','喝'],['i','อี','你'],['u','อู','不'],['ü','อวี (ปากจู๋ พูดอี)','女'],['er','เออร์ (ม้วนลิ้น)','二']]],
- ['สระประสม',[['ai','ไอ','来'],['ei','เอย','飞'],['ao','เอา','好'],['ou','โอว','都']]],
- ['สระมีตัวสะกด',[['an','อัน','看'],['en','เอิน','很'],['ang','อาง','忙'],['eng','เอิง','冷'],['ong','อง','中']]],
- ['ขึ้นต้นด้วย i',[['ia','เอีย (ยา)','家'],['ie','เอีย (เย)','姐'],['iao','เอียว','小'],['iu','อิว','九'],['ian','เอียน (เยน)','天'],['in','อิน','今'],['iang','เอียง (ยาง)','想'],['ing','อิง','听'],['iong','อยง','熊']]],
- ['ขึ้นต้นด้วย u',[['ua','อวา','话'],['uo','อวอ','多'],['uai','อวาย','快'],['ui','อุย (เวย)','对'],['uan','อวน (วาน)','换'],['un','อุน (เวิน)','春'],['uang','อวาง','黄']]],
- ['ขึ้นต้นด้วย ü',[['üe','เอวีย','学'],['üan','เอวียน','远'],['ün','อวิน','云']]]];
+ ['สระเดี่ยว',[['a','อา','啊'],['o','โอ','喔'],['e','เออ','鹅'],['i','อี','衣'],['u','อู','屋'],['ü','อวี','迂'],['er','เออร์','儿']]],
+ ['สระประสม',[['ai','ไอ','哀'],['ei','เอย','诶'],['ao','เอา','凹'],['ou','โอว','欧']]],
+ ['สระมีตัวสะกด',[['an','อัน','安'],['en','เอิน','恩'],['ang','อาง','昂'],['eng','เอิง','鞥'],['ong','อง','翁']]],
+ ['ขึ้นต้นด้วย i',[['ia','ยา','呀'],['ie','เย','耶'],['iao','เยา','腰'],['iu','โยว','优'],['ian','เยียน','烟'],['in','อิน','因'],['iang','ยาง','央'],['ing','อิง','英'],['iong','ยง','雍']]],
+ ['ขึ้นต้นด้วย u',[['ua','วา','蛙'],['uo','วอ','窝'],['uai','วาย','歪'],['ui','เวย','威'],['uan','วาน','弯'],['un','เวิน','温'],['uang','วาง','汪']]],
+ ['ขึ้นต้นด้วย ü',[['üe','เยว','约'],['üan','เยวียน','冤'],['ün','ยวิน','晕']]]];
 const PYTIPS=[
  ['พ่นลม vs ไม่พ่นลม','b d g z zh j ไม่พ่นลม (ป ต ก) ส่วน p t k c ch q พ่นลม (พ ท ค) ลองเอากระดาษไว้หน้าปาก ถ้ากระดาษไหวคือพ่นลม'],
  ['i ไม่ได้อ่านว่า อี เสมอ','หลัง z c s zh ch sh r ตัว i อ่านคล้าย อือ เช่น 是 shì 字 zì 吃 chī'],
@@ -550,8 +553,8 @@ function toneSvg(t,big){ if(!t.path) return `<svg viewBox="0 0 120 80" class="ts
   return `<svg viewBox="0 0 120 80" class="tsvg" aria-hidden="true">${[14,27,40,53,66].map(y=>`<line x1="8" x2="112" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`).join('')}<path d="${t.path}" fill="none" stroke="var(--violet)" stroke-width="6" stroke-linecap="round"/></svg>`;}
 function enterPinyin(){S.level='py';save('hsk-level','py');$('#home').hidden=true;$('#inlevel').hidden=true;$('#pinyin').hidden=false;
   document.documentElement.style.setProperty('--acc','var(--violet)');renderPinyin();window.scrollTo(0,0);}
-function renderPinyin(){
-  const tabs=[['tones','วรรณยุกต์'],['init','พยัญชนะต้น'],['fin','สระ'],['tips','กฎที่ต้องรู้'],['quiz','ฝึกฟัง']];
+function renderPinyin(){ if(!['tones','init','fin'].includes(PS.sec)) PS.sec='tones';
+  const tabs=[['tones','วรรณยุกต์'],['init','พยัญชนะต้น'],['fin','สระ']];
   let h=`<div class="lvbar"><button class="btn" id="pyBack">เปลี่ยนระดับ</button><span class="cur">พินอินและวรรณยุกต์</span><span class="muted">พื้นฐานก่อนเริ่ม HSK1</span></div>
   <nav class="tabs">${tabs.map(([k,n])=>`<button data-ps="${k}" aria-selected="${PS.sec===k}">${n}</button>`).join('')}</nav>`;
   if(PS.sec==='tones'){
@@ -560,9 +563,9 @@ function renderPinyin(){
       <div style="font-size:14px;margin-top:6px">${t.d}</div><div class="lv lv4" style="margin-top:6px">${t.th}</div></button>`).join('')}</div>
       <p class="muted" style="margin-top:14px">เส้นในภาพคือระดับเสียงจากต่ำ (ล่าง) ถึงสูง (บน) เสียงไทยที่เทียบไว้เป็นแค่ตัวช่วยจำ ไม่ได้ตรงเป๊ะ</p>`;
   } else if(PS.sec==='init'){
-    h+=`<p class="muted">พยัญชนะต้น 21 ตัว (และกึ่งสระ y w) เสียงไทยใกล้เคียงไว้ช่วยจำ กดการ์ดเพื่อฟังคำตัวอย่าง</p>`+INIT.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,t,hz,py,n])=>`<button class="pcard" data-say="${hz}"><span class="pl">${p}</span><span>${t}</span><span class="hz" style="font-size:22px">${hz} <small style="color:var(--teal)">${py}</small></span>${n?`<span class="muted" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div>`).join('');
+    h+=`<p class="muted">พยัญชนะต้น 21 ตัว (และกึ่งสระ y w) อ่านแบบท่องเหมือนตอนเรียนพินอิน กดการ์ดเพื่อฟังเสียง</p>`+INIT.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,rd,t,hz,n])=>`<button class="pcard" data-say="${hz}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span><span class="rd">${rd}</span><span class="tr2">${t}</span>${n?`<span class="muted" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div>`).join('');
   } else if(PS.sec==='fin'){
-    h+=`<p class="muted">สระที่ใช้บ่อย พร้อมเสียงไทยใกล้เคียงและคำตัวอย่าง</p>`+FIN.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,t,hz])=>{const w=BY[hz];return `<button class="pcard" data-say="${hz}"><span class="pl">${p}</span><span>${t}</span><span class="hz" style="font-size:22px">${hz}${w?` <small style="color:var(--teal)">${esc(w.p)}</small>`:''}</span></button>`;}).join('')}</div>`).join('');
+    h+=`<p class="muted">สระทั้งหมด พร้อมเสียงไทยใกล้เคียง กดการ์ดเพื่อฟังเสียง</p>`+FIN.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,t,hz])=>`<button class="pcard" data-say="${hz}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span><span class="tr2">${t}</span></button>`).join('')}</div>`).join('');
   } else if(PS.sec==='tips'){
     h+=PYTIPS.map(([a,b])=>`<div class="qa"><b>${a}</b><div>${b}</div></div>`).join('');
   } else {
