@@ -115,6 +115,9 @@ nav.tabs button[aria-selected="true"]{background:var(--acc)!important;border-col
 .newsh .tr{font-size:16px;font-weight:600;color:var(--ink)}
 .kwon .w.kw{background:var(--sun-soft)!important;font-weight:700;border-bottom-color:var(--sun)!important}
 .kwtag{background:var(--sun-soft);border-bottom:3px solid var(--sun);font-weight:700;border-radius:5px;padding:0 6px;font-size:13px}
+/* in-app banner */
+.iab{position:sticky;top:0;z-index:30;display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--sun-soft);border-bottom:1px solid var(--sun);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));font-size:14px}
+.iab button{border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
 /* feedback */
 .fbhome{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:12px 16px;margin-top:4px;font-size:15px;color:var(--muted)}
 /* level menu */
@@ -446,15 +449,43 @@ applyTheme();
 
 /* toast + speech (Microsoft Yaoyao first) */
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2800);}
-let voice=null, warned=false;
-function pickVoice(){ if(!('speechSynthesis' in window))return; const vs=speechSynthesis.getVoices();
-  voice=vs.find(v=>/yaoyao/i.test(v.name))||vs.find(v=>/zh[-_]CN/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null; }
+let voice=null, warned=false, voicesLoaded=false;
+const UA=navigator.userAgent||'';
+const IN_APP=/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Line\/|Messenger|MicroMessenger|TikTok|musical_ly/i.test(UA);
+const APPNAME=/Line\//i.test(UA)?'LINE':/Instagram/i.test(UA)?'Instagram':/TikTok|musical_ly/i.test(UA)?'TikTok':/MicroMessenger/i.test(UA)?'WeChat':/Messenger/i.test(UA)?'Messenger':'Facebook';
+const isMandarin=v=>/^(zh|cmn)/i.test(v.lang)&&!/HK|MO|yue/i.test(v.lang)&&!/Cantonese|粤|廣東|Sin-ji|Sinji/i.test(v.name);
+function pickVoice(){ if(!('speechSynthesis' in window))return; const vs=speechSynthesis.getVoices(); if(vs.length) voicesLoaded=true;
+  voice=vs.find(v=>/yaoyao/i.test(v.name)&&isMandarin(v))||vs.find(v=>isMandarin(v)&&/(zh|cmn)[-_](CN|Hans)/i.test(v.lang))||vs.find(isMandarin)||null; }
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
-function speak(text,rate){
-  if(!('speechSynthesis' in window)){toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้');return;}
-  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=rate||0.85; if(voice)u.voice=voice; speechSynthesis.speak(u);
-  if(!warned && speechSynthesis.getVoices().length && !(voice&&/yaoyao/i.test(voice.name))){warned=true;toast(voice?'ไม่พบเสียง Yaoyao ในเครื่องนี้ จึงใช้เสียงจีนอื่นแทน':'ไม่พบเสียงภาษาจีนในเครื่อง ติดตั้งเสียง Microsoft Yaoyao ในการตั้งค่า');}
+function osName(){return /iPhone|iPad|iPod/i.test(UA)||(/Mac/i.test(UA)&&navigator.maxTouchPoints>1)?'ios':/Android/i.test(UA)?'android':/Windows/i.test(UA)?'win':/Mac/i.test(UA)?'mac':'other';}
+function voiceHelp(){
+  if(document.querySelector('.ovl.vh')) return;
+  const os=osName();
+  const steps={ios:'ไปที่ การตั้งค่า → การช่วยการเข้าถึง → เนื้อหาที่พูด → เสียง → ภาษาจีน (จีนแผ่นดินใหญ่) แล้วดาวน์โหลดเสียง เช่น Tingting',
+    android:'ติดตั้งหรืออัปเดตแอป "Speech Services by Google" จาก Play Store แล้วไปที่ การตั้งค่า → การช่วยเหลือพิเศษ → เอาต์พุตการอ่านออกเสียง → เลือก Google แล้วดาวน์โหลดเสียงภาษาจีน (จีนกลาง)',
+    win:'ไปที่ Settings → Time & Language → Language & region → Add a language → 中文(中华人民共和国) ติ๊ก Text-to-speech แล้วรีสตาร์ตเบราว์เซอร์',
+    mac:'ไปที่ System Settings → Accessibility → Spoken Content → System Voice → Manage Voices แล้วเพิ่มเสียงภาษาจีน (Mainland China)',
+    other:'ติดตั้งเสียงอ่านภาษาจีนกลาง (zh-CN) ในเครื่อง หรือลองเปิดด้วย Chrome / Safari'}[os];
+  const ov=document.createElement('div'); ov.className='ovl vh';
+  ov.innerHTML=`<div class="sbox" style="text-align:left"><h3 style="margin-top:0">เครื่องนี้ยังไม่มีเสียงภาษาจีนกลาง</h3>
+   <p class="muted" style="font-size:14px">เว็บใช้เสียงอ่านของเครื่องคุณ ถ้าไม่มีเสียงจีน เครื่องจะใช้เสียงภาษาอื่นอ่านแทน ฟังแล้วจะไม่รู้เรื่อง เลยหยุดไว้ก่อน</p>
+   ${IN_APP?`<p><b>1.</b> ตอนนี้เปิดอยู่ในแอป ${APPNAME} ให้กด ⋯ มุมขวาบน แล้วเลือก <b>เปิดในเบราว์เซอร์</b> (Safari / Chrome) ส่วนใหญ่แค่นี้ก็มีเสียงแล้ว</p><p><b>2.</b> ถ้ายังไม่มีเสียง: ${steps}</p>`:`<p>${steps}</p>`}
+   <p style="text-align:center"><button class="btn go" id="vhClose">เข้าใจแล้ว</button></p></div>`;
+  document.body.appendChild(ov); const c=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)c();}; ov.querySelector('#vhClose').onclick=c;
 }
+function speak(text,rate){
+  if(!('speechSynthesis' in window)){voiceHelp();return;}
+  if(!voice) pickVoice();
+  if(!voice && (voicesLoaded||IN_APP)){ voiceHelp(); return; }
+  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=rate||0.85; if(voice)u.voice=voice; speechSynthesis.speak(u);
+  if(!warned && voice && !/yaoyao/i.test(voice.name)){warned=true;}
+}
+function inAppBanner(){ if(!IN_APP) return; try{ if(sessionStorage.getItem('iab-hide')) return; }catch(e){}
+  const b=document.createElement('div'); b.className='iab';
+  b.innerHTML=`<span>กำลังเปิดในแอป ${APPNAME} เสียงอ่านอาจไม่ทำงาน แนะนำให้กด <b>⋯</b> แล้วเลือก <b>เปิดในเบราว์เซอร์</b></span><button aria-label="ปิด">✕</button>`;
+  document.body.prepend(b); b.querySelector('button').onclick=()=>{b.remove();try{sessionStorage.setItem('iab-hide','1');}catch(e){}};
+}
+inAppBanner();
 
 /* Claude helper (optional) */
 let samplePromise=(window.claude&&window.claude.use)?window.claude.use('sample').catch(()=>null):Promise.resolve(null);
