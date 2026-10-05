@@ -458,7 +458,7 @@ function pickVoice(){ if(!('speechSynthesis' in window))return; const vs=speechS
   voice=vs.find(v=>/yaoyao/i.test(v.name)&&isMandarin(v))||vs.find(v=>isMandarin(v)&&/(zh|cmn)[-_](CN|Hans)/i.test(v.lang))||vs.find(isMandarin)||null; }
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
 function osName(){return /iPhone|iPad|iPod/i.test(UA)||(/Mac/i.test(UA)&&navigator.maxTouchPoints>1)?'ios':/Android/i.test(UA)?'android':/Windows/i.test(UA)?'win':/Mac/i.test(UA)?'mac':'other';}
-function voiceHelp(){
+function voiceHelp(){ track('problem/no-chinese-voice'+(IN_APP?'-inapp':''),'ไม่มีเสียงจีน'+(IN_APP?' (เปิดในแอป)':''));
   if(document.querySelector('.ovl.vh')) return;
   const os=osName();
   const steps={ios:'ไปที่ การตั้งค่า → การช่วยการเข้าถึง → เนื้อหาที่พูด → เสียง → ภาษาจีน (จีนแผ่นดินใหญ่) แล้วดาวน์โหลดเสียง เช่น Tingting',
@@ -506,10 +506,10 @@ function renderHome(){
   <div class="basics"><button class="lvcard k0" id="goPy"><span class="big">พินอิน</span><span>วรรณยุกต์ 4 เสียง พยัญชนะต้น และสระ</span><span class="d">เริ่มที่นี่ถ้าเพิ่งเรียนจากศูนย์</span></button><button class="lvcard ks" id="goSt"><span class="big">ลำดับขีด</span><span>เส้นพื้นฐาน 14 แบบ และกฎการเขียน</span><span class="d">เขียนตัวอักษรจีนให้ถูกลำดับ</span></button></div><div class="levels">${LEVELS.map(l=>{const st=lvStats(l),nl=LESSONS.filter(x=>x.lv===l).length;
     return `<button class="lvcard k${l}" data-lv="${l}"><span class="big">HSK${l}</span><span>${st.n} คำ ${nl?nl+' บทเรียน':'· บทเรียนกำลังมา'}</span><span class="d">${desc[l]}</span>
     <span class="d">จำได้ ${st.k} คำ (${st.p}%)</span><div class="bar" style="width:100%"><i style="width:${st.p}%;background:var(--l${l})"></i></div></button>`;}).join('')}</div>`;
-  if(FEEDBACK_URL){$('#home').insertAdjacentHTML('beforeend',`<div class="fbhome"><span>ลองใช้แล้วเป็นยังไงบ้าง? ช่วยบอกหน่อยนะ ใช้เวลาแค่ 2 นาที</span><button class="btn go" id="fbHome">💬 ส่งความคิดเห็น</button></div>`);$('#fbHome').onclick=()=>window.open(FEEDBACK_URL,'_blank','noopener');}
+  if(FEEDBACK_URL){$('#home').insertAdjacentHTML('beforeend',`<div class="fbhome"><span>ลองใช้แล้วเป็นยังไงบ้าง? ช่วยบอกหน่อยนะ ใช้เวลาแค่ 2 นาที</span><button class="btn go" id="fbHome">💬 ส่งความคิดเห็น</button></div>`);$('#fbHome').onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
   $$('.lvcard[data-lv]').forEach(b=>b.onclick=()=>enterLevel(+b.dataset.lv)); $('#goPy').onclick=enterPinyin; $('#goSt').onclick=enterStrokes;
 }
-function enterLevel(l){S.customDeck=null;S.vfilter='all';S.level=l;save('hsk-level',l);S.lesson=null;S.set='all';S.tsrc='all';
+function enterLevel(l){track('level/hsk'+l,'เข้า HSK'+l);S.customDeck=null;S.vfilter='all';S.level=l;save('hsk-level',l);S.lesson=null;S.set='all';S.tsrc='all';
   document.documentElement.style.setProperty('--acc',`var(--l${l})`);
   $('#home').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=true;$('#inlevel').hidden=false;$('#lvWrap').innerHTML=lvMenu(l);bindLvMenu($('#lvWrap'));
   renderToday();renderProg();go('lessons');window.scrollTo(0,0);}
@@ -552,7 +552,7 @@ function lineHTML(t){return t.map(x=>{ if(!Array.isArray(x)) return esc(x);
   const [h,py,l,m]=x; return `<span class="w c${l}${KW.has(h)?' kw':''}" data-h="${esc(h)}" data-p="${esc(py)}" data-l="${l}" data-m="${esc(m)}" tabindex="0" role="button"><ruby>${esc(h)}<rt>${esc(py)}</rt></ruby></span>`;}).join('');}
 const plainLine=t=>t.map(x=>Array.isArray(x)?x[0]:x).join('');
 function renderLesson(id){
-  const L=LESSONS.find(l=>l.id===id); KW=new Set(L.vocab.map(v=>v[0]));
+  const L=LESSONS.find(l=>l.id===id); KW=new Set(L.vocab.map(v=>v[0])); track('lesson/'+L.id,'เปิดบท HSK'+L.lv+' '+L.title);
   let html=`<div class="lhead"><button class="btn" id="back">กลับ</button><h2>${esc(L.title)}</h2><span class="muted">HSK${L.lv} ${L.kind==='day'?'Day '+L.n:'บทอ่านที่ '+L.n}</span></div>
   <div class="controls">
     <label class="chip"><input type="checkbox" id="tPy"${S.showPy?' checked':''}> พินอิน</label>
@@ -587,7 +587,7 @@ function renderLesson(id){
   $('#tKw').onchange=e=>{S.kw=e.target.checked;$('#ltext').classList.toggle('kwon',S.kw);};
   $$('[data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));
   $$('.w').forEach(w=>{w.onclick=e=>{e.stopPropagation();openPop(w);}; w.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPop(w);}};});
-  $('#markDone').onclick=()=>{doneL.has(L.id)?doneL.delete(L.id):(doneL.add(L.id),markStudy());save('hsk-lessons-done',[...doneL]);renderLesson(id);};
+  $('#markDone').onclick=()=>{doneL.has(L.id)?doneL.delete(L.id):(doneL.add(L.id),markStudy(),track('lesson-done/'+L.id,'อ่านจบ HSK'+L.lv+' '+L.title));save('hsk-lessons-done',[...doneL]);renderLesson(id);};
   $('#pracS').onclick=()=>{S.tsrc=L.id;S.tkind='sent';go('type');};
   $('#pracW').onclick=()=>{S.tsrc=L.id;S.tkind='word';go('type');};
 }
@@ -683,7 +683,7 @@ function renderCards(){
   $('#say').onclick=()=>speak(w.h);
   $('#yes').onclick=()=>answerCard(true); $('#no').onclick=()=>answerCard(false);
 }
-function answerCard(ok){const w=S.deck[S.di];if(!w)return; markStudy();
+function answerCard(ok){const w=S.deck[S.di];if(!w)return; markStudy(); track('use/flashcards','ใช้แฟลชการ์ด');
   if(!ok) addMiss(w.h);
   if(S.cmode==='srs'&&!S.customDeck){ srsAnswer(w,ok); if(!ok) S.deck.push(Object.assign({},w,{_new:false})); }
   else { ok?known.add(w.h):known.delete(w.h); saveKnown(); }
@@ -711,7 +711,7 @@ function renderQuiz(){
   if(!Q.items.length){
     $('#main').innerHTML=head+`<div class="box" style="text-align:center"><div class="th" style="font-size:20px;margin-bottom:6px">${S.qsrc==='todo'?'ไม่มีคำที่ยังจำไม่ได้ในชุดนี้ เก่งมาก!':'ยังไม่มีคำที่ตอบผิดในชุดนี้'}</div><div class="muted">${S.qsrc==='miss'?'คำที่ตอบผิดในแบบทดสอบ แฟลชการ์ด หรือฝึกแปล จะมารวมที่นี่':'ลองเลือกชุดอื่น หรือเปลี่ยนเป็น "ทุกคำ"'}</div></div>`;
     bindQuiz(); return; }
-  if(Q.n>=Q.items.length){
+  if(Q.n>=Q.items.length){ track('use/quiz-finish','ทำแบบทดสอบจบ',false);
     $('#main').innerHTML=head+`<div class="box"><div class="score">${Q.score}/${Q.items.length}</div>
       <p style="text-align:center">${Q.score===Q.items.length?'ถูกทุกข้อ เก่งมาก':'คำที่ตอบผิด ลองทบทวนอีกครั้ง'}</p>
       ${Q.miss.map(w=>`<div><span class="hz" style="font-size:22px">${esc(w.h)}</span> <span style="color:var(--teal)">${esc(w.p)}</span> ${esc(thOf(w))}</div>`).join('')}
@@ -787,7 +787,7 @@ function resHTML(st,it){
 function doCheck(){const it=S.tlist[S.ti],ans=$('#tin').value; const r=check(ans,it); if(!r){$('#tin').focus();return;}
   const msg={ok:'ถูกต้อง',notone:'ถูกต้อง',tone:'เกือบถูก',bad:'ยังไม่ตรงกับเฉลย'}[r];
   const note={notone:'ตัวสะกดถูก แต่ยังไม่ได้ใส่วรรณยุกต์',tone:'ตัวสะกดถูก แต่วรรณยุกต์ยังไม่ตรง',bad:(window.claude?'ประโยคภาษาจีนพูดได้หลายแบบ ถ้าคิดว่าคำตอบของคุณก็ถูก กดให้ Claude ช่วยดูได้':'ประโยคภาษาจีนพูดได้หลายแบบ ลองเทียบกับเฉลยด้านล่าง')}[r];
-  markStudy();
+  markStudy(); track('use/translate','ฝึกแปล');
   if(r==='ok'||r==='notone')S.tscore++; else if(r==='bad'&&S.tkind==='word'&&BY[it.hz]) addMiss(it.hz);
   S.tstate={r,ans,msg,note}; speak(it.hz); renderType();}
 async function askClaude(it,st){
@@ -839,7 +839,7 @@ const MONO=W.filter(w=>w.h.length===1&&!/\s/.test(w.p)&&toneOf(w.p).length===1);
 const DUO=W.filter(w=>w.h.length===2&&toneOf(w.p).length===2);
 function toneSvg(t,big){ if(!t.path) return `<svg viewBox="0 0 120 80" class="tsvg" aria-hidden="true"><circle cx="60" cy="48" r="7" fill="var(--violet)"/></svg>`;
   return `<svg viewBox="0 0 120 80" class="tsvg" aria-hidden="true">${[14,27,40,53,66].map(y=>`<line x1="8" x2="112" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`).join('')}<path d="${t.path}" fill="none" stroke="var(--violet)" stroke-width="6" stroke-linecap="round"/></svg>`;}
-function enterPinyin(){S.level='py';save('hsk-level','py');$('#home').hidden=true;$('#inlevel').hidden=true;$('#strokesView').hidden=true;$('#pinyin').hidden=false;
+function enterPinyin(){track('level/pinyin','เข้าหน้าพินอิน');S.level='py';save('hsk-level','py');$('#home').hidden=true;$('#inlevel').hidden=true;$('#strokesView').hidden=true;$('#pinyin').hidden=false;
   document.documentElement.style.setProperty('--acc','var(--violet)');renderPinyin();window.scrollTo(0,0);}
 function renderPinyin(){ if(!['tones','init','fin'].includes(PS.sec)) PS.sec='tones';
   const tabs=[['tones','วรรณยุกต์'],['init','พยัญชนะต้น'],['fin','สระ']];
@@ -961,7 +961,7 @@ function renderWrite(){
     $('#wmsg').textContent='เขียนทีละขีดตามลำดับในกรอบแรก ถ้าผิด 3 ครั้งจะมีตัวช่วยกะพริบ';
     const next=()=>{ if(i>=live.length){$('#wmsg').textContent=mistakes===0?'เยี่ยม! เขียนถูกลำดับทุกขีด':'เขียนครบแล้ว ผิดไป '+mistakes+' ครั้ง ลองอีกรอบได้'; speak(w.h); return;}
       const [wr,k]=live[i]; $$('.wbox').forEach((b,j)=>b.classList.toggle('on',j===k));
-      wr.hideCharacter(); wr.quiz({showHintAfterMisses:3,onComplete:s=>{markStudy();mistakes+=s.totalMistakes;wr.showCharacter();i++;next();}}); };
+      wr.hideCharacter(); wr.quiz({showHintAfterMisses:3,onComplete:s=>{markStudy();track('use/writing','ฝึกเขียน');mistakes+=s.totalMistakes;wr.showCharacter();i++;next();}}); };
     next();
   };
 }
@@ -1059,7 +1059,7 @@ const SRULES=[
  ['点在右上最后写','diǎn zài yòushàng zuìhòu xiě','จุดที่อยู่มุมขวาบน เขียนเป็นขีดสุดท้าย','我']];
 const SS={sec:'basic'};
 let sWriters=[];
-function enterStrokes(){S.level='st';save('hsk-level','st');$('#home').hidden=true;$('#inlevel').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=false;
+function enterStrokes(){track('level/strokes','เข้าหน้าลำดับขีด');S.level='st';save('hsk-level','st');$('#home').hidden=true;$('#inlevel').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=false;
   document.documentElement.style.setProperty('--acc','var(--teal)');renderStrokes();window.scrollTo(0,0);}
 function mkWriter(el,c,opts){ if(!window.HanziWriter||!strokes()[c]){el.innerHTML=`<div class="hz" style="font-size:80px;line-height:120px">${esc(c)}</div>`;return null;}
   const css=getComputedStyle(document.documentElement),col=n=>css.getPropertyValue(n).trim()||'#333';
@@ -1105,12 +1105,26 @@ function bindLvMenu(root){
 }
 document.addEventListener('click',()=>{ $$('.lvlist').forEach(l=>{l.parentNode.querySelector('.lvbtn').setAttribute('aria-expanded','false');l.remove();}); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') $$('.lvlist').forEach(l=>l.remove()); });
+/* ===== usage tracking (GoatCounter events, no cookies) ===== */
+const tracked=new Set();
+function track(name,title,once=true){
+  if(once&&tracked.has(name)) return; tracked.add(name);
+  const send=(n)=>{ if(window.goatcounter&&window.goatcounter.count){ try{window.goatcounter.count({path:name,title:title||name,event:true});}catch(e){} }
+    else if(n<20) setTimeout(()=>send(n+1),1500); };
+  send(0);
+}
+(function activeTimer(){
+  let active=0,last=Date.now(); const marks=[1,5,15,30,60];
+  ['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,()=>{last=Date.now();},{passive:true}));
+  setInterval(()=>{ if(document.visibilityState!=='visible'||Date.now()-last>90000) return; active+=5;
+    const m=Math.floor(active/60); if(marks.includes(m)) track('time/'+String(m).padStart(2,'0')+'min','ใช้งานต่อเนื่อง '+m+' นาที'); },5000);
+})();
 /* ===== footer ===== */
 function openCredits(){const ov=document.createElement('div');ov.className='ovl';
   ov.innerHTML=`<div class="sbox lic" role="dialog" aria-label="เครดิตและสัญญาอนุญาต">${document.getElementById('licTpl').innerHTML}<p style="text-align:center;margin-top:14px"><button class="btn go" id="licClose">ปิด</button></p></div>`;
   document.body.appendChild(ov); const close=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)close();}; ov.querySelector('#licClose').onclick=close;}
 $('#credBtn').onclick=openCredits;
-if(FEEDBACK_URL){const f=$('#fbBtn');f.hidden=false;f.onclick=()=>window.open(FEEDBACK_URL,'_blank','noopener');}
+if(FEEDBACK_URL){const f=$('#fbBtn');f.hidden=false;f.onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
 /* ===== tabs ===== */
 function go(tab){S.tab=tab;closePop();
   $$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
