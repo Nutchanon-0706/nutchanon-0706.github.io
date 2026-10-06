@@ -44,7 +44,30 @@ button,input,select{font:inherit;color:inherit}
 .hz{font-family:var(--hz)}
 .wrap{max-width:900px;margin:0 auto;padding:18px 16px 70px}
 
-header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 -16px 14px;padding:10px 16px;position:sticky;top:0;z-index:25;background:var(--bg);border-bottom:1px solid transparent}
+header.top.scrolled{border-bottom-color:var(--line);box-shadow:0 4px 14px rgba(30,50,80,.06)}
+.navback{display:inline-flex;align-items:center;gap:6px;flex:none;border:0;border-radius:999px;background:var(--acc,var(--teal));color:#fff;font-weight:700;font-size:16px;padding:9px 16px 9px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(30,50,80,.18)}
+.navback .arr{font-size:22px;line-height:1}
+.navback[hidden]{display:none}
+.lback{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.prevnext{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn.prev{font-weight:600}
+.ln.playing .bubble,.para.ln.playing,.newsh.ln.playing{box-shadow:0 0 0 3px var(--sun);transition:box-shadow .2s}
+.playall{margin:2px 0 8px;display:inline-flex;align-items:center;gap:6px;border-radius:999px;font-weight:600}
+.playall.on{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.diffline{font-family:var(--hz);font-size:20px;line-height:1.9;margin-top:4px}
+.diffline .dm{background:var(--sun-soft);border-bottom:3px solid var(--sun);border-radius:3px}
+.diffline .dx{color:var(--coral);text-decoration:line-through}
+.simbar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin:6px 0 2px;max-width:260px}.simbar i{display:block;height:100%;background:var(--teal)}
+.newsbar{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--violet-soft);border-radius:14px;padding:10px 14px;margin-bottom:12px;font-size:14px}
+.newsbar button{border:0;background:none;cursor:pointer;color:var(--ink);font-size:16px}
+.newsbar .lk{color:var(--violet);font-weight:700;font-size:14px}
+.newshome{background:var(--violet-soft);border-radius:18px;padding:14px 16px;margin:6px 0 4px}
+.newshome b{color:var(--violet)}
+.newshome ul,.cl ul{margin:6px 0;padding-left:20px}.newshome li,.cl li{margin:3px 0;font-size:15px}
+.cl h3{margin:14px 0 2px;font-size:16px;color:var(--violet)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--coral);margin-left:4px;vertical-align:middle}
+@media (max-width:600px){.navback .nbt{display:none}.navback{padding:8px 12px}.brand p{display:none}.brand .logo{width:38px;height:38px;font-size:22px}}
 .brand{display:flex;align-items:center;gap:12px}
 .logo{width:46px;height:46px;border-radius:14px;background:var(--coral);color:#fff;display:grid;place-items:center;font-family:var(--hz);font-weight:700;font-size:26px}
 .brand h1{margin:0;font-size:20px;line-height:1.2}
@@ -116,10 +139,25 @@ nav.tabs button[aria-selected="true"]{background:var(--acc)!important;border-col
 .kwon .w.kw{background:var(--sun-soft)!important;font-weight:700;border-bottom-color:var(--sun)!important}
 .kwtag{background:var(--sun-soft);border-bottom:3px solid var(--sun);font-weight:700;border-radius:5px;padding:0 6px;font-size:13px}
 /* in-app banner */
-.iab{position:sticky;top:0;z-index:30;display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--sun-soft);border-bottom:1px solid var(--sun);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));font-size:14px}
+.iab{position:relative;z-index:30;display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--sun-soft);border-bottom:1px solid var(--sun);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));font-size:14px}
 .iab button{border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
 /* feedback */
 .fbhome{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:12px 16px;margin-top:4px;font-size:15px;color:var(--muted)}
+/* pinyin table */
+.pyt-wrap{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.pyt{border-collapse:separate;border-spacing:0;font-size:14px}
+.pyt th,.pyt td{padding:0;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:center;min-width:52px}
+.pyt thead th{position:sticky;top:0;z-index:2;background:var(--violet-soft);color:var(--violet);font-weight:700;padding:6px 4px}
+.pyt .sth{position:sticky;left:0;z-index:1;background:var(--violet-soft);color:var(--violet);font-weight:700;padding:4px 8px;min-width:54px}
+.pyt thead .sth{z-index:3}
+.pyt tr.gstart td,.pyt tr.gstart th{border-top:2px solid var(--violet)}
+.pyt td button{width:100%;border:0;background:none;padding:7px 4px;cursor:pointer;color:var(--ink);font-size:14px}
+.pyt td button:hover{background:var(--sun-soft)}
+.sylpop .ph{font-family:var(--ui);font-weight:700;font-size:26px;color:var(--violet)}
+.sylt{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.sylt button{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:8px 4px;cursor:pointer;color:var(--ink);font-size:17px}
+.sylt button span svg{width:14px;height:14px;fill:var(--teal)}
+.sylt button:disabled{opacity:.45;cursor:default}
 /* level menu */
 .lvmenu{position:relative;display:inline-block}
 .lvbtn{background:var(--acc);color:#fff;border:0;border-radius:14px;padding:9px 18px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(30,50,80,.15)}
@@ -288,13 +326,14 @@ tr.known td.h{color:var(--muted)}
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="logo">学</div><div><h1>เรียนจีน HSK 1–4</h1><p>หลักสูตร HSK ใหม่ปี 2025 ระดับ 1–4</p></div></div>
-    <div style="display:flex;gap:8px;align-items:center"><button class="streak" id="streakBtn"></button><button class="themebtn" id="themeBtn" aria-label="สลับโหมดกลางวันกลางคืน"></button></div>
+    <button class="navback" id="navBack" hidden aria-label="ย้อนกลับ"><span class="arr">←</span><span class="nbt">ย้อนกลับ</span></button><div class="brand"><div class="logo">学</div><div><h1>เรียนจีน HSK 1–4</h1><p>หลักสูตร HSK ใหม่ปี 2025 ระดับ 1–4</p></div></div>
+    <div style="display:flex;gap:8px;align-items:center"><button class="streak" id="streakBtn"></button><button class="themebtn" id="muteBtn" aria-label="เปิดหรือปิดเสียงอัตโนมัติ"></button><button class="themebtn" id="themeBtn" aria-label="สลับโหมดกลางวันกลางคืน"></button></div>
   </header>
   <div id="home"></div>
   <div id="pinyin" hidden></div>
   <div id="strokesView" hidden></div>
   <div id="inlevel" hidden>
+  <div id="newsBar"></div>
   <div class="lvbar"><span id="lvWrap"></span><span class="muted" id="curProg"></span></div>
   <section class="today" id="today"></section>
   <nav class="tabs" role="tablist">
@@ -309,7 +348,7 @@ tr.known td.h{color:var(--muted)}
   </div>
 </div>
 <footer class="foot wrap">
-  <div class="factions"><button class="btn" id="fbBtn" hidden>💬 ส่งความคิดเห็น</button><button class="btn" id="credBtn">เครดิตและสัญญาอนุญาต</button></div>
+  <div class="factions"><button class="btn" id="newsBtn">✨ มีอะไรใหม่</button><button class="btn" id="fbBtn" hidden>💬 ส่งความคิดเห็น</button><button class="btn" id="credBtn">เครดิตและสัญญาอนุญาต</button></div>
   <p>© 2026 เรียนจีน HSK 1–4 · สงวนลิขสิทธิ์บทเรียน บทความ และคำแปลภาษาไทย ห้ามคัดลอกไปใช้เพื่อการค้าโดยไม่ได้รับอนุญาต</p>
   <p>เว็บนี้จัดทำขึ้นเพื่อช่วยเตรียมสอบ HSK ไม่ได้เกี่ยวข้องกับ Center for Language Education and Cooperation (CLEC) หรือ Chinese Testing International ผู้จัดสอบ HSK อย่างเป็นทางการ HSK เป็นเครื่องหมายการค้าของเจ้าของ</p>
 </footer>
@@ -473,11 +512,65 @@ function voiceHelp(){ track('problem/no-chinese-voice'+(IN_APP?'-inapp':''),'ไ
    <p style="text-align:center"><button class="btn go" id="vhClose">เข้าใจแล้ว</button></p></div>`;
   document.body.appendChild(ov); const c=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)c();}; ov.querySelector('#vhClose').onclick=c;
 }
+let MUTED=load('hsk-muted',false), PLAYING=null;
+function voiceOK(){ if(!('speechSynthesis' in window)){voiceHelp();return false;} if(!voice) pickVoice(); if(!voice && (voicesLoaded||IN_APP)){ voiceHelp(); return false; } return true; }
+function mkUtter(text,rate){const u=new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=rate||0.85; if(voice)u.voice=voice; return u;}
+/* ===== recorded audio (files on GitHub), falls back to device voice ===== */
+const AUDIO_BASE=(/github\.io$/.test(location.hostname)||location.protocol==='file:')?'audio/':'https://nutchanon-0706.github.io/audio/';
+const AUD={idx:null,idxP:null,whole:{},urls:new Map(),el:null,tok:0};
+const nk=t=>String(t).replace(/\s+/g,'');
+function audioIndex(){ if(!AUD.idxP) AUD.idxP=fetch(AUDIO_BASE+'index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{AUD.idx=j&&j.m?j:null;return AUD.idx;}); return AUD.idxP; }
+async function clipURL(key){
+  if(AUD.urls.has(key)) return AUD.urls.get(key);
+  const idx=await audioIndex(); const e=idx&&idx.m[key]; if(!e) return null;
+  const [bank,off,len]=e, url=AUDIO_BASE+bank+'.bin'; let blob=null;
+  try{
+    if(AUD.whole[bank]){ blob=new Blob([AUD.whole[bank].slice(off,off+len)],{type:'audio/mpeg'}); }
+    else { const r=await fetch(url,{headers:{Range:`bytes=${off}-${off+len-1}`}});
+      if(r.status===206){ blob=new Blob([await r.arrayBuffer()],{type:'audio/mpeg'}); }
+      else if(r.ok){ const buf=await r.arrayBuffer(); AUD.whole[bank]=buf; blob=new Blob([buf.slice(off,off+len)],{type:'audio/mpeg'}); } }
+  }catch(err){ return null; }
+  if(!blob||!blob.size) return null;
+  const u=URL.createObjectURL(blob); AUD.urls.set(key,u); return u;
+}
+const SILENT='data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+function audioEl(){ if(!AUD.el){ AUD.el=new Audio(); AUD.el.preload='auto'; } return AUD.el; }
+addEventListener('pointerdown',function unlock(){ removeEventListener('pointerdown',unlock,true); try{const a=audioEl(); if(!a.src){a.src=SILENT; a.play().then(()=>a.pause()).catch(()=>{});} }catch(e){} audioIndex(); },true);
+/* play key; if no recorded clip, read fallback text with device voice. onDone fires when finished either way */
+function sayKey(key,text,rate,onDone){
+  const my=++AUD.tok;
+  clipURL(key).then(u=>{
+    if(my!==AUD.tok) return;
+    if(u){ const a=audioEl(); let fin=false; const end=()=>{if(fin)return;fin=true;onDone&&onDone();};
+      a.onended=end; a.onerror=()=>{ if(!fin){fin=true; ttsSay(text,rate,onDone);} }; a.src=u; a.currentTime=0;
+      a.play().catch(()=>{ if(!fin){fin=true; ttsSay(text,rate,onDone);} }); return; }
+    ttsSay(text,rate,onDone);
+  });
+}
+function ttsSay(text,rate,onDone){ if(!voiceOK()){ onDone&&onDone(); return; } try{speechSynthesis.cancel();}catch(e){}
+  const u=mkUtter(text,rate); let fin=false; const end=()=>{if(fin)return;fin=true;onDone&&onDone();}; u.onend=end; u.onerror=end; speechSynthesis.speak(u); }
+function stopAll(){ if(PLAYING){PLAYING.stop=true;PLAYING=null;} AUD.tok++; try{ if(AUD.el){AUD.el.onended=null;AUD.el.pause();} }catch(e){} try{speechSynthesis.cancel();}catch(e){}
+  document.querySelectorAll('.ln.playing').forEach(e=>e.classList.remove('playing'));
+  document.querySelectorAll('.playall.on').forEach(b=>{b.classList.remove('on');b.innerHTML=b.dataset.label;}); }
+function autoSpeak(text,rate){ if(MUTED) return; speak(text,rate); }
+function speakKey(key,text,rate){ stopAll(); sayKey(key,text,rate); }
+function renderMute(){const b=document.getElementById('muteBtn'); if(!b) return; b.innerHTML=MUTED?'🔇':'🔊'; b.title=MUTED?'ปิดเสียงอัตโนมัติอยู่ (กดปุ่มลำโพงยังฟังได้)':'เสียงอัตโนมัติเปิดอยู่';}
+function toggleMute(){MUTED=!MUTED;save('hsk-muted',MUTED);renderMute();if(MUTED)stopAll();track('use/mute-'+(MUTED?'on':'off'),MUTED?'ปิดเสียง':'เปิดเสียง',false);
+  toast(MUTED?'ปิดเสียงอัตโนมัติแล้ว 🔇 กดปุ่มลำโพงเพื่อฟังเองได้':'เปิดเสียงอัตโนมัติแล้ว 🔊');}
+function playSection(btn){
+  if(btn.classList.contains('on')){stopAll();return;}
+  stopAll();
+  const els=[...document.querySelectorAll(`.ln[data-sec="${btn.dataset.sec}"]`)]; if(!els.length) return;
+  const job={stop:false}; PLAYING=job; btn.classList.add('on'); btn.innerHTML='■ หยุด'; let i=0;
+  track('use/playall','ฟังต่อเนื่องทั้งบท');
+  const next=()=>{ if(job.stop) return; document.querySelectorAll('.ln.playing').forEach(e=>e.classList.remove('playing'));
+    if(i>=els.length){stopAll();return;}
+    const el=els[i++]; el.classList.add('playing'); el.scrollIntoView({block:'center',behavior:'smooth'});
+    sayKey(nk(el.dataset.text),el.dataset.text,0.85,()=>{ if(!job.stop) setTimeout(next,450); }); };
+  next();
+}
 function speak(text,rate){
-  if(!('speechSynthesis' in window)){voiceHelp();return;}
-  if(!voice) pickVoice();
-  if(!voice && (voicesLoaded||IN_APP)){ voiceHelp(); return; }
-  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=rate||0.85; if(voice)u.voice=voice; speechSynthesis.speak(u);
+  stopAll(); sayKey(nk(text),text,rate);
   if(!warned && voice && !/yaoyao/i.test(voice.name)){warned=true;}
 }
 function inAppBanner(){ if(!IN_APP) return; try{ if(sessionStorage.getItem('iab-hide')) return; }catch(e){}
@@ -507,13 +600,15 @@ function renderHome(){
     return `<button class="lvcard k${l}" data-lv="${l}"><span class="big">HSK${l}</span><span>${st.n} คำ ${nl?nl+' บทเรียน':'· บทเรียนกำลังมา'}</span><span class="d">${desc[l]}</span>
     <span class="d">จำได้ ${st.k} คำ (${st.p}%)</span><div class="bar" style="width:100%"><i style="width:${st.p}%;background:var(--l${l})"></i></div></button>`;}).join('')}</div>`;
   if(FEEDBACK_URL){$('#home').insertAdjacentHTML('beforeend',`<div class="fbhome"><span>ลองใช้แล้วเป็นยังไงบ้าง? ช่วยบอกหน่อยนะ ใช้เวลาแค่ 2 นาที</span><button class="btn go" id="fbHome">💬 ส่งความคิดเห็น</button></div>`);$('#fbHome').onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
+  const g=CHANGELOG[0]; $('#home').insertAdjacentHTML('afterbegin',`<div class="newshome"><b>✨ ${g.t}</b>${seenNews()?'':'<span class="dot"></span>'}<ul>${g.items.slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul><button class="btn" id="newsHome">ดูทั้งหมด</button></div>`);
+  $('#newsHome').onclick=openNews;
   $$('.lvcard[data-lv]').forEach(b=>b.onclick=()=>enterLevel(+b.dataset.lv)); $('#goPy').onclick=enterPinyin; $('#goSt').onclick=enterStrokes;
 }
 function enterLevel(l){track('level/hsk'+l,'เข้า HSK'+l);S.customDeck=null;S.vfilter='all';S.level=l;save('hsk-level',l);S.lesson=null;S.set='all';S.tsrc='all';
   document.documentElement.style.setProperty('--acc',`var(--l${l})`);
   $('#home').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=true;$('#inlevel').hidden=false;$('#lvWrap').innerHTML=lvMenu(l);bindLvMenu($('#lvWrap'));
-  renderToday();renderProg();go('lessons');window.scrollTo(0,0);}
-function leaveLevel(){S.level=null;save('hsk-level',null);closePop();$('#inlevel').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=true;$('#home').hidden=false;renderHome();window.scrollTo(0,0);}
+  renderToday();renderProg();renderNewsBar();go('lessons');window.scrollTo(0,0);}
+function leaveLevel(){S.level=null;save('hsk-level',null);closePop();$('#inlevel').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=true;$('#home').hidden=false;renderHome();window.scrollTo(0,0);stopAll();pushNav();}
 function renderProgOld(){
   const col={1:'var(--l1)',2:'var(--l2)',3:'var(--l3)'};
   $('#prog').innerHTML=[1,2,3].map(l=>{const all=W.filter(w=>w.l===l),k=all.filter(w=>known.has(w.h)).length,p=Math.round(k/all.length*100);
@@ -536,6 +631,7 @@ function bindSel(re){ const a=$('#lvSel'); if(a) a.onchange=e=>{S.lv=e.target.va
 
 /* ===== lessons ===== */
 function renderLessons(){
+  stopAll();
   if(S.lesson) return renderLesson(S.lesson);
   const card=l=>`<button class="lcard ${l.kind}" data-id="${l.id}">${doneL.has(l.id)?'<span class="done">อ่านแล้ว</span>':''}
     <span class="n">${l.kind==='day'?'Day '+l.n:'บทอ่านที่ '+l.n}</span><span class="t">${esc(l.title)}</span>
@@ -545,7 +641,7 @@ function renderLessons(){
   $('#main').innerHTML=`<div class="group">บทเรียนรายวัน: แชทแบบเพื่อนคุยกัน + บทความ (วันละประมาณ 25 คำ)</div>
     <div class="lgrid">${mine.filter(l=>l.kind==='day').map(card).join('')}</div>
     ${reads.length?`<div class="group">บทอ่าน</div><div class="lgrid">${reads.map(card).join('')}</div>`:''}`;
-  $$('.lcard').forEach(b=>b.onclick=()=>{S.lesson=b.dataset.id;renderLessons();window.scrollTo(0,0);});
+  $$('.lcard').forEach(b=>b.onclick=()=>{S.lesson=b.dataset.id;renderLessons();window.scrollTo(0,0);pushNav();});
 }
 let KW=new Set();
 function lineHTML(t){return t.map(x=>{ if(!Array.isArray(x)) return esc(x);
@@ -553,7 +649,7 @@ function lineHTML(t){return t.map(x=>{ if(!Array.isArray(x)) return esc(x);
 const plainLine=t=>t.map(x=>Array.isArray(x)?x[0]:x).join('');
 function renderLesson(id){
   const L=LESSONS.find(l=>l.id===id); KW=new Set(L.vocab.map(v=>v[0])); track('lesson/'+L.id,'เปิดบท HSK'+L.lv+' '+L.title);
-  let html=`<div class="lhead"><button class="btn" id="back">กลับ</button><h2>${esc(L.title)}</h2><span class="muted">HSK${L.lv} ${L.kind==='day'?'Day '+L.n:'บทอ่านที่ '+L.n}</span></div>
+  let html=`<div class="lhead"><button class="btn lback" id="back">← กลับไปรายการบท</button><h2>${esc(L.title)}</h2><span class="muted">HSK${L.lv} ${L.kind==='day'?'Day '+L.n:'บทอ่านที่ '+L.n}</span></div>
   <div class="controls">
     <label class="chip"><input type="checkbox" id="tPy"${S.showPy?' checked':''}> พินอิน</label>
     <label class="chip"><input type="checkbox" id="tTr"${S.showTr?' checked':''}> คำแปลไทย</label>
@@ -562,13 +658,17 @@ function renderLesson(id){
   </div>
   <div class="legend"><span class="kwtag">คำสำคัญ</span><span class="muted">คำใหม่ของบทนี้ตัวหนาพื้นเหลือง</span>${tag(S.level)}<span class="muted">คำระดับ HSK${S.level} ขีดเส้นสี แตะคำเพื่อดูความหมายและฟังเสียง</span></div>
   <div id="ltext" class="${S.kw!==false?'kwon ':''}f${S.level} ${S.showPy?'':'nopy'} ${S.showTr?'':'notr'} ${S.colors?'colors':''}">`;
+  let sec=-1; const secHas=new Set(); L.blocks.forEach(b=>{if(b.k==='h')sec++;else if(b.k!=='h')secHas.add(Math.max(sec,0));}); sec=-1;
+  const lnAttr=(b)=>` data-sec="${Math.max(sec,0)}" data-text="${esc(plainLine(b.t))}"`;
+  if(L.blocks[0]&&L.blocks[0].k!=='h'){sec=0;html+=`<button class="btn playall" data-sec="0" data-label="▶ ฟังต่อเนื่องทั้งตอน">▶ ฟังต่อเนื่องทั้งตอน</button>`;}
   L.blocks.forEach((b,i)=>{
-    if(b.k==='h'){html+=`<div class="part">${esc(b.x)}</div>`;return;}
-    if(b.k==='nh'){html+=`<div class="newsh"><div class="line" lang="zh-CN">${lineHTML(b.t)}</div><div class="tr">${esc(b.th)}</div><div class="lineact"><button class="icon" data-say="${esc(plainLine(b.t))}" aria-label="ฟังพาดหัว">${PLAY}</button></div></div>`;return;}
+    if(b.k==='h'){sec++;const lab=/^แชท|สนทนา/.test(b.x)?'▶ ฟังบทสนทนาทั้งหมด':/^บทความ/.test(b.x)?'▶ ฟังบทความทั้งหมด':'▶ ฟังต่อเนื่องทั้งตอน';
+      html+=`<div class="part">${esc(b.x)}</div>`+(secHas.has(sec)?`<button class="btn playall" data-sec="${sec}" data-label="${lab}">${lab}</button>`:'');return;}
+    if(b.k==='nh'){html+=`<div class="newsh ln"${lnAttr(b)}><div class="line" lang="zh-CN">${lineHTML(b.t)}</div><div class="tr">${esc(b.th)}</div><div class="lineact"><button class="icon" data-say="${esc(plainLine(b.t))}" aria-label="ฟังพาดหัว">${PLAY}</button></div></div>`;return;}
     const inner=`<div class="line" lang="zh-CN">${lineHTML(b.t)}</div><div class="tr">${esc(b.th)}</div>
       <div class="lineact"><button class="icon" data-say="${esc(plainLine(b.t))}" aria-label="ฟังประโยค">${PLAY}</button></div>`;
-    if(b.k==='p') html+=`<div class="para">${inner}</div>`;
-    else html+=`<div class="msg ${b.k==='me'?'me':''}"><div class="who">${b.k==='me'?'ฉัน':'阿杰'}</div><div class="bubble">${inner}</div></div>`;
+    if(b.k==='p') html+=`<div class="para ln"${lnAttr(b)}>${inner}</div>`;
+    else html+=`<div class="msg ln ${b.k==='me'?'me':''}"${lnAttr(b)}><div class="who">${b.k==='me'?'ฉัน':'阿杰'}</div><div class="bubble">${inner}</div></div>`;
   });
   html+='</div>';
   if(L.qs.length) html+=`<div class="part">คำถามท้ายบท</div>`+L.qs.map(q=>`<div class="qa"><div class="q">${esc(q[0])}</div><div class="muted" style="font-size:14px">${esc(q[1])}</div><details><summary class="muted" style="cursor:pointer;font-size:14px">ดูคำตอบ</summary><div class="a">${esc(q[2])}</div></details></div>`).join('');
@@ -580,7 +680,8 @@ function renderLesson(id){
     <button class="btn" id="markDone">${doneL.has(L.id)?'ยกเลิกเครื่องหมายอ่านแล้ว':'อ่านจบแล้ว'}</button>
   </div>`;
   $('#main').innerHTML=html;
-  $('#back').onclick=()=>{S.lesson=null;closePop();renderLessons();};
+  $('#back').onclick=()=>navBack();
+  $$('.playall').forEach(b=>b.onclick=()=>playSection(b));
   $('#tPy').onchange=e=>{S.showPy=e.target.checked;$('#ltext').classList.toggle('nopy',!S.showPy);};
   $('#tTr').onchange=e=>{S.showTr=e.target.checked;$('#ltext').classList.toggle('notr',!S.showTr);};
   $('#tCo').onchange=e=>{S.colors=e.target.checked;$('#ltext').classList.toggle('colors',S.colors);};
@@ -608,7 +709,7 @@ function openPop(w){
   popEl.style.left=x+'px';popEl.style.top=Math.max(8,y)+'px';
   popEl.querySelector('#popSay').onclick=()=>speak(h);
   const k=popEl.querySelector('#popKnown'); if(k) k.onclick=()=>{const on=!known.has(h);on?(known.add(h),markStudy()):known.delete(h);saveKnown();k.classList.toggle('on',on);k.textContent=on?'✓ จำได้':'จำได้';};
-  speak(h);
+  autoSpeak(h);
 }
 
 /* ===== vocab ===== */
@@ -663,12 +764,14 @@ function renderCards(){
     body=srsMode?`<div class="card" style="cursor:default"><div><div class="th">วันนี้ทบทวนครบแล้ว</div><div class="muted">พรุ่งนี้มีคำถึงรอบทบทวน ${srsTomorrow()} คำ กลับมาอีกทีพรุ่งนี้นะ</div><p class="muted" style="font-size:14px">อยากฝึกเพิ่ม เปลี่ยนเป็น "ฝึกตามชุด" ได้</p></div></div>`
       :(!S.deck.length?`<div class="card" style="cursor:default"><div><div class="th">ชุดนี้จำได้ครบแล้ว</div><div class="muted">เลือกชุดอื่น หรือเอาเครื่องหมาย "เฉพาะคำที่ยังจำไม่ได้" ออก</div></div></div>`
       :`<div class="card" style="cursor:default"><div><div class="th">ทบทวนครบ ${S.deck.length} ใบแล้ว</div><p><button class="btn go" id="again">เริ่มรอบใหม่</button></p></div></div>`);
+    if(S.deck.length&&S.di>0) body+=`<div class="prevnext"><button class="btn prev" id="cprev2">← ใบก่อนหน้า</button></div>`;
   } else {
     const st=srs[w.h], badge=srsMode?(w._new&&!st?'<span class="lv lv3">คำใหม่</span>':`<span class="lv lv1">ทบทวน</span>`):'';
     body=`<button class="card ${S.flip?'back':''}" id="card" aria-label="พลิกการ์ด"><div>${badge}<div class="bigc">${esc(w.h)}</div>
      ${S.flip?`<div class="py">${esc(w.p)}</div><div class="th">${esc(thOf(w))}</div>`:`<div class="muted">แตะเพื่อดูคำตอบ (หรือกด Space)</div>`}</div></button>
      <div class="cardbar"><span class="muted">${srsMode?'จำได้ → เว้นระยะนานขึ้น · จำไม่ได้ → กลับมาอีกในรอบนี้':`ใบที่ ${S.di+1} จาก ${S.deck.length}`}</span><span style="display:flex;gap:8px">
-     <button class="icon" id="say" aria-label="ฟัง">${PLAY}</button><button class="btn no" id="no">ยังจำไม่ได้</button><button class="btn go" id="yes">จำได้แล้ว</button></span></div>`;
+     <button class="icon" id="say" aria-label="ฟัง">${PLAY}</button><button class="btn no" id="no">ยังจำไม่ได้</button><button class="btn go" id="yes">จำได้แล้ว</button></span></div>
+     ${S.di>0?`<div class="prevnext"><button class="btn prev" id="cprev">← ใบก่อนหน้า</button></div>`:''}`;
   }
   const top=S.customDeck?`<div class="vsum"><span>ฝึกจากลิสต์คำศัพท์ที่เลือกไว้ ${S.customDeck.length} คำ</span><button class="btn" id="clearDeck">กลับไปแฟลชการ์ดปกติ</button></div>`:`<div class="controls">${modeSel}${ctl}</div>${info}`;
   $('#main').innerHTML=top+body;
@@ -678,9 +781,11 @@ function renderCards(){
   bindSel(()=>{buildDeck();renderCards();});
   if($('#onlyNew')) $('#onlyNew').onchange=e=>{S.onlyNew=e.target.checked;buildDeck();renderCards();};
   if($('#again')) $('#again').onclick=()=>{buildDeck();renderCards();};
+  if($('#cprev2')) $('#cprev2').onclick=()=>{S.di--;S.flip=true;renderCards();};
   if(!w||S.di>=S.deck.length) return;
-  $('#card').onclick=()=>{S.flip=!S.flip;if(S.flip)speak(w.h);renderCards();$('#card').focus();};
+  $('#card').onclick=()=>{S.flip=!S.flip;if(S.flip)autoSpeak(w.h);renderCards();$('#card').focus();};
   $('#say').onclick=()=>speak(w.h);
+  if($('#cprev')) $('#cprev').onclick=()=>{S.di--;S.flip=true;renderCards();};
   $('#yes').onclick=()=>answerCard(true); $('#no').onclick=()=>answerCard(false);
 }
 function answerCard(ok){const w=S.deck[S.di];if(!w)return; markStudy(); track('use/flashcards','ใช้แฟลชการ์ด');
@@ -728,10 +833,12 @@ function renderQuiz(){
       if(done&&o.h===w.h)c+=' right';else if(done&&k===it.pick)c+=' wrong';
       return `<button class="${c}" data-k="${k}"${done?' disabled':''}>${esc(S.qmode==='zh-th'?thOf(o):o.h)}</button>`;}).join('')}</div>
     <div class="fb">${done?`<span class="hz" style="font-size:22px">${esc(w.h)}</span> <span style="color:var(--teal)">${esc(w.p)}</span> ${esc(thOf(w))}
-      <p><button class="btn go" id="next">${Q.n+1<Q.items.length?'ข้อต่อไป':'ดูผลคะแนน'}</button></p>`:''}</div></div>`;
+      `:''}</div>
+    <div class="prevnext">${Q.n>0?`<button class="btn prev" id="qprev">← ข้อก่อนหน้า</button>`:'<span></span>'}${done?`<button class="btn go" id="next">${Q.n+1<Q.items.length?'ข้อต่อไป →':'ดูผลคะแนน'}</button>`:''}</div></div>`;
   bindQuiz();
   if($('#qplay')) $('#qplay').onclick=()=>speak(w.h);
-  $$('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;it.pick=k; markStudy(); if(it.opts[k].h===w.h)Q.score++; else {Q.miss.push(w);addMiss(w.h);} speak(w.h); renderQuiz(); $('#next').focus();});
+  $$('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;it.pick=k; markStudy(); if(it.opts[k].h===w.h)Q.score++; else {Q.miss.push(w);addMiss(w.h);} autoSpeak(w.h); renderQuiz(); $('#next').focus();});
+  if($('#qprev')) $('#qprev').onclick=()=>{Q.n--;renderQuiz();};
   if($('#next')) $('#next').onclick=()=>{Q.n++;renderQuiz(); if(S.qmode==='listen'&&Q.n<Q.items.length)speak(Q.items[Q.n].w.h);};
 }
 function bindQuiz(){bindSel(()=>{newQuiz();renderQuiz();});
@@ -758,38 +865,67 @@ function tSource(){
   if(S.tkind==='sent') return ls.flatMap(l=>l.sents.map(s=>({th:s[0],hz:s[1],py:s[2]})));
   const seen=new Set(); return ls.flatMap(l=>l.vocab).filter(v=>v[2]===S.level&&!seen.has(v[0])&&seen.add(v[0])).map(v=>({th:v[3],hz:v[0],py:v[1]}));
 }
-function startType(){S.tlist=shuffle(tSource());S.ti=0;S.tstate=null;S.tscore=0;}
+function startType(){S.tlist=shuffle(tSource());S.ti=0;S.tstate=null;S.tscore=0;S.tres=[];S.tok={};S.tdraft='';}
+function tScore(){return Object.values(S.tok||{}).filter(Boolean).length;}
 function renderType(){
   const it=S.tlist[S.ti];
   const head=`<div class="controls"><select id="tsrc" aria-label="บทเรียน"><option value="all">ทุกบทเรียน HSK${S.level}</option>${LESSONS.filter(l=>l.lv===S.level).map(l=>`<option value="${l.id}"${S.tsrc===l.id?' selected':''}>${l.kind==='day'?'Day '+l.n:'บทอ่าน '+l.n}: ${esc(l.title)}</option>`).join('')}</select>
     <select id="tkind" aria-label="ฝึกอะไร"><option value="sent"${S.tkind==='sent'?' selected':''}>แปลทั้งประโยค</option><option value="word"${S.tkind==='word'?' selected':''}>แปลคำศัพท์</option></select></div>`;
   if(!S.tlist.length){$('#main').innerHTML=head+`<div class="box" style="text-align:center"><div style="font-size:20px;font-weight:600">ฝึกแปลใช้ประโยคจากบทเรียน</div><p class="muted">บทเรียน HSK${S.level} ยังไม่มา ระหว่างนี้ลองฝึกคำศัพท์ในแท็บแฟลชการ์ดหรือทดสอบก่อนนะ</p></div>`;bindType();return;}
-  if(!it){$('#main').innerHTML=head+`<div class="box"><div class="score">${S.tscore}/${S.tlist.length}</div><p style="text-align:center"><button class="btn go" id="again">ฝึกอีกรอบ</button></p></div>`;bindType();$('#again').onclick=()=>{startType();renderType();};return;}
+  if(!it){$('#main').innerHTML=head+`<div class="box"><div class="score">${tScore()}/${S.tlist.length}</div><p style="text-align:center"><button class="btn go" id="again">ฝึกอีกรอบ</button></p></div>`;bindType();$('#again').onclick=()=>{startType();renderType();};return;}
   const st=S.tstate;
-  $('#main').innerHTML=head+`<div class="box"><div class="muted">ข้อ ${S.ti+1} จาก ${S.tlist.length} ถูก ${S.tscore} ข้อ</div>
+  $('#main').innerHTML=head+`<div class="box"><div class="muted">ข้อ ${S.ti+1} จาก ${S.tlist.length} ถูก ${tScore()} ข้อ</div>
     <div class="tprompt">${esc(it.th)}</div>
-    <input class="tin" id="tin" type="text" lang="zh-CN" autocomplete="off" placeholder="พิมพ์ตัวจีน หรือพินอิน (ใส่ตัวเลขแทนวรรณยุกต์ได้ เช่น ni3 hao3)"${st?' disabled':''} value="${esc(st?st.ans:'')}">
-    <div class="controls" style="margin-top:12px">${st?`<button class="btn go" id="tnext">ข้อต่อไป</button>`:`<button class="btn go" id="tcheck">ตรวจคำตอบ</button><button class="btn" id="tskip">ดูเฉลย</button>`}</div>
-    <div id="tres">${st?resHTML(st,it):''}</div></div>`;
+    <input class="tin" id="tin" type="text" lang="zh-CN" autocomplete="off" placeholder="พิมพ์ตัวจีน หรือพินอิน (ใส่ตัวเลขแทนวรรณยุกต์ได้ เช่น ni3 hao3)"${st?' disabled':''} value="${esc(st?st.ans:(S.tdraft||''))}">
+    <div class="controls" style="margin-top:12px">${st?((st.r==='ok'||st.r==='notone')?`<button class="btn" id="tretry">↺ ทำข้อนี้ใหม่</button>`:`<button class="btn vi" id="tretry">↺ ลองใหม่อีกครั้ง</button>`):`<button class="btn go" id="tcheck">ตรวจคำตอบ</button><button class="btn" id="tskip">ดูเฉลย</button>`}</div>
+    <div id="tres">${st?resHTML(st,it):''}</div>
+    <div class="prevnext">${S.ti>0?`<button class="btn prev" id="tprev">← ข้อก่อนหน้า</button>`:'<span></span>'}${st?`<button class="btn go" id="tnext">ข้อต่อไป →</button>`:''}</div></div>`;
   bindType();
-  if(!st){const inp=$('#tin');inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing)doCheck();};$('#tcheck').onclick=doCheck;$('#tskip').onclick=()=>{S.tstate={r:'bad',ans:'',msg:'เฉลย'};renderType();speak(it.hz);};}
-  else {$('#tnext').onclick=()=>{S.ti++;S.tstate=null;renderType();};$('#tnext').focus();
+  if($('#tretry')) $('#tretry').onclick=()=>{S.tdraft=(S.tstate&&S.tstate.ans)||'';S.tstate=null;S.tres[S.ti]=null;renderType();const i=$('#tin');i.focus();i.setSelectionRange(i.value.length,i.value.length);};
+  if($('#tprev')) $('#tprev').onclick=()=>{S.tdraft='';S.tres[S.ti]=S.tstate;S.ti--;S.tstate=S.tres[S.ti]||null;renderType();};
+  if(!st){const inp=$('#tin');inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing)doCheck();};$('#tcheck').onclick=doCheck;$('#tskip').onclick=()=>{S.tdraft=$('#tin').value;S.tstate={r:'bad',ans:S.tdraft,msg:'เฉลย',note:'จำเฉลยแล้วกด "ลองใหม่อีกครั้ง" เพื่อพิมพ์เองได้'};renderType();autoSpeak(it.hz);};}
+  else {$('#tnext').onclick=()=>{S.tdraft='';S.tres[S.ti]=S.tstate;S.ti++;S.tstate=S.tres[S.ti]||null;renderType();};$('#tnext').focus();
     const ai=$('#askAI'); if(ai) ai.onclick=()=>askClaude(it,st);
     $$('#tres [data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));}
 }
 function resHTML(st,it){
-  const cls=st.r==='ok'?'ok':st.r==='bad'?'bad':'mid';
+  const cls=st.r==='ok'||st.r==='notone'?'ok':st.r==='bad'?'bad':'mid';
   return `<div class="res ${cls}"><b>${esc(st.msg)}</b>${st.note?`<div>${esc(st.note)}</div>`:''}
     <div class="ans" style="margin-top:6px">${esc(it.hz)} <button class="icon" data-say="${esc(it.hz)}" aria-label="ฟัง">${PLAY}</button></div><div style="color:var(--teal)">${esc(it.py)}</div>
-    ${st.r==='bad'&&st.ans&&S.tkind==='sent'&&st.ai!==false&&window.claude?`<div style="margin-top:10px"><button class="btn vi" id="askAI">ให้ Claude ช่วยดูว่าคำตอบของฉันใช้ได้ไหม</button></div>`:''}
+    ${st.diff?diffHTML(st.diff):''}
+    ${st.r!=='ok'&&st.r!=='notone'&&st.ans&&S.tkind==='sent'&&st.ai!==false&&window.claude?`<div style="margin-top:10px"><button class="btn vi" id="askAI">ให้ Claude ช่วยดูว่าคำตอบของฉันใช้ได้ไหม</button></div>`:''}
     ${st.aiText?`<div style="margin-top:10px;white-space:pre-wrap">${esc(st.aiText)}</div>`:''}</div>`;
 }
-function doCheck(){const it=S.tlist[S.ti],ans=$('#tin').value; const r=check(ans,it); if(!r){$('#tin').focus();return;}
-  const msg={ok:'ถูกต้อง',notone:'ถูกต้อง',tone:'เกือบถูก',bad:'ยังไม่ตรงกับเฉลย'}[r];
-  const note={notone:'ตัวสะกดถูก แต่ยังไม่ได้ใส่วรรณยุกต์',tone:'ตัวสะกดถูก แต่วรรณยุกต์ยังไม่ตรง',bad:(window.claude?'ประโยคภาษาจีนพูดได้หลายแบบ ถ้าคิดว่าคำตอบของคุณก็ถูก กดให้ Claude ช่วยดูได้':'ประโยคภาษาจีนพูดได้หลายแบบ ลองเทียบกับเฉลยด้านล่าง')}[r];
+function lcsAlign(a,b){const n=a.length,m=b.length,dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const ua=new Array(n).fill(false),ub=new Array(m).fill(false);let i=0,j=0;
+  while(i<n&&j<m){if(a[i]===b[j]){ua[i]=ub[j]=true;i++;j++;}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++;}
+  return {k:dp[0][0],ua,ub};}
+function similarity(ans,it){
+  const isHz=/[\u3400-\u9fff]/.test(ans);
+  let A,B,As,Bs,join;
+  if(isHz){A=[...strip(ans)];B=[...strip(it.hz)];As=A;Bs=B;join='';}
+  else{As=numToMark(ans.toLowerCase()).split(/[\s,.?!，。？！]+/).filter(Boolean);Bs=it.py.toLowerCase().split(/[\s,.?!，。？！]+/).filter(Boolean);
+    A=As.map(plain);B=Bs.map(plain);join=' ';}
+  if(!A.length||!B.length) return null;
+  const r=lcsAlign(A,B), pct=Math.round(200*r.k/(A.length+B.length));
+  return {pct,isHz,join,As,Bs,ua:r.ua,ub:r.ub};
+}
+function diffHTML(d){
+  const ref=d.Bs.map((t,i)=>d.ub[i]?esc(t):`<span class="dm">${esc(t)}</span>`).join(d.join);
+  const you=d.As.map((t,i)=>d.ua[i]?esc(t):`<span class="dx">${esc(t)}</span>`).join(d.join);
+  return `<div style="margin-top:10px"><b>ใกล้เคียงเฉลย ${d.pct}%</b><div class="simbar"><i style="width:${d.pct}%"></i></div>
+   <div class="muted" style="font-size:13px;margin-top:6px">คำตอบของคุณ (ขีดฆ่า = ส่วนที่ต่างจากเฉลย)</div><div class="diffline"${d.isHz?' lang="zh-CN"':''}>${you}</div>
+   <div class="muted" style="font-size:13px;margin-top:4px">เฉลย (พื้นเหลือง = ส่วนที่ขาดไป)</div><div class="diffline"${d.isHz?' lang="zh-CN"':''}>${ref}</div></div>`;
+}
+function doCheck(){const it=S.tlist[S.ti],ans=$('#tin').value; let r=check(ans,it); if(!r){$('#tin').focus();return;}
+  let extra={};
+  if(r==='bad'){const d=similarity(ans,it); if(d){extra.diff=d; if(d.pct>=85) r='close'; else if(d.pct>=50) r='part';}}
+  const msg={ok:'ถูกต้อง',notone:'ถูกต้อง',tone:'เกือบถูก',close:'ใกล้เคียงมาก',part:'ถูกบางส่วน',bad:'ยังไม่ตรงกับเฉลย'}[r];
+  const note={notone:'ตัวสะกดถูก แต่ยังไม่ได้ใส่วรรณยุกต์',tone:'ตัวสะกดถูก แต่วรรณยุกต์ยังไม่ตรง',close:'ต่างจากเฉลยนิดเดียว ภาษาจีนพูดได้หลายแบบ ถ้าความหมายเหมือนกันก็ใช้ได้ (นับเป็นข้อถูก)',part:'ถูกไปแล้วบางส่วน ดูจุดที่ต่างด้านล่าง',bad:(window.claude?'ประโยคภาษาจีนพูดได้หลายแบบ ถ้าคิดว่าคำตอบของคุณก็ถูก กดให้ Claude ช่วยดูได้':'ประโยคภาษาจีนพูดได้หลายแบบ ลองเทียบกับเฉลยด้านล่าง')}[r];
   markStudy(); track('use/translate','ฝึกแปล');
-  if(r==='ok'||r==='notone')S.tscore++; else if(r==='bad'&&S.tkind==='word'&&BY[it.hz]) addMiss(it.hz);
-  S.tstate={r,ans,msg,note}; speak(it.hz); renderType();}
+  const good=(r==='ok'||r==='notone'||r==='close'); S.tok[S.ti]=good; if(!good&&S.tkind==='word'&&BY[it.hz]) addMiss(it.hz);
+  S.tstate=Object.assign({r,ans,msg,note},extra); autoSpeak(it.hz); renderType();}
 async function askClaude(it,st){
   const sample=await samplePromise; if(!sample){st.ai=false;st.aiText='ฟีเจอร์นี้ใช้ไม่ได้ในหน้านี้';renderType();return;}
   st.aiText='กำลังตรวจ...';renderType();
@@ -798,7 +934,7 @@ async function askClaude(it,st){
 เฉลย: ${it.hz}
 คำตอบของนักเรียน: ${st.ans}
 บอกว่าคำตอบของนักเรียนถูกต้องและเป็นธรรมชาติไหม (ภาษาพูดแบบเพื่อนคุยกันถือว่าดี) ถ้าผิดให้บอกจุดที่ผิดและวิธีแก้`,{modelTier:'quick'});
-    if(res.text&&/^(ถูก|ใช้ได้)/.test(res.text.trim())&&st.r==='bad'){S.tscore++;st.r='mid';st.msg='Claude บอกว่าใช้ได้';}
+    if(res.text&&/^(ถูก|ใช้ได้)/.test(res.text.trim())&&st.r==='bad'){S.tok[S.ti]=true;st.r='mid';st.msg='Claude บอกว่าใช้ได้';}
     st.aiText=res.text;}catch(e){st.aiText=e&&e.code==='rate_limited'?'ใช้งานถี่เกินไป ลองใหม่อีกสักครู่':'ตรวจไม่สำเร็จ ลองใหม่อีกครั้ง'; if(e&&e.code==='not_granted')st.ai=false;}
   renderType();
 }
@@ -806,11 +942,11 @@ function bindType(){$('#tsrc').onchange=e=>{S.tsrc=e.target.value;startType();re
 
 /* ===== pinyin & tones ===== */
 const TONES=[
- {n:1,name:'เสียงที่ 1',py:'mā',h:'妈',m:'แม่',d:'สูงและเรียบ ลากค้างไว้ระดับเดียวตลอด เหมือนร้องโน้ตสูงค้างไว้',th:'ใกล้เสียงสามัญ แต่สูงกว่า',path:'M14 16 L106 16'},
- {n:2,name:'เสียงที่ 2',py:'má',h:'麻',m:'ชา (เช่น ลิ้นชา)',d:'ขึ้นจากกลางไปสูง เหมือนตอนถามว่า "หา?" แบบสงสัย',th:'ใกล้เสียงจัตวา',path:'M14 44 L106 14'},
- {n:3,name:'เสียงที่ 3',py:'mǎ',h:'马',m:'ม้า',d:'ต่ำ กดลงก่อนแล้วขึ้นนิดหนึ่ง เวลาพูดเร็วมักแค่ต่ำลงอย่างเดียว',th:'ใกล้เสียงเอก (ต่ำ)',path:'M14 34 Q52 78 106 26'},
- {n:4,name:'เสียงที่ 4',py:'mà',h:'骂',m:'ด่า',d:'ตกแรงจากสูงลงต่ำ สั้นและเด็ดขาด เหมือนตอนดุว่า "ไม่!"',th:'ใกล้เสียงโทแบบตกแรง',path:'M14 14 L106 66'},
- {n:0,name:'เสียงเบา',py:'ma',h:'吗',m:'คำลงท้ายคำถาม',d:'สั้น เบา ไม่มีเครื่องหมาย ระดับเสียงขึ้นกับพยางค์ข้างหน้า',th:'พูดเบา ๆ สั้น ๆ',path:''}];
+ {n:1,name:'เสียงที่ 1',py:'mā',h:'妈',m:'แม่',d:'สูงและเรียบ ลากค้างไว้ระดับเดียวตลอด เหมือนร้องโน้ตสูงค้างไว้',path:'M14 16 L106 16'},
+ {n:2,name:'เสียงที่ 2',py:'má',h:'麻',m:'ชา (เช่น ลิ้นชา)',d:'ขึ้นจากระดับกลางไปสูง คล้ายน้ำเสียงตอนถามด้วยความสงสัย',path:'M14 44 L106 14'},
+ {n:3,name:'เสียงที่ 3',py:'mǎ',h:'马',m:'ม้า',d:'ต่ำ กดลงก่อนแล้วขึ้นนิดหนึ่ง เวลาพูดเร็วมักแค่ต่ำลงอย่างเดียว',path:'M14 34 Q52 78 106 26'},
+ {n:4,name:'เสียงที่ 4',py:'mà',h:'骂',m:'ด่า',d:'ตกแรงจากสูงลงต่ำ สั้นและเด็ดขาด คล้ายน้ำเสียงตอนออกคำสั่ง',path:'M14 14 L106 66'},
+ {n:0,name:'เสียงเบา',py:'ma',h:'吗',m:'คำลงท้ายคำถาม',d:'สั้น เบา ไม่มีเครื่องหมาย ระดับเสียงขึ้นกับพยางค์ข้างหน้า',path:''}];
 const INIT=[
  ['ริมฝีปาก',[['b','bo','ปัว','波','ไม่พ่นลม'],['p','po','พัว','坡','พ่นลม'],['m','mo','มัว','摸',''],['f','fo','ฟัว','佛','']]],
  ['ปลายลิ้น',[['d','de','เตอ','得','ไม่พ่นลม'],['t','te','เทอ','特','พ่นลม'],['n','ne','เนอ','讷',''],['l','le','เลอ','乐','']]],
@@ -826,6 +962,40 @@ const FIN=[
  ['ขึ้นต้นด้วย i',[['ia','ยา','呀'],['ie','เย','耶'],['iao','เยา','腰'],['iu','โยว','优'],['ian','เยียน','烟'],['in','อิน','因'],['iang','ยาง','央'],['ing','อิง','英'],['iong','ยง','雍']]],
  ['ขึ้นต้นด้วย u',[['ua','วา','蛙'],['uo','วอ','窝'],['uai','วาย','歪'],['ui','เวย','威'],['uan','วาน','弯'],['un','เวิน','温'],['uang','วาง','汪']]],
  ['ขึ้นต้นด้วย ü',[['üe','เยว','约'],['üan','เยวียน','冤'],['ün','ยวิน','晕']]]];
+const PYT={"ini":["","b","p","m","f","d","t","n","l","g","k","h","j","q","x","zh","ch","sh","r","z","c","s"],"groups":[["a",["a","ai","ao","an","ang"]],["o",["o","ong","ou"]],["e",["e","ei","en","eng","er"]],["i",["i","ia","iao","ie","iu","ian","iang","in","ing","iong"]],["u",["u","ua","uo","ui","uai","uan","un","uang","ueng"]],["ü",["ü","üe","üan","ün"]]],"cells":{"a":["","a",{"1":"锕","2":"啊","3":"啊","4":"啊"}],"ba":["b","a",{"1":"巴","2":"菝","3":"把","4":"爸"}],"pa":["p","a",{"1":"啪","2":"爬","4":"袙"}],"ma":["m","a",{"1":"妈","2":"犘","3":"码","4":"骂"}],"fa":["f","a",{"1":"彂","2":"乏","3":"法","4":"珐"}],"da":["d","a",{"1":"褡","2":"妲","3":"打","4":"亣"}],"ta":["t","a",{"1":"溻","2":"蹹","3":"獭","4":"挞"}],"na":["n","a",{"1":"南","2":"拿","3":"乸","4":"纳"}],"la":["l","a",{"1":"柆","2":"旯","3":"藞","4":"辣"}],"ga":["g","a",{"1":"嘠","2":"尜","3":"尕","4":"尬"}],"ka":["k","a",{"1":"衉","3":"佧"}],"ha":["h","a",{"1":"铪","2":"虾","3":"哈","4":"吓"}],"zha":["zh","a",{"1":"渣","2":"铡","3":"眨","4":"榨"}],"cha":["ch","a",{"1":"锸","2":"茶","3":"镲","4":"岔"}],"sha":["sh","a",{"1":"杀","2":"啥","3":"傻","4":"霎"}],"za":["z","a",{"1":"匝","2":"砸","3":"咱","4":"喒"}],"ca":["c","a",{"1":"擦","3":"礤","4":"遪"}],"sa":["s","a",{"1":"仨","3":"撒","4":"萨"}],"ai":["","ai",{"1":"哀","2":"皑","3":"矮","4":"爱"}],"bai":["b","ai",{"1":"掰","2":"白","3":"摆","4":"败"}],"pai":["p","ai",{"1":"拍","2":"牌","3":"排","4":"蒎"}],"mai":["m","ai",{"2":"哩","3":"买","4":"卖"}],"dai":["d","ai",{"1":"懛","3":"傣","4":"带"}],"tai":["t","ai",{"1":"胎","2":"炱","3":"呔","4":"态"}],"nai":["n","ai",{"2":"孻","3":"奶","4":"奈"}],"lai":["l","ai",{"2":"来","4":"赖"}],"gai":["g","ai",{"1":"该","3":"改","4":"钙"}],"kai":["k","ai",{"1":"开","3":"凯","4":"勓"}],"hai":["h","ai",{"1":"咳","2":"孩","3":"海","4":"氦"}],"zhai":["zh","ai",{"1":"摘","2":"度","3":"窄","4":"债"}],"chai":["ch","ai",{"1":"钗","2":"豺","3":"茝","4":"虿"}],"shai":["sh","ai",{"1":"筛","3":"繺","4":"晒"}],"zai":["z","ai",{"1":"哉","3":"宰","4":"再"}],"cai":["c","ai",{"1":"猜","2":"材","3":"彩","4":"菜"}],"sai":["s","ai",{"1":"腮","4":"赛"}],"ao":["","ao",{"1":"爊","2":"翱","3":"袄","4":"岙"}],"bao":["b","ao",{"1":"褒","2":"雹","3":"保","4":"报"}],"pao":["p","ao",{"1":"抛","2":"咆","3":"跑","4":"疱"}],"mao":["m","ao",{"1":"猫","2":"矛","3":"卯","4":"帽"}],"dao":["d","ao",{"1":"刂","2":"叨","3":"导","4":"到"}],"tao":["t","ao",{"1":"涛","2":"萄","3":"讨","4":"套"}],"nao":["n","ao",{"1":"孬","2":"挠","3":"恼","4":"闹"}],"lao":["l","ao",{"1":"捞","2":"劳","3":"老","4":"涝"}],"gao":["g","ao",{"1":"糕","3":"稿","4":"诰"}],"kao":["k","ao",{"1":"尻","3":"烤","4":"靠"}],"hao":["h","ao",{"1":"嚆","2":"嚎","3":"好","4":"昊"}],"zhao":["zh","ao",{"1":"钊","2":"着","3":"沼","4":"照"}],"chao":["ch","ao",{"1":"钞","2":"潮","3":"炒","4":"耖"}],"shao":["sh","ao",{"1":"烧","2":"韶","3":"少","4":"绍"}],"rao":["r","ao",{"2":"饶","3":"擾","4":"遶"}],"zao":["z","ao",{"1":"糟","2":"凿","3":"早","4":"噪"}],"cao":["c","ao",{"1":"操","2":"曹","3":"艹","4":"肏"}],"sao":["s","ao",{"1":"骚","3":"嫂","4":"瘙"}],"an":["","an",{"1":"安","2":"雸","3":"铵","4":"按"}],"ban":["b","an",{"1":"班","3":"板","4":"办"}],"pan":["p","an",{"1":"攀","2":"盘","3":"坢","4":"判"}],"man":["m","an",{"1":"颟","2":"馒","3":"满","4":"漫"}],"fan":["f","an",{"1":"翻","2":"烦","3":"返","4":"饭"}],"dan":["d","an",{"1":"丹","3":"赕","4":"蛋"}],"tan":["t","an",{"1":"坍","2":"谈","3":"坦","4":"炭"}],"nan":["n","an",{"1":"囝","2":"男","3":"腩","4":"婻"}],"lan":["l","an",{"2":"篮","3":"懒","4":"滥"}],"gan":["g","an",{"1":"肝","3":"敢","4":"赣"}],"kan":["k","an",{"1":"刊","3":"砍","4":"瞰"}],"han":["h","an",{"1":"憨","2":"寒","3":"丆","4":"汉"}],"zhan":["zh","an",{"1":"毡","2":"讝","3":"展","4":"战"}],"chan":["ch","an",{"1":"搀","2":"缠","3":"产","4":"羼"}],"shan":["sh","an",{"1":"山","3":"闪","4":"善"}],"ran":["r","an",{"2":"然","3":"染"}],"zan":["z","an",{"1":"糌","2":"咱","3":"昝","4":"暂"}],"can":["c","an",{"1":"骖","2":"惭","3":"惨","4":"灿"}],"san":["s","an",{"1":"三","3":"伞","4":"俕"}],"ang":["","ang",{"1":"肮","2":"岇","4":"盎"}],"bang":["b","ang",{"1":"帮","3":"绑","4":"棒"}],"pang":["p","ang",{"1":"乓","2":"庞","3":"耪","4":"胖"}],"mang":["m","ang",{"1":"牤","2":"忙","3":"漭","4":"吂"}],"fang":["f","ang",{"1":"芳","2":"肪","3":"纺","4":"放"}],"dang":["d","ang",{"1":"裆","3":"党","4":"档"}],"tang":["t","ang",{"1":"羰","2":"堂","3":"傥","4":"烫"}],"nang":["n","ang",{"1":"囊","2":"乪","3":"攮","4":"儾"}],"lang":["l","ang",{"1":"啷","2":"廊","3":"朗","4":"蒗"}],"gang":["g","ang",{"1":"刚","3":"岗","4":"筻"}],"kang":["k","ang",{"1":"慷","2":"摃","3":"奋","4":"钪"}],"hang":["h","ang",{"1":"夯","2":"航","3":"狠","4":"行"}],"zhang":["zh","ang",{"1":"张","3":"掌","4":"丈"}],"chang":["ch","ang",{"1":"猖","2":"尝","3":"昶","4":"唱"}],"shang":["sh","ang",{"1":"伤","3":"晌","4":"绱"}],"rang":["r","ang",{"1":"嚷","2":"瓤","3":"壤","4":"让"}],"zang":["z","ang",{"1":"赃","3":"驵","4":"葬"}],"cang":["c","ang",{"1":"仓","2":"欌","3":"蒼","4":"賶"}],"sang":["s","ang",{"1":"桑","3":"嗓","4":"丧"}],"o":["","o",{"1":"喔","2":"哦","3":"嚄","4":"哦"}],"bo":["b","o",{"1":"拨","2":"博","3":"箥","4":"孹"}],"po":["p","o",{"1":"泼","2":"婆","3":"叵","4":"破"}],"mo":["m","o",{"1":"摸","2":"膜","3":"懡","4":"默"}],"fo":["f","o",{"2":"仏"}],"dong":["d","ong",{"1":"东","3":"懂","4":"动"}],"tong":["t","ong",{"1":"嗵","2":"彤","3":"桶","4":"痛"}],"nong":["n","ong",{"2":"农","3":"繷","4":"挊"}],"long":["l","ong",{"1":"隆","2":"咙","3":"垄","4":"哢"}],"gong":["g","ong",{"1":"公","3":"巩","4":"贡"}],"kong":["k","ong",{"1":"崆","3":"恐","4":"鞚"}],"hong":["h","ong",{"1":"烘","2":"宏","3":"晎","4":"讧"}],"zhong":["zh","ong",{"1":"终","3":"肿","4":"仲"}],"chong":["ch","ong",{"1":"充","2":"崇","3":"宠","4":"铳"}],"rong":["r","ong",{"1":"茸","2":"溶","3":"冗","4":"縙"}],"zong":["z","ong",{"1":"宗","3":"总","4":"纵"}],"cong":["c","ong",{"1":"聪","2":"丛","4":"謥"}],"song":["s","ong",{"1":"松","2":"鬆","3":"怂","4":"送"}],"ou":["","ou",{"1":"欧","2":"齵","3":"偶","4":"怄"}],"pou":["p","ou",{"1":"剖","2":"抔","3":"咅","4":"踣"}],"mou":["m","ou",{"1":"哞","2":"谋","3":"某"}],"fou":["f","ou",{"1":"不","2":"紑","3":"缶"}],"dou":["d","ou",{"1":"兜","3":"抖","4":"痘"}],"tou":["t","ou",{"1":"偷","2":"亠","3":"妵","4":"透"}],"nou":["n","ou",{"2":"羺","3":"啂","4":"耨"}],"lou":["l","ou",{"1":"搂","2":"楼","3":"篓","4":"陋"}],"gou":["g","ou",{"1":"沟","3":"狗","4":"够"}],"kou":["k","ou",{"1":"抠","3":"口","4":"寇"}],"hou":["h","ou",{"1":"呴","2":"喉","3":"吼","4":"候"}],"zhou":["zh","ou",{"1":"周","2":"轴","3":"帚","4":"咒"}],"chou":["ch","ou",{"1":"抽","2":"畴","3":"丑","4":"殠"}],"shou":["sh","ou",{"1":"收","2":"熟","3":"手","4":"授"}],"rou":["r","ou",{"2":"揉","3":"韖","4":"宍"}],"zou":["z","ou",{"1":"邹","3":"走","4":"族"}],"cou":["c","ou",{"1":"楱","3":"趣","4":"凑"}],"sou":["s","ou",{"1":"艘","3":"嗾","4":"瘶"}],"e":["","e",{"1":"屙","2":"俄","3":"砈","4":"饿"}],"me":["m","e",{"1":"嚒"}],"de":["d","e",{"1":"嘚","2":"德"}],"te":["t","e",{"4":"特"}],"ne":["n","e",{"2":"哪","4":"疒"}],"le":["l","e",{"1":"肋","4":"泐"}],"ge":["g","e",{"1":"哥","2":"阁","3":"哿","4":"铬"}],"ke":["k","e",{"1":"柯","2":"翗","3":"岢","4":"克"}],"he":["h","e",{"1":"嗬","2":"河","4":"贺"}],"zhe":["zh","e",{"1":"遮","2":"哲","3":"者","4":"浙"}],"che":["ch","e",{"1":"砗","3":"扯","4":"彻"}],"she":["sh","e",{"1":"奢","2":"佘","3":"捨","4":"摄"}],"re":["r","e",{"2":"若","3":"惹","4":"热"}],"ze":["z","e",{"2":"则","4":"仄"}],"ce":["c","e",{"4":"测"}],"se":["s","e",{"1":"閪","4":"涩"}],"ei":["","ei",{"1":"欸","2":"诶","3":"欸","4":"欸"}],"bei":["b","ei",{"1":"杯","3":"鉳","4":"备"}],"pei":["p","ei",{"1":"呸","2":"陪","3":"俖","4":"佩"}],"mei":["m","ei",{"2":"枚","3":"每","4":"妹"}],"fei":["f","ei",{"1":"飞","2":"淝","3":"诽","4":"费"}],"dei":["d","ei",{"1":"嘚","3":"得"}],"tei":["t","ei",{"1":"忒"}],"nei":["n","ei",{"3":"馁","4":"內"}],"lei":["l","ei",{"1":"勒","2":"镭","3":"垒","4":"泪"}],"gei":["g","ei",{"3":"给"}],"kei":["k","ei",{"1":"刻"}],"hei":["h","ei",{"1":"黑"}],"zhei":["zh","ei",{"4":"这"}],"shei":["sh","ei",{"2":"谁"}],"zei":["z","ei",{"2":"贼"}],"en":["","en",{"1":"恩","3":"峎","4":"摁"}],"ben":["b","en",{"1":"锛","3":"苯","4":"笨"}],"pen":["p","en",{"1":"歕","2":"盆","3":"呠","4":"吩"}],"men":["m","en",{"1":"椚","2":"门","4":"懑"}],"fen":["f","en",{"1":"氛","2":"坟","3":"粉","4":"忿"}],"den":["d","en",{"4":"扥"}],"nen":["n","en",{"4":"嫩"}],"len":["l","en",{"4":"啉"}],"gen":["g","en",{"1":"根","2":"哏","3":"艮","4":"揯"}],"ken":["k","en",{"3":"肯","4":"裉"}],"hen":["h","en",{"1":"噷","2":"拫","3":"很","4":"恨"}],"zhen":["zh","en",{"1":"真","3":"诊","4":"镇"}],"chen":["ch","en",{"1":"琛","2":"晨","3":"碜","4":"衬"}],"shen":["sh","en",{"1":"深","2":"榊","3":"婶","4":"渗"}],"ren":["r","en",{"2":"人","3":"稔","4":"认"}],"zen":["z","en",{"1":"撍","3":"怎","4":"谮"}],"cen":["c","en",{"1":"参","2":"岑"}],"sen":["s","en",{"1":"森","3":"洒"}],"eng":["","eng",{"1":"鞥"}],"beng":["b","eng",{"1":"崩","2":"甭","3":"琫","4":"蹦"}],"peng":["p","eng",{"1":"烹","2":"朋","3":"剻","4":"碰"}],"meng":["m","eng",{"1":"擝","2":"檬","3":"猛","4":"梦"}],"feng":["f","eng",{"1":"丰","2":"堸","3":"泛","4":"凤"}],"deng":["d","eng",{"1":"噔","3":"等","4":"凳"}],"teng":["t","eng",{"1":"鼟","2":"疼","4":"霯"}],"neng":["n","eng",{"2":"而","3":"螚"}],"leng":["l","eng",{"1":"棱","2":"塄","3":"冷","4":"愣"}],"geng":["g","eng",{"1":"庚","3":"埂","4":"堩"}],"keng":["k","eng",{"1":"铿","3":"忐"}],"heng":["h","eng",{"1":"涥","2":"恒","4":"堼"}],"zheng":["zh","eng",{"1":"争","3":"整","4":"证"}],"cheng":["ch","eng",{"1":"撑","2":"城","3":"骋","4":"敞"}],"sheng":["sh","eng",{"1":"生","2":"绳","3":"眚","4":"剩"}],"reng":["r","eng",{"1":"扔","2":"仍","4":"芿"}],"zeng":["z","eng",{"1":"憎","3":"鬷","4":"赠"}],"ceng":["c","eng",{"1":"曽","2":"层","4":"蹭"}],"seng":["s","eng",{"1":"鬙"}],"er":["","er",{"2":"鲕","3":"尔","4":"二"}],"yi":["","i",{"1":"伊","2":"姨","3":"蚁","4":"忆"}],"bi":["b","i",{"1":"逼","2":"鼻","3":"笔","4":"必"}],"pi":["p","i",{"1":"披","2":"啤","3":"匹","4":"僻"}],"mi":["m","i",{"1":"眯","2":"弥","3":"米","4":"密"}],"di":["d","i",{"1":"低","2":"嫡","3":"诋","4":"第"}],"ti":["t","i",{"1":"锑","2":"题","3":"躰","4":"剃"}],"ni":["n","i",{"1":"呢","2":"霓","3":"你","4":"腻"}],"li":["l","i",{"1":"哩","2":"梨","3":"李","4":"利"}],"ji":["j","i",{"1":"基","2":"即","3":"挤","4":"季"}],"qi":["q","i",{"1":"凄","2":"骑","3":"起","4":"弃"}],"xi":["x","i",{"1":"吸","2":"习","3":"屣","4":"细"}],"zhi":["zh","i",{"1":"织","2":"值","3":"址","4":"志"}],"chi":["ch","i",{"1":"痴","2":"持","3":"侈","4":"炽"}],"shi":["sh","i",{"1":"师","2":"十","3":"使","4":"世"}],"ri":["r","i",{"4":"日"}],"zi":["z","i",{"1":"资","2":"蓻","3":"滓","4":"字"}],"ci":["c","i",{"1":"偨","2":"词","3":"此","4":"赐"}],"si":["s","i",{"1":"丝","3":"死","4":"四"}],"ya":["","ia",{"1":"丫","2":"崖","3":"痖","4":"亚"}],"dia":["d","ia",{"3":"嗲"}],"lia":["l","ia",{"3":"俩"}],"jia":["j","ia",{"1":"加","2":"荚","3":"甲","4":"嫁"}],"qia":["q","ia",{"1":"掐","2":"拤","3":"峠","4":"恰"}],"xia":["x","ia",{"1":"瞎","2":"侠","3":"閕","4":"下"}],"yao":["","iao",{"1":"邀","2":"尧","3":"舀","4":"药"}],"biao":["b","iao",{"1":"标","3":"表","4":"鳔"}],"piao":["p","iao",{"1":"飘","2":"瓢","3":"皫","4":"勡"}],"miao":["m","iao",{"1":"喵","2":"瞄","3":"秒","4":"庙"}],"fiao":["f","iao",{"4":"覅"}],"diao":["d","iao",{"1":"凋","3":"屌","4":"吊"}],"tiao":["t","iao",{"1":"祧","2":"条","3":"宨","4":"眺"}],"niao":["n","iao",{"3":"嬲","4":"脲"}],"liao":["l","iao",{"1":"蹽","2":"寥","3":"叾","4":"撂"}],"jiao":["j","iao",{"1":"交","2":"嚼","3":"饺","4":"叫"}],"qiao":["q","iao",{"1":"敲","2":"桥","3":"巧","4":"峭"}],"xiao":["x","iao",{"1":"消","2":"淆","3":"小","4":"效"}],"ye":["","ie",{"1":"椰","2":"爷","3":"冶","4":"业"}],"bie":["b","ie",{"1":"憋","2":"蹩","3":"瘪","4":"彆"}],"pie":["p","ie",{"1":"氕","3":"鐅","4":"嫳"}],"mie":["m","ie",{"1":"吀","4":"灭"}],"die":["d","ie",{"1":"爹","2":"叠","3":"哆","4":"哋"}],"tie":["t","ie",{"1":"贴","3":"铁","4":"餮"}],"nie":["n","ie",{"1":"捏","2":"苶","3":"鉨","4":"啮"}],"lie":["l","ie",{"1":"咧","2":"咧","3":"挘","4":"劣"}],"jie":["j","ie",{"1":"街","2":"劫","3":"媎","4":"借"}],"qie":["q","ie",{"1":"苆","2":"聺","3":"且","4":"怯"}],"xie":["x","ie",{"1":"蠍","2":"协","3":"冩","4":"谢"}],"you":["","iu",{"1":"幽","2":"尤","3":"友","4":"又"}],"miu":["m","iu",{"4":"谬"}],"diu":["d","iu",{"1":"丢"}],"niu":["n","iu",{"1":"妞","2":"牛","3":"纽","4":"拗"}],"liu":["l","iu",{"1":"熘","2":"流","3":"柳","4":"鹨"}],"jiu":["j","iu",{"1":"揪","3":"久","4":"就"}],"qiu":["q","iu",{"1":"秋","2":"求","3":"糗","4":"愀"}],"xiu":["x","iu",{"1":"修","2":"苬","3":"朽","4":"秀"}],"yan":["","ian",{"1":"阉","2":"严","3":"俨","4":"厌"}],"bian":["b","ian",{"1":"编","3":"贬","4":"变"}],"pian":["p","ian",{"1":"篇","2":"胼","3":"覑","4":"骗"}],"mian":["m","ian",{"2":"棉","3":"冕","4":"面"}],"dian":["d","ian",{"1":"掂","3":"点","4":"店"}],"tian":["t","ian",{"1":"天","2":"甜","3":"腆","4":"掭"}],"nian":["n","ian",{"1":"拈","2":"鲇","3":"撵","4":"念"}],"lian":["l","ian",{"2":"联","3":"脸","4":"炼"}],"jian":["j","ian",{"1":"坚","3":"减","4":"健"}],"qian":["q","ian",{"1":"千","2":"钱","3":"谴","4":"歉"}],"xian":["x","ian",{"1":"先","2":"嫌","3":"险","4":"现"}],"yang":["","iang",{"1":"殃","2":"扬","3":"养","4":"漾"}],"niang":["n","iang",{"2":"娘","4":"醸"}],"liang":["l","iang",{"2":"梁","3":"两","4":"谅"}],"jiang":["j","iang",{"1":"江","3":"奖","4":"匠"}],"qiang":["q","iang",{"1":"枪","2":"墙","3":"羟","4":"炝"}],"xiang":["x","iang",{"1":"乡","2":"详","3":"响","4":"像"}],"yin":["","in",{"1":"因","2":"银","3":"引","4":"胤"}],"bin":["b","in",{"1":"宾","4":"摈"}],"pin":["p","in",{"1":"礗","2":"频","3":"品","4":"牝"}],"min":["m","in",{"2":"民","3":"悯"}],"nin":["n","in",{"2":"您","3":"拰"}],"lin":["l","in",{"1":"拎","2":"林","3":"凛","4":"吝"}],"jin":["j","in",{"1":"今","3":"紧","4":"近"}],"qin":["q","in",{"1":"钦","2":"琴","3":"寝","4":"沁"}],"xin":["x","in",{"1":"心","2":"枔","3":"伈","4":"衅"}],"ying":["","ing",{"1":"婴","2":"赢","3":"影","4":"噟"}],"bing":["b","ing",{"1":"兵","3":"饼","4":"病"}],"ping":["p","ing",{"1":"乒","2":"瓶","3":"頩","4":"聘"}],"ming":["m","ing",{"2":"螟","3":"酩","4":"命"}],"ding":["d","ing",{"1":"叮","3":"顶","4":"定"}],"ting":["t","ing",{"1":"厅","2":"停","3":"艇","4":"汀"}],"ning":["n","ing",{"2":"凝","3":"橣","4":"佞"}],"ling":["l","ing",{"1":"拎","2":"龄","3":"领","4":"另"}],"jing":["j","ing",{"1":"京","3":"警","4":"境"}],"qing":["q","ing",{"1":"轻","2":"情","3":"请","4":"庆"}],"xing":["x","ing",{"1":"星","2":"刑","3":"擤","4":"性"}],"yong":["","iong",{"1":"拥","2":"颙","3":"勇","4":"用"}],"jiong":["j","iong",{"1":"坰","3":"炯"}],"qiong":["q","iong",{"1":"鞠","2":"琼"}],"xiong":["x","iong",{"1":"凶","2":"熊","3":"焽","4":"敻"}],"wu":["","u",{"1":"屋","2":"芜","3":"五","4":"务"}],"bu":["b","u",{"1":"晡","2":"醭","3":"捕","4":"步"}],"pu":["p","u",{"1":"噗","2":"匍","3":"普","4":"舖"}],"mu":["m","u",{"2":"毪","3":"亩","4":"慕"}],"fu":["f","u",{"1":"肤","2":"符","3":"俯","4":"付"}],"du":["d","u",{"1":"督","2":"犊","3":"睹","4":"妒"}],"tu":["t","u",{"1":"突","2":"图","3":"钍","4":"堍"}],"nu":["n","u",{"2":"奴","3":"努","4":"怒"}],"lu":["l","u",{"1":"噜","2":"卢","3":"掳","4":"录"}],"gu":["g","u",{"1":"姑","2":"骨","3":"鼓","4":"故"}],"ku":["k","u",{"1":"哭","3":"狜","4":"裤"}],"hu":["h","u",{"1":"乎","2":"壶","3":"琥","4":"互"}],"zhu":["zh","u",{"1":"株","2":"竹","3":"嘱","4":"住"}],"chu":["ch","u",{"1":"出","2":"厨","3":"楚","4":"搐"}],"shu":["sh","u",{"1":"书","2":"孰","3":"暑","4":"束"}],"ru":["r","u",{"2":"如","3":"乳","4":"入"}],"zu":["z","u",{"1":"葅","2":"镞","3":"组","4":"伹"}],"cu":["c","u",{"1":"粗","2":"徂","3":"皻","4":"猝"}],"su":["s","u",{"1":"苏","2":"俗","4":"塑"}],"wa":["","ua",{"1":"挖","2":"哇","3":"佤","4":"腽"}],"gua":["g","ua",{"1":"刮","3":"剐","4":"挂"}],"kua":["k","ua",{"1":"舿","3":"垮","4":"骻"}],"hua":["h","ua",{"1":"花","2":"猾","4":"画"}],"zhua":["zh","ua",{"1":"抓","3":"爪"}],"chua":["ch","ua",{"1":"撮"}],"shua":["sh","ua",{"1":"唰","3":"耍","4":"誜"}],"rua":["r","ua",{"2":"挼"}],"wo":["","uo",{"1":"窝","3":"我","4":"卧"}],"duo":["d","uo",{"1":"多","2":"夺","3":"朵","4":"剁"}],"tuo":["t","uo",{"1":"托","2":"驼","3":"妥","4":"唾"}],"nuo":["n","uo",{"2":"挪","3":"媠","4":"懦"}],"luo":["l","uo",{"1":"頱","2":"箩","3":"裸","4":"洛"}],"guo":["g","uo",{"1":"锅","2":"国","3":"裹","4":"划"}],"kuo":["k","uo",{"4":"廓"}],"huo":["h","uo",{"1":"耠","2":"佸","3":"夥","4":"获"}],"zhuo":["zh","uo",{"1":"桌","2":"浊"}],"chuo":["ch","uo",{"1":"戳","4":"辍"}],"shuo":["sh","uo",{"1":"說","2":"杓","4":"硕"}],"ruo":["r","uo",{"2":"挼","4":"弱"}],"zuo":["z","uo",{"1":"作","2":"昨","3":"左","4":"做"}],"cuo":["c","uo",{"1":"磋","2":"痤","3":"搓","4":"错"}],"suo":["s","uo",{"1":"桫","3":"所","4":"蜶"}],"wei":["","ui",{"1":"危","2":"围","3":"伟","4":"卫"}],"dui":["d","ui",{"1":"垖","3":"啍","4":"对"}],"tui":["t","ui",{"1":"推","2":"颓","3":"腿","4":"退"}],"gui":["g","ui",{"1":"规","3":"癸","4":"贵"}],"kui":["k","ui",{"1":"岿","2":"葵","3":"煃","4":"愧"}],"hui":["h","ui",{"1":"徽","2":"回","3":"悔","4":"卉"}],"zhui":["zh","ui",{"1":"锥","3":"沝","4":"坠"}],"chui":["ch","ui",{"1":"炊","2":"锤","4":"吹"}],"shui":["sh","ui",{"2":"脽","3":"水","4":"睡"}],"rui":["r","ui",{"2":"蕤","3":"橤","4":"瑞"}],"zui":["z","ui",{"1":"厜","3":"嘴","4":"罪"}],"cui":["c","ui",{"1":"催","3":"璀","4":"瘁"}],"sui":["s","ui",{"1":"虽","2":"随","3":"髓","4":"岁"}],"wai":["","uai",{"1":"喎","3":"歪","4":"外"}],"guai":["g","uai",{"1":"乖","3":"拐","4":"怪"}],"kuai":["k","uai",{"3":"擓","4":"快"}],"huai":["h","uai",{"2":"槐","4":"壊"}],"zhuai":["zh","uai",{"1":"拽","3":"转","4":"拽"}],"chuai":["ch","uai",{"1":"揣","2":"膗","3":"揣","4":"揣"}],"shuai":["sh","uai",{"1":"摔","3":"甩","4":"帅"}],"wan":["","uan",{"1":"弯","2":"玩","3":"晚","4":"腕"}],"duan":["d","uan",{"1":"端","3":"短","4":"断"}],"tuan":["t","uan",{"1":"煓","2":"抟","3":"疃","4":"褖"}],"nuan":["n","uan",{"2":"奻","3":"煗","4":"餪"}],"luan":["l","uan",{"2":"孪","3":"卵","4":"乱"}],"guan":["g","uan",{"1":"关","3":"管","4":"惯"}],"kuan":["k","uan",{"1":"宽","3":"欵"}],"huan":["h","uan",{"1":"欢","2":"环","3":"缓","4":"换"}],"zhuan":["zh","uan",{"1":"专","3":"竱","4":"篆"}],"chuan":["ch","uan",{"1":"川","2":"船","3":"喘","4":"钏"}],"shuan":["sh","uan",{"1":"闩","4":"腨"}],"ruan":["r","uan",{"2":"壖","3":"软","4":"緛"}],"zuan":["z","uan",{"1":"躜","3":"纂","4":"攥"}],"cuan":["c","uan",{"1":"蹿","2":"巑","4":"窜"}],"suan":["s","uan",{"1":"酸","3":"匴","4":"算"}],"wen":["","un",{"1":"塭","2":"文","3":"吻","4":"问"}],"dun":["d","un",{"1":"墩","3":"趸","4":"钝"}],"tun":["t","un",{"1":"暾","2":"臀","3":"吨","4":"褪"}],"nun":["n","un",{"2":"黁","4":"媆"}],"lun":["l","un",{"1":"抡","2":"仑","3":"稐","4":"溣"}],"gun":["g","un",{"3":"滚","4":"璭"}],"kun":["k","un",{"1":"坤","3":"悃","4":"困"}],"hun":["h","un",{"1":"婚","2":"浑","3":"惛","4":"诨"}],"zhun":["zh","un",{"1":"谆","3":"准","4":"旽"}],"chun":["ch","un",{"1":"椿","2":"纯","3":"蠢"}],"shun":["sh","un",{"3":"吮","4":"顺"}],"run":["r","un",{"2":"撋","4":"润"}],"zun":["z","un",{"1":"尊","2":"蹲","3":"撙","4":"捘"}],"cun":["c","un",{"1":"村","2":"存","3":"忖","4":"籿"}],"sun":["s","un",{"1":"孙","3":"损","4":"摌"}],"wang":["","uang",{"1":"尣","2":"亾","3":"网","4":"望"}],"guang":["g","uang",{"1":"胱","3":"犷","4":"俇"}],"kuang":["k","uang",{"1":"筐","2":"诳","3":"夼","4":"况"}],"huang":["h","uang",{"1":"肓","2":"黄","3":"幌","4":"曂"}],"zhuang":["zh","uang",{"1":"装","3":"奘","4":"壮"}],"chuang":["ch","uang",{"1":"疮","2":"床","3":"闯","4":"怆"}],"shuang":["sh","uang",{"1":"双","3":"塽","4":"灀"}],"weng":["","ueng",{"1":"螉","3":"蓊","4":"瓮"}],"yu":["","ü",{"1":"淤","2":"鱼","3":"宇","4":"预"}],"nü":["n","ü",{"3":"钕","4":"恧"}],"lü":["l","ü",{"2":"驴","3":"旅","4":"律"}],"ju":["j","ü",{"1":"狙","2":"局","3":"举","4":"具"}],"qu":["q","ü",{"1":"趋","2":"劬","3":"龋","4":"阒"}],"xu":["x","ü",{"1":"须","2":"徐","3":"糈","4":"序"}],"yue":["","üe",{"1":"曰","2":"块","3":"哕","4":"阅"}],"nüe":["n","üe",{"4":"虐"}],"lüe":["l","üe",{"3":"掠","4":"略"}],"jue":["j","üe",{"1":"噘","2":"决","3":"蹶","4":"倔"}],"que":["q","üe",{"1":"蒛","2":"瘸","4":"却"}],"xue":["x","üe",{"1":"薛","2":"学","3":"雪","4":"谑"}],"yuan":["","üan",{"1":"冤","2":"元","3":"远","4":"愿"}],"juan":["j","üan",{"1":"娟","3":"锩","4":"倦"}],"quan":["q","üan",{"1":"圏","2":"全","3":"犬","4":"劝"}],"xuan":["x","üan",{"1":"宣","2":"悬","3":"选","4":"绚"}],"yun":["","ün",{"1":"奫","2":"云","3":"陨","4":"孕"}],"jun":["j","ün",{"1":"军","4":"峻"}],"qun":["q","ün",{"1":"囷","2":"裙","3":"蹲"}],"xun":["x","ün",{"1":"勋","2":"循","4":"殉"}]}};
+const TEACH={"pyt:b": "拨", "pyt:p": "泼", "pyt:m": "摸", "pyt:f": "仏", "pyt:d": "嘚", "pyt:t": "特", "pyt:n": "疒", "pyt:l": "肋", "pyt:g": "哥", "pyt:k": "柯", "pyt:h": "嗬", "pyt:j": "基", "pyt:q": "凄", "pyt:x": "吸", "pyt:zh": "织", "pyt:ch": "痴", "pyt:sh": "师", "pyt:r": "日", "pyt:z": "资", "pyt:c": "偨", "pyt:s": "丝", "pyt:y": "伊", "pyt:w": "屋", "pyt:a": "锕", "pyt:o": "喔", "pyt:e": "屙", "pyt:i": "伊", "pyt:u": "屋", "pyt:ü": "淤", "pyt:er": "二", "pyt:ai": "哀", "pyt:ei": "欸", "pyt:ao": "爊", "pyt:ou": "欧", "pyt:an": "安", "pyt:en": "恩", "pyt:ang": "肮", "pyt:eng": "鞥", "pyt:ong": "啊", "pyt:ia": "丫", "pyt:ie": "椰", "pyt:iao": "邀", "pyt:iu": "幽", "pyt:ian": "阉", "pyt:in": "因", "pyt:iang": "殃", "pyt:ing": "婴", "pyt:iong": "拥", "pyt:ua": "挖", "pyt:uo": "窝", "pyt:uai": "喎", "pyt:ui": "危", "pyt:uan": "弯", "pyt:un": "塭", "pyt:uang": "尣", "pyt:üe": "曰", "pyt:üan": "冤", "pyt:ün": "奫"};
+function pyTableHTML(){
+  const ini=PYT.ini, cols=ini.map(i=>i||'–');
+  let h=`<p class="muted">พยางค์ทั้งหมดในภาษาจีนกลาง แถวคือสระ คอลัมน์คือพยัญชนะต้น แตะช่องไหนก็ได้เพื่อฟังทั้ง 4 เสียง ช่องว่างคือพยางค์ที่ไม่มีในภาษาจีน</p>
+  <div class="pyt-wrap"><table class="pyt"><thead><tr><th class="sth"></th>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+  const bySpot={}; for(const [sp,[i,f]] of Object.entries(PYT.cells)) bySpot[i+'|'+f]=sp;
+  PYT.groups.forEach(([g,fs],gi)=>{ fs.forEach((f,fi)=>{
+    h+=`<tr class="${fi===0?'gstart':''}"><th class="sth">${f}</th>${ini.map(i=>{const sp=bySpot[i+'|'+f]; return sp?`<td><button data-cell="${sp}">${sp}</button></td>`:'<td></td>';}).join('')}</tr>`; }); });
+  return h+'</tbody></table></div>';
+}
+function openSyl(btn){
+  closePop(); const sp=btn.dataset.cell, cell=PYT.cells[sp]; if(!cell) return; const tones=cell[2];
+  popEl=document.createElement('div'); popEl.className='pop sylpop';
+  popEl.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><div class="ph">${esc(sp)}</div><span class="muted">${cell[0]?esc(cell[0])+' + ':''}${esc(cell[1])}</span></div>
+    <div class="sylt">${[1,2,3,4].map(t=>tones[t]?`<button data-t="${t}"><b>${esc(numToMark(sp.replace(/ü/g,'v')+t))}</b><span>${PLAY}</span></button>`:`<button disabled><b>${esc(numToMark(sp.replace(/ü/g,'v')+t))}</b><span class="muted" style="font-size:11px">ไม่มี</span></button>`).join('')}</div>`;
+  document.body.appendChild(popEl);
+  const r=btn.getBoundingClientRect(), pw=popEl.offsetWidth, ph=popEl.offsetHeight;
+  let x=Math.min(Math.max(8,r.left+r.width/2-pw/2),innerWidth-pw-8), y=r.bottom+8; if(y+ph>innerHeight-8) y=r.top-ph-8;
+  popEl.style.left=x+'px'; popEl.style.top=Math.max(8,y)+'px';
+  popEl.querySelectorAll('[data-t]').forEach(b=>b.onclick=e=>{e.stopPropagation(); speakKey('py:'+sp+b.dataset.t, tones[b.dataset.t], 0.7);});
+  const first=[1,2,3,4].find(t=>tones[t]); if(first&&!MUTED) speakKey('py:'+sp+first,tones[first],0.7);
+  track('use/pinyin-table','ใช้ตารางพินอิน');
+}
+const INITNOTE={b:'ริมฝีปากประกบแล้วเปิด',p:'ริมฝีปากประกบแล้วเปิด',m:'ริมฝีปากประกบ เสียงออกทางจมูก',f:'ฟันบนแตะริมฝีปากล่าง',
+ j:'ลิ้นแบน แตะหลังฟันล่าง ยิ้มเล็กน้อย',q:'ลิ้นแบน แตะหลังฟันล่าง ยิ้มเล็กน้อย',x:'ลิ้นแบน แตะหลังฟันล่าง ยิ้มเล็กน้อย',
+ zh:'ม้วนปลายลิ้นขึ้นแตะเพดาน',ch:'ม้วนปลายลิ้นขึ้นแตะเพดาน',sh:'ม้วนปลายลิ้นขึ้นใกล้เพดาน',r:'ม้วนปลายลิ้นขึ้นใกล้เพดาน',
+ z:'ปลายลิ้นแตะหลังฟันบน',c:'ปลายลิ้นแตะหลังฟันบน',s:'ปลายลิ้นใกล้หลังฟันบน'};
+const FINNOTE={o:'ห่อปากกลม',e:'ปากเปิดกลาง ๆ ไม่ห่อปาก เสียงออกจากลำคอ',i:'ยิ้มกว้าง ลิ้นยกสูง','ü':'วางลิ้นเหมือน i แต่ห่อปากกลม',
+ er:'ออกเสียง e แล้วม้วนปลายลิ้นขึ้น',an:'จบด้วยปลายลิ้นแตะหลังฟันบน',ang:'จบด้วยโคนลิ้นยกขึ้น เสียงก้องในจมูก',
+ en:'จบด้วยปลายลิ้นแตะหลังฟันบน',eng:'จบด้วยโคนลิ้นยกขึ้น เสียงก้องในจมูก',ong:'ห่อปากกลม จบด้วยเสียงก้องในจมูก',
+ in:'จบด้วยปลายลิ้นแตะหลังฟันบน',ing:'จบด้วยโคนลิ้นยกขึ้น เสียงก้องในจมูก',
+ iu:'ย่อมาจาก i + ou',ui:'ย่อมาจาก u + ei',un:'ย่อมาจาก u + en',
+ 'üe':'หลัง j q x y เขียนเป็น ue แต่ยังออกเสียง ü','üan':'หลัง j q x y เขียนเป็น uan แต่ยังออกเสียง ü','ün':'หลัง j q x y เขียนเป็น un แต่ยังออกเสียง ü'};
 const PYTIPS=[
  ['พ่นลม vs ไม่พ่นลม','b d g z zh j ไม่พ่นลม (ป ต ก) ส่วน p t k c ch q พ่นลม (พ ท ค) ลองเอากระดาษไว้หน้าปาก ถ้ากระดาษไหวคือพ่นลม'],
  ['i ไม่ได้อ่านว่า อี เสมอ','หลัง z c s zh ch sh r ตัว i อ่านคล้าย อือ เช่น 是 shì 字 zì 吃 chī'],
@@ -840,20 +1010,21 @@ const DUO=W.filter(w=>w.h.length===2&&toneOf(w.p).length===2);
 function toneSvg(t,big){ if(!t.path) return `<svg viewBox="0 0 120 80" class="tsvg" aria-hidden="true"><circle cx="60" cy="48" r="7" fill="var(--violet)"/></svg>`;
   return `<svg viewBox="0 0 120 80" class="tsvg" aria-hidden="true">${[14,27,40,53,66].map(y=>`<line x1="8" x2="112" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`).join('')}<path d="${t.path}" fill="none" stroke="var(--violet)" stroke-width="6" stroke-linecap="round"/></svg>`;}
 function enterPinyin(){track('level/pinyin','เข้าหน้าพินอิน');S.level='py';save('hsk-level','py');$('#home').hidden=true;$('#inlevel').hidden=true;$('#strokesView').hidden=true;$('#pinyin').hidden=false;
-  document.documentElement.style.setProperty('--acc','var(--violet)');renderPinyin();window.scrollTo(0,0);}
-function renderPinyin(){ if(!['tones','init','fin'].includes(PS.sec)) PS.sec='tones';
-  const tabs=[['tones','วรรณยุกต์'],['init','พยัญชนะต้น'],['fin','สระ']];
+  document.documentElement.style.setProperty('--acc','var(--violet)');renderPinyin();window.scrollTo(0,0);stopAll();pushNav();}
+function renderPinyin(){ if(!['tones','init','fin','table'].includes(PS.sec)) PS.sec='tones';
+  const tabs=[['tones','วรรณยุกต์'],['init','พยัญชนะต้น'],['fin','สระ'],['table','ตาราง']];
   let h=`<div class="lvbar">${lvMenu('py')}<span class="muted">พินอินและวรรณยุกต์ พื้นฐานก่อนเริ่ม HSK1</span></div>
   <nav class="tabs">${tabs.map(([k,n])=>`<button data-ps="${k}" aria-selected="${PS.sec===k}">${n}</button>`).join('')}</nav>`;
-  if(PS.sec==='tones'){
-    h+=`<p class="muted">ภาษาจีนมี 4 เสียงหลักกับเสียงเบา พยางค์เดียวกันแต่เสียงต่างกัน ความหมายก็เปลี่ยน ลองกดฟังทีละเสียง</p><div class="tgrid">${TONES.map(t=>`<button class="tcard" data-say="${t.h}">
+  if(PS.sec==='table'){ h+=pyTableHTML(); }
+  else if(PS.sec==='tones'){
+    h+=`<p class="muted">ภาษาจีนมี 4 เสียงหลักกับเสียงเบา พยางค์เดียวกันแต่เสียงต่างกัน ความหมายก็เปลี่ยน ลองกดฟังทีละเสียง</p><div class="tgrid">${TONES.map(t=>`<button class="tcard" data-say="${t.h}" data-key="${t.n?'py:ma'+t.n:t.h}">
       ${toneSvg(t)}<div class="tname">${t.name}</div><div class="tpy">${t.py}</div><div class="hz tz">${t.h}</div><div class="muted" style="font-size:14px">${t.m}</div>
-      <div style="font-size:14px;margin-top:6px">${t.d}</div><div class="lv lv4" style="margin-top:6px">${t.th}</div></button>`).join('')}</div>
-      <p class="muted" style="margin-top:14px">เส้นในภาพคือระดับเสียงจากต่ำ (ล่าง) ถึงสูง (บน) เสียงไทยที่เทียบไว้เป็นแค่ตัวช่วยจำ ไม่ได้ตรงเป๊ะ</p>`;
+      <div style="font-size:14px;margin-top:6px">${t.d}</div></button>`).join('')}</div>
+      <p class="muted" style="margin-top:14px">เส้นในภาพคือระดับเสียงจากต่ำ (ล่าง) ถึงสูง (บน) ฟังเสียงจริงแล้วพูดตาม จะได้วรรณยุกต์ที่ถูกต้องกว่าการเทียบกับเสียงภาษาอื่น</p>`;
   } else if(PS.sec==='init'){
-    h+=`<p class="muted">พยัญชนะต้น 21 ตัว (และกึ่งสระ y w) อ่านแบบท่องเหมือนตอนเรียนพินอิน กดการ์ดเพื่อฟังเสียง</p>`+INIT.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,rd,t,hz,n])=>`<button class="pcard" data-say="${hz}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span><span class="rd">${rd}</span><span class="tr2">${t}</span>${n?`<span class="muted" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div>`).join('');
+    h+=`<p class="muted">พยัญชนะต้น 21 ตัว (และกึ่งสระ y w) อ่านแบบท่องเหมือนตอนเรียนพินอิน กดการ์ดแล้วฟังเสียงจริง ดูตำแหน่งปากและลิ้นประกอบ</p>`+INIT.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,rd,t,hz,n])=>{const note=[n,INITNOTE[p]].filter(Boolean).join(' · ');return `<button class="pcard" data-say="${TEACH['pyt:'+p]||hz}" data-key="pyt:${p}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span><span class="rd">${rd}</span>${note?`<span class="muted" style="font-size:13px">${note}</span>`:''}</button>`;}).join('')}</div>`).join('');
   } else if(PS.sec==='fin'){
-    h+=`<p class="muted">สระทั้งหมด พร้อมเสียงไทยใกล้เคียง กดการ์ดเพื่อฟังเสียง</p>`+FIN.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,t,hz])=>`<button class="pcard" data-say="${hz}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span><span class="tr2">${t}</span></button>`).join('')}</div>`).join('');
+    h+=`<p class="muted">สระทั้งหมด กดการ์ดแล้วฟังเสียงจริง ตัวที่ต้องระวังมีวิธีวางปากและลิ้นกำกับไว้</p>`+FIN.map(([g,arr])=>`<div class="group">${g}</div><div class="pgrid">${arr.map(([p,t,hz])=>`<button class="pcard" data-say="${TEACH['pyt:'+p]||hz}" data-key="pyt:${p}" aria-label="ฟังเสียง ${p}"><span class="pl">${p}</span>${FINNOTE[p]?`<span class="muted" style="font-size:13px">${FINNOTE[p]}</span>`:''}</button>`).join('')}</div>`).join('');
   } else if(PS.sec==='tips'){
     h+=PYTIPS.map(([a,b])=>`<div class="qa"><b>${a}</b><div>${b}</div></div>`).join('');
   } else {
@@ -861,8 +1032,9 @@ function renderPinyin(){ if(!['tones','init','fin'].includes(PS.sec)) PS.sec='to
   }
   $('#pinyin').innerHTML=h;
   bindLvMenu($('#pinyin .lvbar'));
-  $$('#pinyin [data-ps]').forEach(b=>b.onclick=()=>{PS.sec=b.dataset.ps; if(PS.sec==='quiz') newPyQuiz(); renderPinyin();});
-  $$('#pinyin [data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say,0.7));
+  $$('#pinyin [data-ps]').forEach(b=>b.onclick=()=>{PS.sec=b.dataset.ps; if(PS.sec==='quiz') newPyQuiz(); renderPinyin(); pushNav();});
+  $$('#pinyin [data-say]').forEach(b=>b.onclick=()=>b.dataset.key?speakKey(b.dataset.key,b.dataset.say,0.7):speak(b.dataset.say,0.7));
+  $$('#pinyin [data-cell]').forEach(b=>b.onclick=e=>{e.stopPropagation();openSyl(b);});
   if(PS.sec==='quiz') bindPyQuiz();
 }
 function newPyQuiz(){
@@ -959,7 +1131,7 @@ function renderWrite(){
     let i=0, mistakes=0; const live=writers.map((wr,k)=>[wr,k]).filter(x=>x[0]);
     if(!live.length) return;
     $('#wmsg').textContent='เขียนทีละขีดตามลำดับในกรอบแรก ถ้าผิด 3 ครั้งจะมีตัวช่วยกะพริบ';
-    const next=()=>{ if(i>=live.length){$('#wmsg').textContent=mistakes===0?'เยี่ยม! เขียนถูกลำดับทุกขีด':'เขียนครบแล้ว ผิดไป '+mistakes+' ครั้ง ลองอีกรอบได้'; speak(w.h); return;}
+    const next=()=>{ if(i>=live.length){$('#wmsg').textContent=mistakes===0?'เยี่ยม! เขียนถูกลำดับทุกขีด':'เขียนครบแล้ว ผิดไป '+mistakes+' ครั้ง ลองอีกรอบได้'; autoSpeak(w.h); return;}
       const [wr,k]=live[i]; $$('.wbox').forEach((b,j)=>b.classList.toggle('on',j===k));
       wr.hideCharacter(); wr.quiz({showHintAfterMisses:3,onComplete:s=>{markStudy();track('use/writing','ฝึกเขียน');mistakes+=s.totalMistakes;wr.showCharacter();i++;next();}}); };
     next();
@@ -1060,7 +1232,7 @@ const SRULES=[
 const SS={sec:'basic'};
 let sWriters=[];
 function enterStrokes(){track('level/strokes','เข้าหน้าลำดับขีด');S.level='st';save('hsk-level','st');$('#home').hidden=true;$('#inlevel').hidden=true;$('#pinyin').hidden=true;$('#strokesView').hidden=false;
-  document.documentElement.style.setProperty('--acc','var(--teal)');renderStrokes();window.scrollTo(0,0);}
+  document.documentElement.style.setProperty('--acc','var(--teal)');renderStrokes();window.scrollTo(0,0);stopAll();pushNav();}
 function mkWriter(el,c,opts){ if(!window.HanziWriter||!strokes()[c]){el.innerHTML=`<div class="hz" style="font-size:80px;line-height:120px">${esc(c)}</div>`;return null;}
   const css=getComputedStyle(document.documentElement),col=n=>css.getPropertyValue(n).trim()||'#333';
   return HanziWriter.create(el,c,Object.assign({width:120,height:120,padding:8,strokeColor:col('--coral'),outlineColor:col('--line'),radicalColor:null,
@@ -1078,7 +1250,7 @@ function renderStrokes(){
   }
   $('#strokesView').innerHTML=h;
   bindLvMenu($('#strokesView .lvbar'));
-  $$('#strokesView [data-ss]').forEach(b=>b.onclick=()=>{SS.sec=b.dataset.ss;renderStrokes();});
+  $$('#strokesView [data-ss]').forEach(b=>b.onclick=()=>{SS.sec=b.dataset.ss;renderStrokes();pushNav();});
   if(SS.sec==='basic'){
     sWriters=BSTROKES.map((s,i)=>{const w=mkWriter($('#sb'+i),s[4],{showCharacter:false,showOutline:true}); if(w) setTimeout(()=>w.animateStroke(s[5]).catch(()=>{}),200+i*120); return w;});
     $$('#strokesView .scard').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,w=sWriters[i]; if(!w)return; w.hideCharacter(); w.animateStroke(BSTROKES[i][5]);});
@@ -1125,14 +1297,85 @@ function openCredits(){const ov=document.createElement('div');ov.className='ovl'
   document.body.appendChild(ov); const close=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)close();}; ov.querySelector('#licClose').onclick=close;}
 $('#credBtn').onclick=openCredits;
 if(FEEDBACK_URL){const f=$('#fbBtn');f.hidden=false;f.onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
+/* ===== navigation (history + back button) ===== */
+const NAV={restoring:false,depth:0,ready:false};
+function navState(){const lv=S.level||null;
+  return {lv, tab:(lv&&lv!=='py'&&lv!=='st')?S.tab:null, lesson:(lv&&lv!=='py'&&lv!=='st'&&S.tab==='lessons')?(S.lesson||null):null,
+    sub:lv==='py'?PS.sec:lv==='st'?SS.sec:null};}
+function navHash(st){if(!st.lv)return '#/home';let h='#/'+(st.lv==='py'?'pinyin':st.lv==='st'?'strokes':'hsk'+st.lv);
+  if(st.sub)h+='/'+st.sub; if(st.tab)h+='/'+st.tab; if(st.lesson)h+='/'+st.lesson; return h;}
+function sameNav(a,b){return !!a&&!!b&&a.lv===b.lv&&a.tab===b.tab&&a.lesson===b.lesson&&a.sub===b.sub;}
+function updBack(){const b=$('#navBack'); if(b) b.hidden=!S.level;}
+function pushNav(){ updBack(); if(NAV.restoring||!NAV.ready) return; const st=navState(); if(sameNav(history.state,st)) return;
+  try{history.pushState(st,'',navHash(st));NAV.depth++;}catch(e){} }
+function applyNav(st){ NAV.restoring=true; closePop(); stopAll();
+  try{ if(!st||!st.lv) leaveLevel();
+    else if(st.lv==='py'){ if(st.sub) PS.sec=st.sub; enterPinyin(); }
+    else if(st.lv==='st'){ if(st.sub) SS.sec=st.sub; enterStrokes(); }
+    else { if(S.level!==st.lv) enterLevel(st.lv); S.lesson=st.lesson||null; go(st.tab||'lessons'); window.scrollTo(0,0); }
+  } finally { NAV.restoring=false; } updBack(); }
+function parentNav(st){ if(!st||!st.lv) return {lv:null};
+  if(st.lesson) return {lv:st.lv,tab:'lessons',lesson:null,sub:null};
+  if(st.tab&&st.tab!=='lessons') return {lv:st.lv,tab:'lessons',lesson:null,sub:null};
+  return {lv:null}; }
+function navBack(){ track('use/back-button','กดปุ่มย้อนกลับ',false);
+  if(NAV.depth>0){history.back();return;}
+  const p=parentNav(navState()); applyNav(p); try{history.replaceState(p,'',navHash(p));}catch(e){} }
+addEventListener('popstate',e=>{ if(e.state){NAV.depth=Math.max(0,NAV.depth-1); applyNav(e.state);} else { const st=parseHash(location.hash); if(st){applyNav(st); try{history.replaceState(navState(),'',location.href);}catch(_){}} } });
+function parseHash(h){ const m=/^#\/?(home|pinyin|strokes|hsk([1-4]))(?:\/([\w-]+))?(?:\/([\w-]+))?(?:\/([\w-]+))?$/.exec(h||''); if(!m) return null;
+  if(m[1]==='home') return {lv:null};
+  if(m[1]==='pinyin') return {lv:'py',sub:m[3]||null}; if(m[1]==='strokes') return {lv:'st',sub:m[3]||null};
+  const tabs=['lessons','vocab','cards','write','quiz','type']; const tab=tabs.includes(m[3])?m[3]:'lessons';
+  const lesson=m[4]&&LESSONS.some(l=>l.id===m[4])?m[4]:null; return {lv:+m[2],tab,lesson,sub:null}; }
+addEventListener('scroll',()=>{const h=document.querySelector('header.top'); if(h) h.classList.toggle('scrolled',scrollY>8);},{passive:true});
+
+/* ===== what's new ===== */
+const CL_VER='2026-10-06';
+const CHANGELOG=[
+ {t:'อัปเดตล่าสุด · 6 ต.ค. 2026 (จากความคิดเห็นของผู้ใช้)',items:[
+  'ปุ่ม <b>← ย้อนกลับ</b> บนหัวเว็บ และปุ่ม Back/ปัดย้อนของมือถือ พากลับหน้าก่อนในเว็บแล้ว ไม่หลุดออกจากเว็บ',
+  'ปุ่ม <b>ข้อก่อนหน้า</b> ในแบบทดสอบ แฟลชการ์ด และฝึกแปล',
+  'ปุ่ม <b>🔇 ปิดเสียงอัตโนมัติ</b> บนหัวเว็บ เหมาะกับตอนอยู่ในที่เงียบ (กดปุ่มลำโพงยังฟังได้)',
+  '<b>ฟังบทสนทนาและบทความต่อเนื่องทั้งบท</b> มีไฮไลต์ประโยคที่กำลังอ่าน',
+  '<b>ตารางพินอิน</b> ครบทุกพยางค์ แตะแล้วฟังได้ทั้ง 4 เสียง (อยู่ในหน้าพินอิน)',
+  'หน้าพินอินเอาตัวอักษรไทยกำกับเสียงออก ให้ฟังเสียงจริงแทน และเพิ่มวิธีวางปากและลิ้นในตัวที่ออกเสียงยาก',
+  'ฝึกแปล: ตอบผิดหรือกดดูเฉลยแล้ว กด <b>ลองใหม่อีกครั้ง</b> เพื่อทำข้อเดิมซ้ำได้',
+  'ฝึกแปลบอก <b>% ความใกล้เคียง</b> และไฮไลต์จุดที่ต่างจากเฉลย ถ้าใกล้เคียง 85% ขึ้นไปนับเป็นข้อถูก']},
+ {t:'ก่อนหน้านี้ในสัปดาห์นี้',items:[
+  'แก้เสียงอ่านที่ฟังไม่รู้เรื่อง: ใช้เฉพาะเสียงจีนกลาง และถ้าเครื่องไม่มีเสียงจีนจะบอกวิธีติดตั้ง',
+  'แถบเตือนเมื่อเปิดผ่านแอป Facebook / LINE / Messenger ให้เปิดในเบราว์เซอร์',
+  'เพิ่ม <b>HSK4</b> คำศัพท์ 1,000 คำ และบทเรียน 10 บทแรก',
+  'แบบทดสอบเลือกเฉพาะคำที่ยังจำไม่ได้ หรือคำที่ตอบผิดบ่อยได้ และกด "ทำข้อที่ผิดอีกรอบ" ได้',
+  'ปุ่มส่งความคิดเห็นในหน้าแรกและท้ายเว็บ']},
+ {t:'กำลังทำต่อ',items:[
+  'ไฟล์เสียงของเว็บเอง ให้เสียงเหมือนกันทุกเครื่อง และแก้เสียงพินอินให้ตรงวรรณยุกต์',
+  'ควิซความเข้าใจท้ายบทสนทนาและบทความ']}];
+function clHTML(){return CHANGELOG.map(g=>`<h3>${g.t}</h3><ul>${g.items.map(i=>`<li>${i}</li>`).join('')}</ul>`).join('');}
+function seenNews(){return load('hsk-cl-seen','')===CL_VER;}
+function markNewsSeen(){save('hsk-cl-seen',CL_VER);renderNewsBar();const d=document.querySelector('#newsBtn .dot');if(d)d.remove();}
+function openNews(){track('click/whats-new','เปิดดูมีอะไรใหม่',false);const ov=document.createElement('div');ov.className='ovl';
+  ov.innerHTML=`<div class="sbox cl" style="text-align:left" role="dialog" aria-label="มีอะไรใหม่"><h2 style="margin:0">✨ มีอะไรใหม่</h2>${clHTML()}
+   <p class="muted" style="font-size:13px">ขอบคุณทุกคนที่ส่งความคิดเห็นมานะครับ 🙏</p><p style="text-align:center"><button class="btn go" id="clClose">ปิด</button></p></div>`;
+  document.body.appendChild(ov); const c=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)c();}; ov.querySelector('#clClose').onclick=c; markNewsSeen();}
+function renderNewsBar(){const b=$('#newsBar'); if(!b) return;
+  if(seenNews()){b.innerHTML='';return;}
+  b.innerHTML=`<div class="newsbar"><span>✨ <b>อัปเดตใหม่:</b> ปุ่มย้อนกลับ ปุ่มปิดเสียง ฟังทั้งบท และอื่น ๆ <button class="lk" id="nbOpen">ดูทั้งหมด</button></span><button id="nbX" aria-label="ปิด">✕</button></div>`;
+  $('#nbOpen').onclick=openNews; $('#nbX').onclick=markNewsSeen;}
+
 /* ===== tabs ===== */
-function go(tab){S.tab=tab;closePop();
+function go(tab){S.tab=tab;closePop();stopAll();
   $$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
   if(tab==='lessons')renderLessons(); if(tab==='vocab')renderVocab();
-  if(tab==='cards'){buildDeck();renderCards();} if(tab==='write'){renderWrite();} if(tab==='quiz'){newQuiz();renderQuiz();} if(tab==='type'){startType();renderType();}}
+  if(tab==='cards'){buildDeck();renderCards();} if(tab==='write'){renderWrite();} if(tab==='quiz'){newQuiz();renderQuiz();} if(tab==='type'){startType();renderType();} pushNav();}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='lessons')S.lesson=null;if(b.dataset.tab==='cards')S.customDeck=null;go(b.dataset.tab);});
 $('#streakBtn').onclick=openStreak; renderStreak(); setInterval(renderStreak,60000);
-const savedLv=load('hsk-level',null); if(savedLv==='py') enterPinyin(); else if(savedLv==='st') enterStrokes(); else if(savedLv) enterLevel(savedLv); else renderHome();
+$('#navBack').onclick=navBack; $('#muteBtn').onclick=toggleMute; renderMute(); $('#newsBtn').onclick=openNews; if(!seenNews()) $('#newsBtn').insertAdjacentHTML('beforeend','<span class="dot"></span>');
+(function initNav(){ try{history.scrollRestoration='manual';}catch(e){} const fromHash=parseHash(location.hash);
+  if(fromHash){ applyNav(fromHash); }
+  else { const savedLv=load('hsk-level',null); if(savedLv==='py') enterPinyin(); else if(savedLv==='st') enterStrokes(); else if(savedLv) enterLevel(savedLv); else renderHome(); }
+  NAV.ready=true; const st=navState(); const keepHash=/goatcounter/.test(location.hash);
+  try{ history.replaceState(st,'',keepHash?location.href:navHash(st)); }catch(e){}
+  updBack(); renderNewsBar(); window.scrollTo(0,0); })();
 </script>
 <script data-goatcounter="https://hsk-thai.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
