@@ -149,6 +149,11 @@ nav.tabs button[aria-selected="true"]{background:var(--acc)!important;border-col
 .ltr .hz,.lrev .hz{font-size:22px}.ltr .p,.lrev .p{color:var(--teal)}
 .lrev{display:flex;gap:10px;align-items:flex-start}
 .playbig:disabled{opacity:.4;cursor:default}
+/* early users */
+.early{display:flex;flex-direction:column;gap:6px;border:2px solid var(--violet);background:var(--violet-soft);border-radius:18px;padding:14px 16px;margin:10px 0 4px}
+.early b{color:var(--violet);font-size:17px}.early span{font-size:15px;line-height:1.5}
+.early .btn{align-self:flex-start;margin-top:4px}
+.early.in{border-style:dashed}
 /* account & paywall */
 .accbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;padding:0;overflow:hidden;color:var(--muted)}
 .accbtn svg{width:22px;height:22px;fill:currentColor}.accbtn img{width:100%;height:100%;object-fit:cover}.accbtn.in{border-color:var(--teal)}.accbtn span{font-weight:700;color:var(--teal)}
@@ -638,7 +643,8 @@ function renderHome(){
     return `<button class="lvcard k${l}" data-lv="${l}"><span class="big">HSK${l}</span><span>${st.n} คำ ${nl?nl+' บทเรียน':'· บทเรียนกำลังมา'}</span>${l>1&&PAY_ON&&SALES_ON?`<span class="lvown">${ownsLv(l)?'✓ ปลดล็อกแล้ว':'ฟรี 2 บทแรก · ปลดล็อก '+baht(ACC.prices['hsk'+l])}</span>`:''}<span class="d">${desc[l]}</span>
     <span class="d">จำได้ ${st.k} คำ (${st.p}%)</span><div class="bar" style="width:100%"><i style="width:${st.p}%;background:var(--l${l})"></i></div></button>`;}).join('')}</div>`;
   if(FEEDBACK_URL){$('#home').insertAdjacentHTML('beforeend',`<div class="fbhome"><span>ลองใช้แล้วเป็นยังไงบ้าง? ช่วยบอกหน่อยนะ ใช้เวลาแค่ 2 นาที</span><button class="btn go" id="fbHome">💬 ส่งความคิดเห็น</button></div>`);$('#fbHome').onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
-  const g=CHANGELOG[0]; $('#home').insertAdjacentHTML('afterbegin',`<div class="newshome"><b>✨ ${g.t}</b>${seenNews()?'':'<span class="dot"></span>'}<ul>${g.items.slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul><button class="btn" id="newsHome">ดูทั้งหมด</button></div>`);
+  const g=CHANGELOG[0]; $('#home').insertAdjacentHTML('afterbegin',`<div class="newshome"><b>✨ ${g.t}</b>${seenNews()?'':'<span class="dot"></span>'}<ul>${g.items.slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul><button class="btn" id="newsHome">ดูทั้งหมด</button></div>`+(typeof earlyCard==='function'?earlyCard():''));
+  if(typeof bindEarly==='function') bindEarly();
   $('#newsHome').onclick=openNews;
   $$('.lvcard[data-lv]').forEach(b=>b.onclick=()=>enterLevel(+b.dataset.lv)); $('#goPy').onclick=enterPinyin; $('#goSt').onclick=enterStrokes;
 }
@@ -738,6 +744,22 @@ async function loadPrices(){
   try{ const r=await fetch(`${CFG.sbUrl}/rest/v1/products?select=id,price_thb&active=is.true`,{headers:{apikey:CFG.sbKey}});
     if(r.ok){ (await r.json()).forEach(p=>ACC.prices[p.id]=p.price_thb); rerenderForAcc(); } }catch(e){}
 }
+/* ---------- ผู้ใช้รุ่นแรก ---------- */
+const EARLY_END=new Date('2026-10-17T23:59:59+07:00');
+const EARLY_LABEL='17 ต.ค. 2569';
+const EARLY_PERK='ใช้บทเรียน คำศัพท์ และแบบฝึกทั้งหมดที่มีอยู่ในเว็บตอนนี้ ฟรีตลอดไป แม้ภายหลังจะเริ่มเก็บเงินผู้ใช้ใหม่';
+const earlyOpen=()=>Date.now()<=EARLY_END.getTime();
+const isEarly=u=>!!(u&&u.created_at&&new Date(u.created_at).getTime()<=EARLY_END.getTime());
+function earlyCard(){
+  if(!PAY_ON) return '';
+  const u=ACC.user;
+  if(u&&isEarly(u)) return `<div class="early in"><b>🎁 คุณเป็นผู้ใช้รุ่นแรกแล้ว</b><span>${EARLY_PERK} ผูกกับบัญชี ${esc(u.email||'')}</span></div>`;
+  if(!earlyOpen()) return '';
+  const hadSession=Object.keys(localStorage).some(k=>/^sb-.*-auth-token$/.test(k));
+  if(hadSession&&!ACC.ready) return '';
+  return `<div class="early"><b>🎁 สิทธิ์ผู้ใช้รุ่นแรก ถึง ${EARLY_LABEL} เท่านั้น</b><span>ล็อกอินด้วย Google ก่อนวันปิดรับ เพื่อ${EARLY_PERK} (ไม่ต้องจ่าย ไม่ต้องผูกบัตร)</span><button class="btn go" id="earlyGo">ล็อกอินรับสิทธิ์</button></div>`;
+}
+function bindEarly(){ const b=$('#earlyGo'); if(b) b.onclick=()=>{ track('acc/early-click','กดรับสิทธิ์รุ่นแรก',false); openLogin('ล็อกอินก่อน '+EARLY_LABEL+' รับสิทธิ์ผู้ใช้รุ่นแรก: '+EARLY_PERK); }; }
 function rerenderForAcc(){
   try{
     if(!$('#home').hidden) renderHome();
@@ -798,6 +820,7 @@ function openAccount(){
     <p class="muted" style="margin-top:0">${esc(u.email||'')}</p>
     ${SALES_ON?`<div class="owned">${[1,...lv].map(l=>`<div class="orow"><b>HSK${l}</b>${ownsLv(l)?`<span class="okb">${l===1?'ฟรี':'ปลดล็อกแล้ว'}</span>`:`<button class="btn go sm" data-buy="hsk${l}">ซื้อ ${baht(ACC.prices['hsk'+l])}</button>`}</div>`).join('')}</div>
     ${lv.every(l=>!ownsLv(l))?`<button class="btn vi" data-buy="bundle" style="width:100%;margin-top:8px">แพ็กรวม HSK 2+3+4 ${baht(ACC.prices.bundle)}</button>`:''}`:''}
+    ${isEarly(u)?`<div class="early in" style="margin:8px 0"><b>🎁 ผู้ใช้รุ่นแรก</b><span>${EARLY_PERK}</span></div>`:''}
     <p class="muted small">✓ ความคืบหน้า คำที่จำได้ และวันต่อเนื่อง ซิงก์กับบัญชีนี้อัตโนมัติ เปิดเครื่องอื่นแล้วล็อกอินด้วยบัญชีเดียวกันก็ใช้ต่อได้</p>
     <div class="controls" style="justify-content:center"><button class="btn" id="accOut">ออกจากระบบ</button><button class="btn" id="accClose">ปิด</button></div>
     <p class="muted small" style="text-align:center"><a href="#" data-legal="privacy">นโยบายความเป็นส่วนตัว</a> · <a href="#" data-legal="terms">ข้อตกลง</a> · <a href="#" data-legal="refund">การคืนเงิน</a><br>ต้องการลบบัญชีหรือมีปัญหาการชำระเงิน ติดต่อ <a href="mailto:${esc(CFG.contact)}">${esc(CFG.contact)}</a></p></div>`;
@@ -889,7 +912,7 @@ async function syncPush(now){
 addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'&&syncT) syncPush(true); });
 
 /* ---------- legal ---------- */
-const LEGAL_UPDATED='10 ตุลาคม 2569';
+const LEGAL_UPDATED='13 ตุลาคม 2569';
 function legalHTML(k){
   const c=`<a href="mailto:${esc(CFG.contact)}">${esc(CFG.contact)}</a>`;
   if(k==='privacy') return `<h2>นโยบายความเป็นส่วนตัว</h2><p class="muted small">ปรับปรุงล่าสุด ${LEGAL_UPDATED}</p>
@@ -905,8 +928,9 @@ function legalHTML(k){
   <h3>ระยะเวลาเก็บ</h3><p>เก็บไว้ตลอดที่คุณมีบัญชี ข้อมูลการสั่งซื้ออาจเก็บต่ออีกตามที่กฎหมายภาษีกำหนด</p>
   <h3>สิทธิของคุณ</h3><p>คุณขอดู ขอแก้ไข ขอสำเนา หรือขอลบบัญชีและข้อมูลของคุณได้ทุกเมื่อ โดยติดต่อ ${c} เราจะดำเนินการภายใน 30 วัน</p>`;
   if(k==='terms') return `<h2>ข้อตกลงการใช้งาน</h2><p class="muted small">ปรับปรุงล่าสุด ${LEGAL_UPDATED}</p><ul>
-  <li>บทเรียน คำศัพท์ แบบฝึก และพินอินที่มีอยู่ในเว็บไซต์ ใช้ได้ฟรี</li>
+  <li>ปัจจุบันบทเรียน คำศัพท์ แบบฝึก และพินอินในเว็บไซต์ใช้ได้ฟรี ในอนาคตบางส่วนอาจต้องซื้อสำหรับผู้ใช้ใหม่ โดยจะแจ้งล่วงหน้าในส่วน "มีอะไรใหม่"</li>
   <li>ในอนาคตอาจมีเนื้อหาเสริมบางส่วนที่ต้องซื้อ (เช่น แบบฝึกฟังหรือข้อสอบจำลอง) ซึ่งจะแจ้งราคาให้เห็นก่อนซื้อเสมอ เนื้อหาที่ซื้อแล้วใช้ได้ตลอดอายุของเว็บไซต์</li>
+  <li><b>ผู้ใช้รุ่นแรก:</b> บัญชีที่ล็อกอินครั้งแรกภายใน ${EARLY_LABEL} (เวลาประเทศไทย) จะได้ใช้บทเรียน คำศัพท์ และแบบฝึกที่มีอยู่ในเว็บไซต์ ณ วันที่ 17 ต.ค. 2569 ฟรีตลอดอายุของเว็บไซต์ สิทธิ์ผูกกับบัญชี โอนให้ผู้อื่นไม่ได้ เนื้อหาที่เพิ่มภายหลังอาจมีค่าใช้จ่าย</li>
   <li>สิทธิ์ผูกกับบัญชีที่ใช้ซื้อ ใช้ได้เพื่อการเรียนส่วนตัว ห้ามแชร์บัญชี คัดลอก หรือนำเนื้อหาไปเผยแพร่ต่อหรือขาย</li>
   <li>เราพยายามให้เนื้อหาถูกต้องที่สุด แต่ไม่รับประกันผลการสอบ HSK</li>
   <li>ถ้ามีการเปลี่ยนแปลงข้อตกลงที่สำคัญ เราจะแจ้งในส่วน "มีอะไรใหม่" ของเว็บไซต์</li>
@@ -1156,15 +1180,18 @@ function toneVariants(p,n){const M=MARK_L(),chars=[...p],pos=chars.map((c,i)=>TO
   let guard=0; while(out.size<n+1&&guard++<60&&pos.length){const v=chars.slice(); const k=1+Math.floor(Math.random()*Math.min(2,pos.length));
     shuffle(pos).slice(0,k).forEach(i=>{const [b,t]=TONEMAP[v[i]]; let nt; do{nt=Math.floor(Math.random()*4);}while(nt===t); v[i]=M[b][nt];}); out.add(v.join(''));}
   out.delete(p); return [...out].slice(0,n);}
-function listenLines(lv,lid){const ls=lid&&lid!=='all'?LESSONS.filter(l=>l.id===lid):LESSONS.filter(l=>l.lv===lv);
+/* ใช้เฉพาะคำของระดับนั้นลงไป (สะสม): ข้ามประโยคที่มีคำระดับสูงกว่า ยกเว้นชื่อคน/คำอุทาน หรือคำประสมที่ทุกตัวอักษรเรียนแล้ว */
+const CHARS_UPTO={}; function charsUpTo(lv){ if(!CHARS_UPTO[lv]) CHARS_UPTO[lv]=new Set(W.filter(w=>w.l<=lv).map(w=>w.h).join('')); return CHARS_UPTO[lv]; }
+function tokenOK(x,lv){ if(x[2]<=lv) return true; if(x[2]!==5) return false; return /ชื่อ|นามสกุล|หัวเราะ|อุทาน/.test(x[3]||'')||[...x[0]].every(c=>charsUpTo(lv).has(c)); }
+function listenLines(lv,lid){const ls=lid&&lid!=='all'?LESSONS.filter(l=>l.id===lid):LESSONS.filter(l=>l.lv<=lv);
   const out=[]; ls.forEach(L=>(L.blocks||[]).forEach(b=>{ if(b.k==='h'||!b.th) return; const hz=plainLine(b.t); const n=[...hz.replace(/[，。？！、：；“”…\s]/g,'')].length;
-    if(n>=3&&n<=(lv<=2?22:34)) out.push({hz,py:b.t.map(x=>Array.isArray(x)?x[1]:'').filter(Boolean).join(' '),th:b.th,lid:L.id}); })); return out;}
-function listenWords(lv,lid){ if(lid&&lid!=='all'){const L=LESSONS.find(l=>l.id===lid); if(L) return L.vocab.map(v=>BY[v[0]]||{h:v[0],p:v[1],l:v[2],t:v[3]});} return W.filter(w=>w.l===lv);}
+    if(n>=3&&n<=(lv<=2?22:34)&&b.t.every(x=>!Array.isArray(x)||tokenOK(x,lv))) out.push({hz,py:b.t.map(x=>Array.isArray(x)?x[1]:'').filter(Boolean).join(' '),th:b.th,lid:L.id}); })); return out;}
+function listenWords(lv,lid){ if(lid&&lid!=='all'){const L=LESSONS.find(l=>l.id===lid); if(L) return L.vocab.map(v=>BY[v[0]]||{h:v[0],p:v[1],l:v[2],t:v[3]});} return W.filter(w=>S.lpool==='new'?w.l===lv:w.l<=lv);}
 function newListen(){
   const lv=S.level, mode=S.lmode||'word', lid=S.lsrc||'all', N=10; let items=[];
   if(mode==='sent'){ const all=listenLines(lv,lid), lvAll=listenLines(lv,'all');
     items=shuffle(all).slice(0,N).map(it=>{const others=shuffle(lvAll.filter(x=>x.th!==it.th)).slice(0,3).map(x=>x.th); return {say:it.hz,hz:it.hz,py:it.py,th:it.th,opts:shuffle([it.th,...others]),ans:it.th};}); }
-  else { const ws=listenWords(lv,lid).filter(w=>w&&w.h), lvW=W.filter(w=>w.l===lv);
+  else { const ws=listenWords(lv,lid).filter(w=>w&&w.h&&(w.l||9)<=lv), lvW=W.filter(w=>S.lpool==='new'?w.l===lv:w.l<=lv);
     items=shuffle(ws).slice(0,N).map(w=>{ if(mode==='tone'){ const v=toneVariants(w.p,3); return {say:w.h,hz:w.h,py:w.p,th:thOf(w),opts:shuffle([w.p,...v]),ans:w.p,w}; }
       const others=shuffle(lvW.filter(x=>x.h!==w.h&&thOf(x)!==thOf(w))).slice(0,3).map(thOf); return {say:w.h,hz:w.h,py:w.p,th:thOf(w),opts:shuffle([thOf(w),...others]),ans:thOf(w),w}; })
       .filter(it=>it.opts.length>=2); }
@@ -1176,7 +1203,8 @@ function renderListen(){
   const lv=S.level, mine=LESSONS.filter(l=>l.lv===lv);
   const head=`<div class="controls">
     <select id="lmode" aria-label="รูปแบบ"><option value="word"${S.lmode!=='sent'&&S.lmode!=='tone'?' selected':''}>ฟังคำ เลือกความหมาย</option><option value="tone"${S.lmode==='tone'?' selected':''}>ฟังคำ เลือกพินอินให้ถูกเสียง</option><option value="sent"${S.lmode==='sent'?' selected':''}>ฟังประโยค เลือกความหมาย</option></select>
-    <select id="lsrc" aria-label="ใช้จาก"><option value="all">ทั้งหมด HSK${lv}</option>${mine.map(l=>`<option value="${l.id}"${S.lsrc===l.id?' selected':''}>${l.kind==='day'?'Day '+l.n:'บทอ่าน '+l.n}: ${esc(l.title)}</option>`).join('')}</select>
+    <select id="lsrc" aria-label="ใช้จาก"><option value="all">ทั้งหมด${lv>1?' HSK1–'+lv:' HSK1'}</option>${mine.map(l=>`<option value="${l.id}"${S.lsrc===l.id?' selected':''}>${l.kind==='day'?'Day '+l.n:'บทอ่าน '+l.n}: ${esc(l.title)}</option>`).join('')}</select>
+    ${lv>1&&S.lmode!=='sent'?`<select id="lpool" aria-label="ชุดคำ"><option value="cum"${S.lpool!=='new'?' selected':''}>คำ HSK1–${lv} (สะสม)</option><option value="new"${S.lpool==='new'?' selected':''}>เฉพาะคำใหม่ของ HSK${lv}</option></select>`:''}
     <select id="llim" aria-label="จำนวนครั้งที่ฟังได้"><option value="free"${S.llim!=='2'?' selected':''}>ฟังซ้ำได้ไม่จำกัด</option><option value="2"${S.llim==='2'?' selected':''}>ฟังได้ 2 ครั้ง (แบบข้อสอบ)</option></select>
     <button class="btn" id="lrestart">เริ่มใหม่</button></div>`;
   const Q=S.lis;
@@ -1207,6 +1235,7 @@ function bindListen(){
   const re=()=>{newListen();renderListen(); if(S.lis.items.length) listenPlay(S.lis.items[0]);};
   $('#lmode').onchange=e=>{S.lmode=e.target.value;re();};
   $('#lsrc').onchange=e=>{S.lsrc=e.target.value;re();};
+  if($('#lpool')) $('#lpool').onchange=e=>{S.lpool=e.target.value;re();};
   $('#llim').onchange=e=>{S.llim=e.target.value; save('hsk-llim',S.llim); re();};
   $('#lrestart').onclick=re;
 }
@@ -1695,8 +1724,12 @@ function parseHash(h){ const m=/^#\/?(home|pinyin|strokes|hsk([1-4]))(?:\/([\w-]
 addEventListener('scroll',()=>{const h=document.querySelector('header.top'); if(h) h.classList.toggle('scrolled',scrollY>8);},{passive:true});
 
 /* ===== what's new ===== */
-const CL_VER='2026-10-listen';
+const CL_VER='2026-10-early';
 const CHANGELOG=[
+ {t:'ใหม่ · สิทธิ์ผู้ใช้รุ่นแรก (ถึง 17 ต.ค.)',items:[
+  'ต่อไปบทเรียนบางส่วนจะเริ่มเก็บเงินกับผู้ใช้ใหม่ เพื่อเป็นค่าดูแลเว็บและทำเนื้อหาเพิ่ม',
+  '<b>ล็อกอินด้วย Google ภายใน 17 ต.ค. 2569</b> ใช้บทเรียน คำศัพท์ และแบบฝึกทั้งหมดที่มีอยู่ตอนนี้ ฟรีตลอดไป',
+  'ล็อกอินแล้วความคืบหน้าซิงก์ข้ามเครื่องได้ทันที']},
  {t:'ใหม่ · เสียงเดียวกันทุกเครื่อง',items:[
   '<b>เสียงทั้งเว็บใช้ไฟล์เสียงที่อัดไว้อย่างเดียว</b> ไม่ใช้เสียงอ่านของเครื่องแล้ว ทุกเครื่องได้ยินเสียงเดียวกัน',
   'ถ้าเน็ตช้าจนเล่นเสียงไม่ขึ้น จะลองเล่นใหม่ให้เอง และบอกให้รู้แทนการใช้เสียงแปลกๆ']},
@@ -1731,7 +1764,7 @@ function openNews(){track('click/whats-new','เปิดดูมีอะไ�
   document.body.appendChild(ov); const c=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)c();}; ov.querySelector('#clClose').onclick=c; markNewsSeen();}
 function renderNewsBar(){const b=$('#newsBar'); if(!b) return;
   if(seenNews()){b.innerHTML='';return;}
-  b.innerHTML=`<div class="newsbar"><span>✨ <b>ใหม่:</b> เสียงเดียวกันทุกเครื่อง และล็อกอินซิงก์ข้ามเครื่อง <button class="lk" id="nbOpen">ดูทั้งหมด</button></span><button id="nbX" aria-label="ปิด">✕</button></div>`;
+  b.innerHTML=`<div class="newsbar"><span>${earlyOpen()?'🎁 <b>ล็อกอินภายใน 17 ต.ค.</b> รับสิทธิ์ใช้บทเรียนที่มีอยู่ตอนนี้ฟรีตลอดไป':'✨ <b>ใหม่:</b> เสียงเดียวกันทุกเครื่อง และล็อกอินซิงก์ข้ามเครื่อง'} <button class="lk" id="nbOpen">ดูทั้งหมด</button></span><button id="nbX" aria-label="ปิด">✕</button></div>`;
   $('#nbOpen').onclick=openNews; $('#nbX').onclick=markNewsSeen;}
 
 /* ===== tabs ===== */
