@@ -149,11 +149,10 @@ nav.tabs button[aria-selected="true"]{background:var(--acc)!important;border-col
 .ltr .hz,.lrev .hz{font-size:22px}.ltr .p,.lrev .p{color:var(--teal)}
 .lrev{display:flex;gap:10px;align-items:flex-start}
 .playbig:disabled{opacity:.4;cursor:default}
-/* early users */
-.early{display:flex;flex-direction:column;gap:6px;border:2px solid var(--violet);background:var(--violet-soft);border-radius:18px;padding:14px 16px;margin:10px 0 4px}
-.early b{color:var(--violet);font-size:17px}.early span{font-size:15px;line-height:1.5}
-.early .btn{align-self:flex-start;margin-top:4px}
-.early.in{border-style:dashed}
+/* donate */
+.donhome{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--violet-soft);border-radius:16px;padding:12px 16px;margin:10px 0 4px;font-size:15px}
+.sbox.don{text-align:center}.sbox.don p{line-height:1.6}
+.donqr{display:block;width:min(260px,70vw);height:auto;margin:10px auto;border-radius:12px;background:#fff;padding:8px}
 /* account & paywall */
 .accbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;padding:0;overflow:hidden;color:var(--muted)}
 .accbtn svg{width:22px;height:22px;fill:currentColor}.accbtn img{width:100%;height:100%;object-fit:cover}.accbtn.in{border-color:var(--teal)}.accbtn span{font-weight:700;color:var(--teal)}
@@ -385,7 +384,7 @@ tr.known td.h{color:var(--muted)}
   </div>
 </div>
 <footer class="foot wrap">
-  <div class="factions"><button class="btn" id="newsBtn">✨ มีอะไรใหม่</button><button class="btn" id="fbBtn" hidden>💬 ส่งความคิดเห็น</button><button class="btn" id="credBtn">เครดิตและสัญญาอนุญาต</button><button class="btn" id="legalBtn">นโยบายและข้อตกลง</button></div>
+  <div class="factions"><button class="btn" id="newsBtn">✨ มีอะไรใหม่</button><button class="btn" id="fbBtn" hidden>💬 ส่งความคิดเห็น</button><button class="btn" id="credBtn">เครดิตและสัญญาอนุญาต</button><button class="btn" id="legalBtn">นโยบายและข้อตกลง</button><button class="btn vi" id="donBtn" hidden>☕ สนับสนุนเว็บ</button></div>
   <p>© 2026 เรียนจีน HSK 1–4 · สงวนลิขสิทธิ์บทเรียน บทความ และคำแปลภาษาไทย ห้ามคัดลอกไปใช้เพื่อการค้าโดยไม่ได้รับอนุญาต</p>
   <p>เว็บนี้จัดทำขึ้นเพื่อช่วยเตรียมสอบ HSK ไม่ได้เกี่ยวข้องกับ Center for Language Education and Cooperation (CLEC) หรือ Chinese Testing International ผู้จัดสอบ HSK อย่างเป็นทางการ HSK เป็นเครื่องหมายการค้าของเจ้าของ</p>
 </footer>
@@ -643,8 +642,8 @@ function renderHome(){
     return `<button class="lvcard k${l}" data-lv="${l}"><span class="big">HSK${l}</span><span>${st.n} คำ ${nl?nl+' บทเรียน':'· บทเรียนกำลังมา'}</span>${l>1&&PAY_ON&&SALES_ON?`<span class="lvown">${ownsLv(l)?'✓ ปลดล็อกแล้ว':'ฟรี 2 บทแรก · ปลดล็อก '+baht(ACC.prices['hsk'+l])}</span>`:''}<span class="d">${desc[l]}</span>
     <span class="d">จำได้ ${st.k} คำ (${st.p}%)</span><div class="bar" style="width:100%"><i style="width:${st.p}%;background:var(--l${l})"></i></div></button>`;}).join('')}</div>`;
   if(FEEDBACK_URL){$('#home').insertAdjacentHTML('beforeend',`<div class="fbhome"><span>ลองใช้แล้วเป็นยังไงบ้าง? ช่วยบอกหน่อยนะ ใช้เวลาแค่ 2 นาที</span><button class="btn go" id="fbHome">💬 ส่งความคิดเห็น</button></div>`);$('#fbHome').onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};}
-  const g=CHANGELOG[0]; $('#home').insertAdjacentHTML('afterbegin',`<div class="newshome"><b>✨ ${g.t}</b>${seenNews()?'':'<span class="dot"></span>'}<ul>${g.items.slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul><button class="btn" id="newsHome">ดูทั้งหมด</button></div>`+(typeof earlyCard==='function'?earlyCard():''));
-  if(typeof bindEarly==='function') bindEarly();
+  const g=CHANGELOG[0]; $('#home').insertAdjacentHTML('afterbegin',`<div class="newshome"><b>✨ ${g.t}</b>${seenNews()?'':'<span class="dot"></span>'}<ul>${g.items.slice(0,3).map(i=>`<li>${i}</li>`).join('')}</ul><button class="btn" id="newsHome">ดูทั้งหมด</button></div>`);
+  { const nh=document.querySelector('#home .newshome'); if(nh) nh.insertAdjacentHTML('afterend',donateCard()); else $('#home').insertAdjacentHTML('afterbegin',donateCard()); if($('#donHome')) $('#donHome').onclick=openDonate; }
   $('#newsHome').onclick=openNews;
   $$('.lvcard[data-lv]').forEach(b=>b.onclick=()=>enterLevel(+b.dataset.lv)); $('#goPy').onclick=enterPinyin; $('#goSt').onclick=enterStrokes;
 }
@@ -744,24 +743,6 @@ async function loadPrices(){
   try{ const r=await fetch(`${CFG.sbUrl}/rest/v1/products?select=id,price_thb&active=is.true`,{headers:{apikey:CFG.sbKey}});
     if(r.ok){ (await r.json()).forEach(p=>ACC.prices[p.id]=p.price_thb); rerenderForAcc(); } }catch(e){}
 }
-/* ---------- ผู้ใช้รุ่นแรก ---------- */
-/* ทดสอบ: ?early=end จำลองว่าเลยวันปิดรับแล้ว (เฉพาะแท็บนี้) ?early=off กลับเป็นปกติ  มีผลแค่การแสดงผล ไม่มีผลกับสิทธิ์จริง */
-const EARLY_SIM=(()=>{ try{ const q=new URL(location.href).searchParams.get('early'); if(q==='end') sessionStorage.setItem('hsk-early-sim','end'); if(q==='off') sessionStorage.removeItem('hsk-early-sim'); return sessionStorage.getItem('hsk-early-sim')==='end'; }catch(e){ return false; } })();
-const EARLY_END=EARLY_SIM?new Date(Date.now()-60000):new Date('2026-10-17T23:59:59+07:00');
-const EARLY_LABEL='17 ต.ค. 2569';
-const EARLY_PERK='ใช้บทเรียน คำศัพท์ และแบบฝึกทั้งหมดที่มีอยู่ในเว็บตอนนี้ได้ฟรี แม้ภายหลังจะเริ่มเก็บเงินผู้ใช้ใหม่';
-const earlyOpen=()=>Date.now()<=EARLY_END.getTime();
-const isEarly=u=>!!(u&&u.created_at&&new Date(u.created_at).getTime()<=EARLY_END.getTime());
-function earlyCard(){
-  if(!PAY_ON) return '';
-  const u=ACC.user;
-  if(u&&isEarly(u)) return `<div class="early in"><b>🎁 คุณเป็นผู้ใช้รุ่นแรกแล้ว</b><span>${EARLY_PERK} ผูกกับบัญชี ${esc(u.email||'')}</span></div>`;
-  if(!earlyOpen()) return '';
-  const hadSession=Object.keys(localStorage).some(k=>/^sb-.*-auth-token$/.test(k));
-  if(hadSession&&!ACC.ready) return '';
-  return `<div class="early"><b>🎁 สิทธิ์ผู้ใช้รุ่นแรก ถึง ${EARLY_LABEL} เท่านั้น</b><span>ล็อกอินด้วย Google ก่อนวันปิดรับ เพื่อ${EARLY_PERK} (ไม่ต้องจ่าย ไม่ต้องผูกบัตร)</span><button class="btn go" id="earlyGo">ล็อกอินรับสิทธิ์</button></div>`;
-}
-function bindEarly(){ const b=$('#earlyGo'); if(b) b.onclick=()=>{ track('acc/early-click','กดรับสิทธิ์รุ่นแรก',false); openLogin('ล็อกอินก่อน '+EARLY_LABEL+' รับสิทธิ์ผู้ใช้รุ่นแรก: '+EARLY_PERK); }; }
 function rerenderForAcc(){
   try{
     if(!$('#home').hidden) renderHome();
@@ -777,7 +758,7 @@ function openLogin(reason){
   const ov=document.createElement('div'); ov.className='ovl';
   ov.innerHTML=`<div class="sbox acc" role="dialog" aria-label="เข้าสู่ระบบ">
     <h2>เข้าสู่ระบบ</h2>
-    <p class="muted">${reason?esc(reason):'ล็อกอินเพื่อซื้อบทเรียน และเก็บความคืบหน้าไว้ใช้ได้ทุกเครื่อง'}</p>
+    <p class="muted">${reason?esc(reason):'ล็อกอินเพื่อเก็บความคืบหน้าไว้ใช้ได้ทุกเครื่อง (ไม่ล็อกอินก็เรียนได้ทุกบท)'}</p>
     <button class="btn gbtn" id="gLogin"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>เข้าสู่ระบบด้วย Google</button>
     ${CFG.emailLogin?`<div class="orline"><span>หรือใช้อีเมล</span></div>
     <div id="emBox"><input id="emIn" type="email" placeholder="อีเมลของคุณ" autocomplete="email"><button class="btn go" id="emGo">ส่งรหัสเข้าอีเมล</button></div>`:''}
@@ -822,10 +803,9 @@ function openAccount(){
     <p class="muted" style="margin-top:0">${esc(u.email||'')}</p>
     ${SALES_ON?`<div class="owned">${[1,...lv].map(l=>`<div class="orow"><b>HSK${l}</b>${ownsLv(l)?`<span class="okb">${l===1?'ฟรี':'ปลดล็อกแล้ว'}</span>`:`<button class="btn go sm" data-buy="hsk${l}">ซื้อ ${baht(ACC.prices['hsk'+l])}</button>`}</div>`).join('')}</div>
     ${lv.every(l=>!ownsLv(l))?`<button class="btn vi" data-buy="bundle" style="width:100%;margin-top:8px">แพ็กรวม HSK 2+3+4 ${baht(ACC.prices.bundle)}</button>`:''}`:''}
-    ${isEarly(u)?`<div class="early in" style="margin:8px 0"><b>🎁 ผู้ใช้รุ่นแรก</b><span>${EARLY_PERK}</span></div>`:''}
     <p class="muted small">✓ ความคืบหน้า คำที่จำได้ และวันต่อเนื่อง ซิงก์กับบัญชีนี้อัตโนมัติ เปิดเครื่องอื่นแล้วล็อกอินด้วยบัญชีเดียวกันก็ใช้ต่อได้</p>
     <div class="controls" style="justify-content:center"><button class="btn" id="accOut">ออกจากระบบ</button><button class="btn" id="accClose">ปิด</button></div>
-    <p class="muted small" style="text-align:center"><a href="#" data-legal="privacy">นโยบายความเป็นส่วนตัว</a> · <a href="#" data-legal="terms">ข้อตกลง</a> · <a href="#" data-legal="refund">การคืนเงิน</a><br>ต้องการลบบัญชีหรือมีปัญหาการชำระเงิน ติดต่อ <a href="mailto:${esc(CFG.contact)}">${esc(CFG.contact)}</a></p></div>`;
+    <p class="muted small" style="text-align:center"><a href="#" data-legal="privacy">นโยบายความเป็นส่วนตัว</a> · <a href="#" data-legal="terms">ข้อตกลง</a><br>ต้องการลบบัญชี ติดต่อ <a href="mailto:${esc(CFG.contact)}">${esc(CFG.contact)}</a></p></div>`;
   document.body.appendChild(ov); const close=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)close();};
   ov.querySelector('#accClose').onclick=close; ov.querySelector('#accOut').onclick=logout;
   ov.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{close();buy(b.dataset.buy);});
@@ -922,18 +902,17 @@ function legalHTML(k){
   <h3>ข้อมูลที่เราเก็บ</h3><ul>
   <li><b>ถ้าไม่ล็อกอิน:</b> ความคืบหน้าการเรียนเก็บไว้ในเครื่องของคุณเท่านั้น เราไม่ได้รับข้อมูลนี้</li>
   <li><b>ถ้าล็อกอิน:</b> อีเมล ชื่อ และรูปโปรไฟล์จากบัญชี Google ของคุณ และความคืบหน้าการเรียน (คำที่จำได้ บทที่อ่านแล้ว วันที่เรียน) เพื่อให้ใช้ต่อได้ทุกเครื่อง</li>
-  <li><b>ถ้าซื้อบทเรียน:</b> รายการสั่งซื้อ ยอดเงิน และวันที่ชำระ การชำระเงินดำเนินการโดย Stripe เราไม่เห็นและไม่เก็บเลขบัตรหรือข้อมูลบัญชีธนาคารของคุณ</li>
+  <li><b>ถ้าสนับสนุนเว็บ:</b> การโอนเงินทำผ่านแอปธนาคารของคุณโดยตรง เว็บไซต์ไม่ได้รับหรือเก็บข้อมูลการโอนใดๆ</li>
   <li><b>สถิติการใช้งาน:</b> เราใช้ GoatCounter นับจำนวนผู้เข้าชมและการใช้ฟีเจอร์แบบไม่ระบุตัวตน ไม่ใช้คุกกี้ติดตาม</li></ul>
-  <h3>เราใช้ข้อมูลเพื่อ</h3><ul><li>ให้คุณเข้าสู่ระบบ ใช้บทเรียนที่ซื้อ และซิงก์ความคืบหน้า</li><li>ยืนยันการชำระเงินและดูแลเรื่องคืนเงิน</li><li>ปรับปรุงเว็บไซต์ (จากสถิติแบบไม่ระบุตัวตน)</li></ul>
+  <h3>เราใช้ข้อมูลเพื่อ</h3><ul><li>ให้คุณเข้าสู่ระบบและซิงก์ความคืบหน้า</li><li>ปรับปรุงเว็บไซต์ (จากสถิติแบบไม่ระบุตัวตน)</li></ul>
   <p>เราไม่ขายหรือแบ่งปันข้อมูลของคุณให้ใครเพื่อการตลาด</p>
-  <h3>ผู้ให้บริการที่เกี่ยวข้อง</h3><ul><li>Supabase (ระบบบัญชีและฐานข้อมูล เซิร์ฟเวอร์ในสิงคโปร์)</li><li>Stripe (รับชำระเงิน)</li><li>Google (การเข้าสู่ระบบ)</li><li>GitHub Pages (โฮสต์เว็บไซต์)</li></ul>
-  <h3>ระยะเวลาเก็บ</h3><p>เก็บไว้ตลอดที่คุณมีบัญชี ข้อมูลการสั่งซื้ออาจเก็บต่ออีกตามที่กฎหมายภาษีกำหนด</p>
+  <h3>ผู้ให้บริการที่เกี่ยวข้อง</h3><ul><li>Supabase (ระบบบัญชีและฐานข้อมูล เซิร์ฟเวอร์ในสิงคโปร์)</li><li>Google (การเข้าสู่ระบบ)</li><li>GitHub Pages (โฮสต์เว็บไซต์)</li></ul>
+  <h3>ระยะเวลาเก็บ</h3><p>เก็บไว้ตลอดที่คุณมีบัญชี</p>
   <h3>สิทธิของคุณ</h3><p>คุณขอดู ขอแก้ไข ขอสำเนา หรือขอลบบัญชีและข้อมูลของคุณได้ทุกเมื่อ โดยติดต่อ ${c} เราจะดำเนินการภายใน 30 วัน</p>`;
   if(k==='terms') return `<h2>ข้อตกลงการใช้งาน</h2><p class="muted small">ปรับปรุงล่าสุด ${LEGAL_UPDATED}</p><ul>
-  <li>ปัจจุบันบทเรียน คำศัพท์ แบบฝึก และพินอินในเว็บไซต์ใช้ได้ฟรี ในอนาคตบางส่วนอาจต้องซื้อสำหรับผู้ใช้ใหม่ โดยจะแจ้งล่วงหน้าในส่วน "มีอะไรใหม่"</li>
-  <li>ในอนาคตอาจมีเนื้อหาเสริมบางส่วนที่ต้องซื้อ (เช่น แบบฝึกฟังหรือข้อสอบจำลอง) ซึ่งจะแจ้งราคาให้เห็นก่อนซื้อเสมอ เนื้อหาที่ซื้อแล้วใช้ได้ตลอดอายุของเว็บไซต์</li>
-  <li><b>ผู้ใช้รุ่นแรก:</b> บัญชีที่ล็อกอินครั้งแรกภายใน ${EARLY_LABEL} (เวลาประเทศไทย) จะได้ใช้บทเรียน คำศัพท์ และแบบฝึกที่มีอยู่ในเว็บไซต์ ณ วันที่ 17 ต.ค. 2569 ได้ฟรี สิทธิ์ผูกกับบัญชี โอนให้ผู้อื่นไม่ได้ เนื้อหาที่เพิ่มภายหลังอาจมีค่าใช้จ่าย</li>
-  <li>สิทธิ์ผูกกับบัญชีที่ใช้ซื้อ ใช้ได้เพื่อการเรียนส่วนตัว ห้ามแชร์บัญชี คัดลอก หรือนำเนื้อหาไปเผยแพร่ต่อหรือขาย</li>
+  <li>บทเรียน คำศัพท์ แบบฝึก ฝึกฟัง และพินอินในเว็บไซต์ ใช้ได้ฟรี</li>
+  <li>การสนับสนุน (donate) เป็นความสมัครใจ ไม่มีผลกับการใช้งาน และไม่มีการคืนเงิน</li>
+  <li>ใช้ได้เพื่อการเรียนส่วนตัว ห้ามคัดลอกหรือนำเนื้อหาไปเผยแพร่ต่อหรือขาย</li>
   <li>เราพยายามให้เนื้อหาถูกต้องที่สุด แต่ไม่รับประกันผลการสอบ HSK</li>
   <li>ถ้ามีการเปลี่ยนแปลงข้อตกลงที่สำคัญ เราจะแจ้งในส่วน "มีอะไรใหม่" ของเว็บไซต์</li>
   <li>ข้อตกลงนี้อยู่ภายใต้กฎหมายไทย</li></ul><p>ติดต่อ ${c}</p>`;
@@ -945,7 +924,7 @@ function legalHTML(k){
 }
 function openLegal(k){
   const ov=document.createElement('div'); ov.className='ovl';
-  ov.innerHTML=`<div class="sbox legal" role="dialog"><div class="ltabs">${[['privacy','ความเป็นส่วนตัว'],['terms','ข้อตกลง'],['refund','การคืนเงิน']].map(([x,t])=>`<button class="btn sm${x===k?' on':''}" data-k="${x}">${t}</button>`).join('')}</div><div class="lbody">${legalHTML(k)}</div><p style="text-align:center"><button class="btn go" id="lgx">ปิด</button></p></div>`;
+  ov.innerHTML=`<div class="sbox legal" role="dialog"><div class="ltabs">${[['privacy','ความเป็นส่วนตัว'],['terms','ข้อตกลง']].map(([x,t])=>`<button class="btn sm${x===k?' on':''}" data-k="${x}">${t}</button>`).join('')}</div><div class="lbody">${legalHTML(k)}</div><p style="text-align:center"><button class="btn go" id="lgx">ปิด</button></p></div>`;
   document.body.appendChild(ov); const close=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)close();}; ov.querySelector('#lgx').onclick=close;
   ov.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ov.querySelector('.lbody').innerHTML=legalHTML(b.dataset.k);ov.querySelectorAll('[data-k]').forEach(x=>x.classList.toggle('on',x===b));});
 }
@@ -1174,7 +1153,7 @@ function bindQuiz(){bindSel(()=>{newQuiz();renderQuiz();});
 
 /* ฝึกฟัง: ยังไม่เปิดให้ทุกคน (เก็บไว้เป็นฟีเจอร์เสียเงิน) เปิดดูเองได้ด้วย ?preview=listen ปิดด้วย ?preview=off */
 const LISTEN_PREVIEW=(()=>{ try{ const q=new URL(location.href).searchParams.get('preview'); if(q==='listen') localStorage.setItem('hsk-preview-listen','1'); if(q==='off') localStorage.removeItem('hsk-preview-listen'); return localStorage.getItem('hsk-preview-listen')==='1'; }catch(e){ return false; } })();
-const listenOpen=()=>LISTEN_PREVIEW;
+const listenOpen=()=>true;
 /* ===== listening practice (ฝึกฟัง) ===== */
 const TONEMAP={};Object.entries(MARK_L()).forEach(([b,s])=>[...s].forEach((c,i)=>TONEMAP[c]=[b,i]));
 function MARK_L(){return {a:'āáǎà',e:'ēéěè',i:'īíǐì',o:'ōóǒò',u:'ūúǔù','ü':'ǖǘǚǜ'};}
@@ -1242,6 +1221,29 @@ function bindListen(){
   $('#lrestart').onclick=re;
 }
 
+/* ---------- สนับสนุน (donate) ---------- */
+const DONATE_QR='donate.png';
+let DONATE_OK=false;
+(()=>{ const im=new Image(); im.onload=()=>{ DONATE_OK=true; showDonate(); }; im.src=DONATE_QR+'?v=1'; })();
+function showDonate(){
+  const f=$('#donBtn'); if(f) f.hidden=!DONATE_OK;
+  if(DONATE_OK&&!$('#home').hidden&&!$('#donHome')) renderHome();
+}
+function donateCard(){
+  if(!DONATE_OK) return '';
+  return `<div class="donhome"><span>☕ ชอบเว็บนี้ไหม? เว็บนี้ฟรีทุกบท ถ้าอยากช่วยค่าดูแลเว็บและทำเนื้อหาใหม่ สนับสนุนได้ตามสะดวก</span><button class="btn vi" id="donHome">☕ สนับสนุนเว็บ</button></div>`;
+}
+function openDonate(){
+  track('click/donate','เปิดหน้าสนับสนุน',false);
+  const ov=document.createElement('div'); ov.className='ovl';
+  ov.innerHTML=`<div class="sbox don" role="dialog" aria-label="สนับสนุนเว็บ"><h2>☕ สนับสนุนเว็บ</h2>
+    <p>เว็บนี้ทำคนเดียว และเปิดให้ใช้ฟรีทุกบท เงินสนับสนุนจะใช้เป็นค่าดูแลระบบ และเวลาในการทำบทเรียนใหม่</p>
+    <img class="donqr" src="${DONATE_QR}?v=1" alt="QR พร้อมเพย์สำหรับสนับสนุน">
+    <p class="muted small">สแกนด้วยแอปธนาคารใดก็ได้ ใส่จำนวนเงินเองตามสะดวก<br>ในมือถือ: กดค้างที่รูปเพื่อบันทึก แล้วเลือกรูปจากแอปธนาคาร</p>
+    <p class="muted small">ไม่สนับสนุนก็ใช้ได้ทุกอย่างเหมือนเดิม ขอบคุณที่ใช้เว็บนี้นะครับ 🙏</p>
+    <p style="text-align:center;margin:6px 0 0"><button class="btn" id="donX">ปิด</button></p></div>`;
+  document.body.appendChild(ov); const close=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)close();}; ov.querySelector('#donX').onclick=close;
+}
 /* ===== typing practice ===== */
 const MARK={a:'āáǎà',e:'ēéěè',i:'īíǐì',o:'ōóǒò',u:'ūúǔù','ü':'ǖǘǚǜ'};
 function numToMark(s){return s.replace(/v/g,'ü').replace(/([a-zü]+?)([1-5])/g,(m,syl,t)=>{t=+t;if(t===5)return syl;let i=-1;
@@ -1726,19 +1728,19 @@ function parseHash(h){ const m=/^#\/?(home|pinyin|strokes|hsk([1-4]))(?:\/([\w-]
 addEventListener('scroll',()=>{const h=document.querySelector('header.top'); if(h) h.classList.toggle('scrolled',scrollY>8);},{passive:true});
 
 /* ===== what's new ===== */
-const CL_VER='2026-10-early';
+const CL_VER='2026-10-free';
 const CHANGELOG=[
- {t:'ใหม่ · สิทธิ์ผู้ใช้รุ่นแรก (ถึง 17 ต.ค.)',items:[
-  'ต่อไปบทเรียนบางส่วนจะเริ่มเก็บเงินกับผู้ใช้ใหม่ เพื่อเป็นค่าดูแลเว็บและทำเนื้อหาเพิ่ม',
-  '<b>ล็อกอินด้วย Google ภายใน 17 ต.ค. 2569</b> ใช้บทเรียน คำศัพท์ และแบบฝึกทั้งหมดที่มีอยู่ตอนนี้ได้ฟรี แม้ภายหลังจะเริ่มเก็บเงินผู้ใช้ใหม่',
-  'ล็อกอินแล้วความคืบหน้าซิงก์ข้ามเครื่องได้ทันที']},
+ {t:'ใหม่ · ฝึกฟัง เปิดให้ทุกคน',items:[
+  '<b>แท็บ "ฝึกฟัง"</b> ในทุกระดับ ฟังคำหรือประโยคแล้วเลือกคำตอบ ฝึกแยกวรรณยุกต์ได้ด้วย ใช้เฉพาะคำศัพท์ถึงระดับที่เรียน',
+  'ในหน้าบทเรียนมีปุ่ม <b>🎧 ฝึกฟังบทนี้</b>',
+  '<b>ทุกอย่างในเว็บฟรี</b> ใครอยากช่วยค่าดูแลเว็บ กดปุ่ม ☕ สนับสนุนเว็บ ได้ตามสะดวก']},
  {t:'ใหม่ · เสียงเดียวกันทุกเครื่อง',items:[
   '<b>เสียงทั้งเว็บใช้ไฟล์เสียงที่อัดไว้อย่างเดียว</b> ไม่ใช้เสียงอ่านของเครื่องแล้ว ทุกเครื่องได้ยินเสียงเดียวกัน',
   'ถ้าเน็ตช้าจนเล่นเสียงไม่ขึ้น จะลองเล่นใหม่ให้เอง และบอกให้รู้แทนการใช้เสียงแปลกๆ']},
  {t:'ใหม่ · บัญชีผู้ใช้ ซิงก์ข้ามเครื่อง',items:[
   '<b>ล็อกอินด้วย Google</b> (ปุ่มรูปคนมุมขวาบน) ความคืบหน้า คำที่จำได้ และวันต่อเนื่อง ซิงก์ข้ามมือถือกับคอมได้ (ไม่ล็อกอินก็ใช้ได้เหมือนเดิม)',
   '<b>ทุกบทเรียนที่มีอยู่ยังฟรีเหมือนเดิม</b>',
-  'เพิ่มหน้า <b>นโยบายความเป็นส่วนตัว ข้อตกลง และการคืนเงิน</b> (ท้ายเว็บ)']},
+  'เพิ่มหน้า <b>นโยบายความเป็นส่วนตัวและข้อตกลง</b> (ท้ายเว็บ)']},
  {t:'อัปเดตล่าสุด · 6 ต.ค. 2026 (จากความคิดเห็นของผู้ใช้)',items:[
   'ปุ่ม <b>← ย้อนกลับ</b> บนหัวเว็บ และปุ่ม Back/ปัดย้อนของมือถือ พากลับหน้าก่อนในเว็บแล้ว ไม่หลุดออกจากเว็บ',
   'ปุ่ม <b>ข้อก่อนหน้า</b> ในแบบทดสอบ แฟลชการ์ด และฝึกแปล',
@@ -1766,7 +1768,7 @@ function openNews(){track('click/whats-new','เปิดดูมีอะไ�
   document.body.appendChild(ov); const c=()=>ov.remove(); ov.onclick=e=>{if(e.target===ov)c();}; ov.querySelector('#clClose').onclick=c; markNewsSeen();}
 function renderNewsBar(){const b=$('#newsBar'); if(!b) return;
   if(seenNews()){b.innerHTML='';return;}
-  b.innerHTML=`<div class="newsbar"><span>${earlyOpen()?'🎁 <b>ล็อกอินภายใน 17 ต.ค.</b> รับสิทธิ์ใช้บทเรียนที่มีอยู่ตอนนี้ได้ฟรี':'✨ <b>ใหม่:</b> เสียงเดียวกันทุกเครื่อง และล็อกอินซิงก์ข้ามเครื่อง'} <button class="lk" id="nbOpen">ดูทั้งหมด</button></span><button id="nbX" aria-label="ปิด">✕</button></div>`;
+  b.innerHTML=`<div class="newsbar"><span>✨ <b>ใหม่:</b> แท็บฝึกฟัง เปิดให้ทุกคนแล้ว ฟรีทุกอย่าง <button class="lk" id="nbOpen">ดูทั้งหมด</button></span><button id="nbX" aria-label="ปิด">✕</button></div>`;
   $('#nbOpen').onclick=openNews; $('#nbX').onclick=markNewsSeen;}
 
 /* ===== tabs ===== */
@@ -1777,7 +1779,7 @@ function go(tab){S.tab=tab;closePop();stopAll();
 if(listenOpen()){const lb=document.querySelector('nav.tabs [data-tab=listen]'); if(lb) lb.hidden=false;}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='lessons')S.lesson=null;if(b.dataset.tab==='cards')S.customDeck=null;go(b.dataset.tab);});
 $('#streakBtn').onclick=openStreak; renderStreak(); setInterval(renderStreak,60000);
-$('#navBack').onclick=navBack; $('#legalBtn').onclick=()=>openLegal('privacy'); $('#accBtn').onclick=()=>ACC.user?openAccount():openLogin(); accInit(); $('#muteBtn').onclick=toggleMute; renderMute(); $('#newsBtn').onclick=openNews; if(!seenNews()) $('#newsBtn').insertAdjacentHTML('beforeend','<span class="dot"></span>');
+$('#navBack').onclick=navBack; $('#legalBtn').onclick=()=>openLegal('privacy'); $('#donBtn').onclick=openDonate; showDonate(); $('#accBtn').onclick=()=>ACC.user?openAccount():openLogin(); accInit(); $('#muteBtn').onclick=toggleMute; renderMute(); $('#newsBtn').onclick=openNews; if(!seenNews()) $('#newsBtn').insertAdjacentHTML('beforeend','<span class="dot"></span>');
 (function initNav(){ try{history.scrollRestoration='manual';}catch(e){} const fromHash=parseHash(location.hash);
   if(fromHash){ applyNav(fromHash); }
   else { const savedLv=load('hsk-level',null); if(savedLv==='py') enterPinyin(); else if(savedLv==='st') enterStrokes(); else if(savedLv) enterLevel(savedLv); else renderHome(); }
