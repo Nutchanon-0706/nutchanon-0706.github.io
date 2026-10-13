@@ -737,6 +737,102 @@ nav.tabs button[aria-selected="true"]{background:none!important;border-color:tra
 :root[data-theme="dark"] .btn.go:hover,:root[data-theme="dark"] .btn.primary:hover{background:#C4554B}
 @media (min-width:900px){#main{margin-inline:auto}}
 
+/* donate: filled band so it reads as a real call to action */
+#home .donhome{background:var(--accent);border:0;color:#fff;padding:16px 18px;gap:16px;border-radius:var(--r3);align-items:center}
+#home .donhome b{color:#fff;font-size:17px;font-weight:700}
+#home .donhome .muted{color:rgba(255,255,255,.88)!important}
+#home .donhome::before{content:"";flex:none;width:40px;height:40px;border-radius:var(--r2);background:rgba(255,255,255,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/%3E%3C/svg%3E") center/22px no-repeat}
+#home .donhome>span{flex:1;min-width:0}
+#home .donhome .btn.doncta{background:#fff!important;color:var(--accent-ink)!important;border-color:#fff!important;font-weight:700;min-height:44px;padding:8px 18px}
+#home .donhome .btn.doncta:hover{background:#FBF1EF!important}
+:root[data-theme="dark"] #home .donhome{background:#9E3F36}
+:root[data-theme="dark"] #home .donhome .btn.doncta{color:#9E3F36!important}
+@media (max-width:420px){#home .donhome::before{display:none}}
+
+/* home without word-of-the-day: single column intro, update line on top */
+.h-intro{grid-template-columns:1fr}
+.h-news-top{width:100%;display:flex;align-items:center;gap:10px;margin:0 0 var(--s2);padding:10px 14px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r2);background:var(--surface);font-size:14px}
+.h-news-top .dot{margin:0;flex:none}
+.h-news-top .nl{flex:none;font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--accent-ink);background:var(--accent-soft);border-radius:4px;padding:1px 7px}
+.h-news-top .nt{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-news-top .more{flex:none;font-size:13px}
+.h-news-top:hover{border-color:var(--line-2);border-left-color:var(--accent)}
+.h-foot{justify-content:flex-start;gap:var(--s3)}
+
+/* =====================================================================
+   MOBILE PASS — content first, one-handed, no ragged control rows
+   ===================================================================== */
+@media (max-width:600px){
+  body{font-size:16px}
+  :root{--header-h:56px}
+  header.top{min-height:56px}
+  .themebtn,.accbtn,.streak{height:38px;min-width:38px}
+  .accbtn{width:38px}
+  /* level view: get to the lesson faster */
+  #inlevel .today{display:none}
+  .newsbar{padding:6px 10px;font-size:13px;margin-bottom:var(--s2)}
+  .newsbar>span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+  .lvbar{margin-bottom:var(--s2)}
+  .lvbtn{min-height:38px;font-size:15px}
+  nav.tabs{margin-bottom:var(--s3)}
+  nav.tabs button{padding:11px 10px 9px;font-size:15px}
+  nav.tabs button[aria-selected="true"]::after{left:8px;right:8px}
+  /* controls: tidy 2-column grid instead of ragged rows */
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+  .controls>select,.controls>.btn,.controls>input{width:100%;min-width:0}
+  .controls>select:only-of-type{grid-column:1/-1}
+  .controls>.chip{justify-content:flex-start;min-width:0}
+  .controls>input[type=search]{grid-column:1/-1}
+  select{min-height:42px;font-size:15px;text-overflow:ellipsis}
+  /* lesson list rows */
+  .lcard{grid-template-columns:52px 1fr auto;padding:11px 12px;column-gap:var(--s2)}
+  .lcard .t{font-size:19px}
+  .lcard .nxt{font-size:12.5px}
+  /* lesson header: back on its own line, then title */
+  .lhead{flex-wrap:wrap}
+  .lhead .lback{flex:0 0 auto}
+  .lhead h2{flex-basis:100%;font-size:28px;margin-top:var(--s1)}
+  .controls:has(.chip){display:flex;flex-wrap:wrap}
+  .legend{font-size:12px}
+  .line{font-size:21px;line-height:2.1}
+  .bubble{max-width:94%}
+  /* practice */
+  .opt{min-height:52px;font-size:16.5px;padding:12px}
+  .tin{font-size:18px;padding:11px 12px}
+  .card{min-height:260px;padding:20px}
+  .box{padding:var(--s4)}
+  .prompt{margin-bottom:var(--s3)}
+  .cardbar{gap:var(--s2)}
+  .cardbar .btn{flex:1 1 auto}
+  /* home */
+  .h-title{font-size:30px}
+  .h-lede{font-size:15.5px;margin-bottom:var(--s4)}
+  .h-intro{padding:var(--s3) 0 var(--s5)}
+  .sec-h{margin:var(--s5) 0 var(--s2)}
+  .sec-h span{font-size:12.5px}
+  .c-main b{font-size:17px}
+  .c-main small{font-size:13.5px}
+  /* footer */
+  .foot{margin-top:var(--s6)}
+  .factions{gap:0 var(--s3)}
+}
+@media (max-width:480px){
+  #home .donhome{flex-direction:column;align-items:stretch;gap:var(--s3);padding:14px 16px}
+  #home .donhome::before{display:none}
+  #home .donhome .btn.doncta{width:100%}
+  .h-news-top .more{display:none}
+  .h-stats li{padding-right:var(--s3);margin-right:var(--s3)}
+}
+@media (max-width:360px){
+  .wrap{padding:0 12px 48px}
+  header.top{margin:0 -12px var(--s3);padding:8px 12px}
+  nav.tabs{margin:0 -12px var(--s3);padding:0 12px}
+  .streak{padding:0 6px 0 3px}
+  .controls{grid-template-columns:1fr}
+  .h-title{font-size:27px}
+}
+@media (max-width:600px){.controls:has(.chip)>input[type=search],.controls:has(.chip)>select{flex:1 1 100%;width:100%}}
+
 </style>
 </head>
 <body>
@@ -1033,6 +1129,7 @@ function renderHome(){
       <span class="c-go">${arrow}</span></button></li>`;
   const cta=started?(nextL?'เรียนบทถัดไป':'เข้าเรียน HSK'+cont):'เริ่มบทแรกของ HSK1';
   $('#home').innerHTML=`
+  <button class="h-news h-news-top" id="newsHome">${seenNews()?'':'<span class="dot"></span>'}<span class="nl">อัปเดต</span><span class="nt">${g.t.replace(/^ใหม่ · /,'')}</span><span class="more">ดูทั้งหมด</span></button>
   <section class="h-intro">
     <div class="h-copy">
       <p class="eyebrow">HSK 1–4 · คำศัพท์หลักสูตร 3.0 · ใช้ฟรีทุกบท</p>
@@ -1042,7 +1139,6 @@ function renderHome(){
       <div class="h-cta"><button class="btn primary lg" id="heroGo">${cta}</button>${started?'':'<button class="btn link" id="heroPy">ยังไม่รู้จักพินอิน? เริ่มที่นี่</button>'}</div>
       ${started?`<ul class="h-stats"><li><b>${st.state==='fire'||st.state==='pending'?st.count:0}</b><span>วันติดต่อกัน</span></li><li><b>${kn}</b><span>คำที่จำได้</span></li><li><b>${dn}</b><span>บทที่อ่านจบ</span></li></ul>`:''}
     </div>
-    ${tw?`<aside class="h-word" aria-label="คำของวันนี้"><button class="tw" id="twBtn" aria-label="ฟังเสียง ${esc(tw.h)}">${esc(tw.h)}</button><span class="wtxt"><span class="lab">คำของวันนี้ · HSK${cont}</span><span class="py">${esc(tw.p)}</span><span class="th">${esc(thOf(tw))}</span><span class="hint">${spk}แตะตัวอักษรเพื่อฟัง</span></span></aside>`:''}
   </section>
   <div class="h-band">${donateCard()}${nMiss?`<div class="h-review"><span>มี <b>${nMiss} คำ</b> ใน HSK${cont} ที่คุณมักตอบผิด</span><button class="btn sm" id="revGo">ทบทวน</button></div>`:''}</div>
   <div class="sec-h"><h3>หลักสูตร</h3><span>4 ระดับ ตามคำศัพท์ HSK 3.0</span></div>
@@ -1053,8 +1149,7 @@ function renderHome(){
     ${row('goPy','ā',false,'var(--accent-ink)','var(--accent-soft)','พินอิน','วรรณยุกต์ 4 เสียง พยัญชนะต้น และสระ','ตารางเสียงครบ',null)}
     ${row('goSt','丿',true,'var(--sage-ink)','var(--sage-soft)','ลำดับขีด','เส้นพื้นฐาน 14 แบบ และกฎการเขียน','ดูวิธีเขียนทีละเส้น',null)}
   </ol>
-  <div class="h-foot"><button class="h-news" id="newsHome">${seenNews()?'':'<span class="dot"></span>'}<span><b>${g.t.replace(/^ใหม่ · /,'อัปเดต: ')}</b></span><span class="more">ดูทั้งหมด</span></button>
-    ${FEEDBACK_URL?'<button class="btn link" id="fbHome">ส่งความคิดเห็นถึงผู้ทำเว็บ</button>':''}</div>`;
+  ${FEEDBACK_URL?'<div class="h-foot"><span>มีอะไรอยากให้ปรับหรือเพิ่ม?</span><button class="btn link" id="fbHome">ส่งความคิดเห็นถึงผู้ทำเว็บ</button></div>':''}`;
   if($('#fbHome')) $('#fbHome').onclick=()=>{track('click/feedback','กดส่งความคิดเห็น',false);window.open(FEEDBACK_URL,'_blank','noopener');};
   if($('#donHome')) $('#donHome').onclick=openDonate;
   $('#newsHome').onclick=openNews;
@@ -2194,6 +2289,7 @@ function renderNewsBar(){const b=$('#newsBar'); if(!b) return;
 /* ===== tabs ===== */
 function go(tab){S.tab=tab;closePop();stopAll();
   $$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
+  { const nv=document.querySelector('#inlevel nav.tabs'), at=nv&&nv.querySelector('[aria-selected=true]'); if(nv&&at) nv.scrollLeft=Math.max(0,at.offsetLeft-(nv.clientWidth-at.offsetWidth)/2); }
   if(tab==='lessons')renderLessons(); if(tab==='vocab')renderVocab();
   if(tab==='cards'){buildDeck();renderCards();} if(tab==='write'){renderWrite();} if(tab==='quiz'){newQuiz();renderQuiz();} if(tab==='type'){startType();renderType();} if(tab==='listen'){S.lis=null;renderListen();} pushNav();}
 if(listenOpen()){const lb=document.querySelector('nav.tabs [data-tab=listen]'); if(lb) lb.hidden=false;}
